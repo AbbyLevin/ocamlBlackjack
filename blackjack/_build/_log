@@ -1,8 +1,10 @@
 ### Starting build.
-# Target: deck_test.ml.depends, tags: { package(ounit2), debug, extension:ml, file:deck_test.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -modules deck_test.ml > deck_test.ml.depends # cached
-# Target: deck_test.cmo, tags: { package(ounit2), byte, compile, debug, extension:cmo, extension:ml, file:deck_test.cmo, file:deck_test.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -package ounit2 -o deck_test.cmo deck_test.ml # cached
-# Target: deck_test.byte, tags: { package(ounit2), byte, debug, dont_link_with, extension:byte, file:deck_test.byte, link, ocaml, program, quiet, traverse }
-ocamlfind ocamlc -linkpkg -g -package ounit2 deck_test.cmo -o deck_test.byte # cached
+# Target: deck.ml.depends, tags: { package(ounit2), extension:ml, file:deck.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -modules deck.ml > deck.ml.depends # cached
+# Target: deck.cmo, tags: { package(ounit2), byte, compile, extension:cmo, extension:ml, file:deck.cmo, file:deck.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package ounit2 -o deck.cmo deck.ml # cached
+# Target: card.ml.depends, tags: { package(ounit2), extension:ml, file:card.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -modules card.ml > card.ml.depends
+# Target: card.cmo, tags: { package(ounit2), byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package ounit2 -o card.cmo card.ml
 # Compilation successful.
