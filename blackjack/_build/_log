@@ -1,2 +1,6 @@
 ### Starting build.
-# Compilation unsuccessful.
+# Target: deck.ml.depends, tags: { package(ounit2), extension:ml, file:deck.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -modules deck.ml > deck.ml.depends # cached
+# Target: deck.cmo, tags: { package(ounit2), byte, compile, extension:cmo, extension:ml, file:deck.cmo, file:deck.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -package ounit2 -o deck.cmo deck.ml # cached
+# Compilation successful.

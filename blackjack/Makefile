@@ -1,9 +1,6 @@
 MODULES=deck
 OBJECTS=$(MODULES:=.cmo)
-MLS=$(MODULES:=.ml)
-MLIS=$(MODULES:=.mli)
-TEST=test.byte
-MAIN=main.byte
+TEST=deck_test.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -13,13 +10,8 @@ build:
 	$(OCAMLBUILD) $(OBJECTS)
 
 test:
-	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST)
+	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
 
-play:
-	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
-
-
-zip:
-	zip adventure.zip *.ml* *.json _tags Makefile
-	
+check:
+	bash checkenv.sh && bash checktypes.sh
 	
