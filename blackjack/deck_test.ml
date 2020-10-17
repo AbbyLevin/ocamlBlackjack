@@ -78,6 +78,16 @@ let add_card_to_test
       assert_equal expected_output (add_card_to num (create_card suit value)) 
         ~printer:(string_of_int))
 
+(** [add_card_to_test name num suit value expected_output] constructs an 
+    OUnit test named [name] that asserts the quality of [expected_output] with 
+    [add_card_to num (create_card [suit] [value]]. *)
+let standard_deck_test 
+    (name : string) (deck : card list)
+    (expected_output : card list) : test = 
+  name >:: (fun _ -> 
+      (* the [printer] tells OUnit how to convert the output to a string *)
+      assert_equal expected_output deck )
+
 let card_tests =
   [
     card_attribute_test "testing that the suit is properly created" get_suit
@@ -103,6 +113,8 @@ let card_tests =
          [(Spades, Jack); (Clubs, Four); (Hearts, Ten); (Diamonds, Queen)]) 34;
     add_card_to_test "adding an int to a non-face card" 5 Hearts One 6;
     add_card_to_test "adding an int to a face card" 100 Spades King 110;
+    standard_deck_test "testing that a standard deck was properly created" 
+      create_standard_deck [];
   ]
 
 let tests =
