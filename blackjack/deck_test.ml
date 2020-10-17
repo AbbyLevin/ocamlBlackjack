@@ -114,6 +114,10 @@ let card_tests =
          [(Spades, Jack); (Clubs, Four); (Hearts, Ten); (Diamonds, Queen)]) 34;
     add_card_to_test "adding an int to a non-face card" 5 Hearts One 6;
     add_card_to_test "adding an int to a face card" 100 Spades King 110;
+  ]
+
+let deck_tests =
+  [
     standard_deck_test "testing that a standard deck was properly created" 
       create_standard_deck 
       (create_card_list [] 
@@ -139,6 +143,7 @@ let card_tests =
 let tests =
   "test suite for Blackjack"  >::: List.flatten [
     card_tests;
+    deck_tests;
   ]
 
 let _ = run_test_tt_main tests
