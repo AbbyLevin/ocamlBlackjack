@@ -1,8 +1,8 @@
 ### Starting build.
 # Target: deck_test.ml.depends, tags: { package(ounit2), debug, extension:ml, file:deck_test.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -modules deck_test.ml > deck_test.ml.depends
+ocamlfind ocamldep -package ounit2 -modules deck_test.ml > deck_test.ml.depends # cached
 # Target: card.ml.depends, tags: { package(ounit2), debug, extension:ml, file:card.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -modules card.ml > card.ml.depends # cached
+ocamlfind ocamldep -package ounit2 -modules card.ml > card.ml.depends
 # Target: deck.ml.depends, tags: { package(ounit2), debug, extension:ml, file:deck.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package ounit2 -modules deck.ml > deck.ml.depends # cached
 # Target: card.cmo, tags: { package(ounit2), byte, compile, debug, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }

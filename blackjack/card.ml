@@ -110,19 +110,3 @@ let rec add_cards (acc : int) (lst : card list) =
     then use this as opposed to the method above. *)
 let add_card_to (num : int) (c : card) : int = 
   num + (get_value c |> int_of_value)
-
-let rec combine_suit_and_values curr suit value_list = 
-  match value_list with 
-  | [] -> curr
-  | h :: t -> combine_suit_and_values ((suit, h) :: curr) suit t
-
-let rec standard_deck_maker acc suit_list value_list = 
-  match suit_list with 
-  | [] -> acc
-  | h :: t -> combine_suit_and_values acc h value_list
-
-let create_standard_deck : card list = 
-  let suit_list = [Clubs; Spades; Hearts; Diamonds] in 
-  let value_list = [One; Two; Three; Four; Five; Six; Seven; Eight; Nine; Ten; 
-                    Jack; Queen; King; Ace] in
-  standard_deck_maker [] suit_list value_list |> create_card_list []
