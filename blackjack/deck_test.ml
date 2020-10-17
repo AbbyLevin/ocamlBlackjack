@@ -32,20 +32,60 @@ let pp_list pp_elt lst =
     in loop 0 "" lst
   in "[" ^ pp_elts lst ^ "]"
 
-(** [starting_room_test name input expected_output] constructs an OUnit
-    test named [name] that asserts the quality of [expected_output]
-    with [starting_room input]. *)
-let suit_test 
-    (name : string) 
-    (suit) (value)
-    (expected_output) : test = 
+(** [card_attribute_test name card_attrib suit value expected_output printer]
+    constructs an OUnit test named [name] that asserts the quality of 
+    [expected_output] [create_card suit value |> card_attribute]. *)
+let card_attribute_test
+    (name : string) (card_attrib)
+    (suit : suit) (value : value) 
+    (expected_output) (printer): test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
-      assert_equal expected_output (create_card suit value))
+      assert_equal expected_output (create_card suit value |> card_attrib)
+        ~printer:printer) 
+
+(** [card_test name suit value expected_output] constructs an OUnit
+    test named [name] that asserts the quality of [expected_output]
+    with the string representation of [create_card suit value]. *)
+let card_test 
+    (name : string) 
+    (suit : suit) (value : value)
+    (expected_output : string) : test = 
+  name >:: (fun _ -> 
+      (* the [printer] tells OUnit how to convert the output to a string *)
+      assert_equal expected_output (string_of_card(create_card suit value)) 
+        ~printer:(fun x -> x))
+
+(** [cards_sum_test name card_list expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [add_cards 0 card_list]. *)
+let card_sum_test 
+    (name : string) (card_list : card list)
+    (expected_output : int) : test = 
+  name >:: (fun _ -> 
+      (* the [printer] tells OUnit how to convert the output to a string *)
+      assert_equal expected_output 
+        (add_cards 0 card_list) 
+        ~printer:(string_of_int)) 
 
 let card_tests =
   [
-
+    card_attribute_test "testing that the suit is properly created" get_suit
+      Clubs One Clubs (string_of_suit);
+    card_attribute_test "testing that the value is properly created" get_value
+      Clubs One One (string_of_value);
+    card_attribute_test "testing that the value is properly created face card" 
+      get_value Clubs Ace Ace (string_of_value);
+    card_test "testing card creation for non-face cards" Clubs One 
+      "1 of clubs";
+    card_test "testing card creation for face cards" Diamonds Queen
+      "queen of diamonds";
+    card_test "testing card creation for ace cards" Spades Ace
+      "ace of spades";
+    card_sum_test "the sum of one card is the value of that card" 
+      (create_card_list [] [(Spades, Two)]) 2;
+    card_sum_test "the sum of two non-face cards" 
+      (create_card_list [] [(Spades, Two); (Diamonds, One)]) 3;
   ]
 
 let tests =
