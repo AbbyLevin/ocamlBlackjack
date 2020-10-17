@@ -64,9 +64,19 @@ let card_sum_test
     (expected_output : int) : test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
-      assert_equal expected_output 
-        (add_cards 0 card_list) 
+      assert_equal expected_output (add_cards 0 card_list) 
         ~printer:(string_of_int)) 
+
+(** [add_card_to_test name num suit value expected_output] constructs an 
+    OUnit test named [name] that asserts the quality of [expected_output] with 
+    [add_card_to num (create_card [suit] [value]]. *)
+let add_card_to_test 
+    (name : string) (num: int) (suit : suit) (value : value)
+    (expected_output : int) : test = 
+  name >:: (fun _ -> 
+      (* the [printer] tells OUnit how to convert the output to a string *)
+      assert_equal expected_output (add_card_to num (create_card suit value)) 
+        ~printer:(string_of_int))
 
 let card_tests =
   [
@@ -86,12 +96,18 @@ let card_tests =
       (create_card_list [] [(Spades, Two)]) 2;
     card_sum_test "the sum of two non-face cards" 
       (create_card_list [] [(Spades, Two); (Diamonds, One)]) 3;
+    card_sum_test "the sum of face cards" 
+      (create_card_list [] [(Spades, Jack); (Diamonds, Queen)]) 20;
+    card_sum_test "the sum of a mix of face and non-face cards" 
+      (create_card_list [] 
+         [(Spades, Jack); (Clubs, Four); (Hearts, Ten); (Diamonds, Queen)]) 34;
+    add_card_to_test "adding an int to a non-face card" 5 Hearts One 6;
+    add_card_to_test "adding an int to a face card" 100 Spades King 110;
   ]
 
 let tests =
   "test suite for Blackjack"  >::: List.flatten [
     card_tests;
-
   ]
 
 let _ = run_test_tt_main tests

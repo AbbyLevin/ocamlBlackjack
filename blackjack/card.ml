@@ -22,35 +22,43 @@ type value =
 
 type card = {suit: suit; value: value}
 
+(** [create_card suit value] creates a card record with suit [suit] and 
+     value [value]. *)
 let create_card suit value = 
   {suit: suit; value: value}
 
-let tuple_to_card tup = 
+(** [tuple_to_card tup] converts a suit * value tuple [tup] into a card. *)
+let tuple_to_card (tup : suit * value) : card = 
   match tup with 
   | (x, y) -> 
     {suit=x; value=y}
 
-let rec create_card_list acc (lst : (suit * value) list) : card list = 
+(** [create_card_list acc lst] returns a list of cards corresponding to a list
+    of suit * value tuples [lst]. *)
+let rec create_card_list (acc : card list) 
+    (lst : (suit * value) list) : card list = 
   match lst with 
   | [] -> acc
   | h :: t -> create_card_list (tuple_to_card h :: acc) t
 
-let get_suit (c : card) = 
+(** [get_suit c] returns the suit of [c]. *)
+let get_suit (c : card) : suit = 
   c.suit
 
-let get_value (c : card) = 
+(** [get_value c] returns the value of [c]. *)
+let get_value (c : card) : value = 
   c.value
 
+(** [string_of_suit suit] returns a string representation of [suit]. *)
 let string_of_suit (suit : suit) = 
-  (*let suit = get_suit c in *)
   match suit with 
   | Clubs -> "clubs"
   | Spades -> "spades"
   | Hearts -> "hearts"
   | Diamonds -> "diamonds"
 
+(** [string_of_value value] returns a string representation of [value]. *)
 let string_of_value (value : value) = 
-  (*let value = get_value c in *)
   match value with 
   | One -> "1"
   | Two -> "2"
@@ -67,9 +75,10 @@ let string_of_value (value : value) =
   | King -> "king"
   | Ace -> "ace"
 
-(* Ace has a lil bit of weird behavior *)
-let int_of_value (c : card) = 
-  let value = get_value c in 
+(** [int_of_value value] returns an int representation of [value]. 
+    Note: Ace has weird behavior which we will handle in a later module. 
+    For now, the default value of Ace is 1. *)
+let int_of_value (value : value) = 
   match value with 
   | One -> 1
   | Two -> 2
@@ -86,12 +95,18 @@ let int_of_value (c : card) =
   | King -> 10
   | Ace -> 1
 
+(** [string_of_card c] returns a string representation of [c]. *)
 let string_of_card (c : card) = 
   (get_value c |> string_of_value) ^ " of " ^ (get_suit c |> string_of_suit)
 
-(*can likely do this functionality in Deck instead, but we'll see if it gets
-  used *)
-let rec add_cards acc (lst : card list) = 
+(* [add_cards acc lst] returns the sum of the values of the cards in [lst]. *)
+let rec add_cards (acc : int) (lst : card list) = 
   match lst with 
   | [] -> acc
-  | h :: t -> add_cards (acc + int_of_value h) t 
+  | h :: t -> add_cards (acc + (get_value h |> int_of_value)) t 
+
+(** [add_card_to num c] adds the value of [c] to [num]. 
+    Note: We would likely keep track of the current sum of a deck and 
+    then use this as opposed to the method above. *)
+let add_card_to (num : int) (c : card) : int = 
+  num + (get_value c |> int_of_value)
