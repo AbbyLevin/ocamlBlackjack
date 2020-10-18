@@ -96,6 +96,16 @@ let shuffle_test
       (* the [printer] tells OUnit how to convert the output to a string *)
       (assert (expected_output != deck)))
 
+(** [sum_cards name card_list expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [sum_cards card_list]. *)
+let sum_cards_test 
+    (name : string) (card_list : card list)
+    (expected_output : int) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (sum_cards card_list) 
+        ~printer:(string_of_int)) 
+
 let card_tests =
   [
     card_attribute_test "testing that the suit is properly created" get_suit
@@ -121,6 +131,35 @@ let card_tests =
          [(Spades, Jack); (Clubs, Four); (Hearts, Ten); (Diamonds, Queen)]) 34;
     add_card_to_test "adding an int to a non-face card" 5 Hearts One 6;
     add_card_to_test "adding an int to a face card" 100 Spades King 110;
+
+    (** Testing sum_cards *)
+    sum_cards_test "empty hand" [] 0;
+    sum_cards_test "one card" [{suit=Clubs; value=Two}] 2;
+    sum_cards_test "10 cards" [{suit=Clubs; value=Two};
+                               {suit=Clubs; value=Three};
+                               {suit=Clubs; value=Four};
+                               {suit=Clubs; value=Five};
+                               {suit=Clubs; value=Six};
+                               {suit=Clubs; value=Seven};
+                               {suit=Clubs; value=Eight};
+                               {suit=Clubs; value=Nine};
+                               {suit=Clubs; value=Ten};
+                               {suit=Clubs; value=Jack}] 64;
+    sum_cards_test "ace high" 
+      [{suit=Clubs; value=Ace}; {suit=Clubs; value=Jack}] 21;
+    sum_cards_test "ace low" 
+      [{suit=Clubs; value=Ace}; {suit=Clubs; value=Jack}; 
+       {suit=Clubs; value=Two}] 13;
+    sum_cards_test "one ace high one ace low" 
+      [{suit=Clubs; value=Ace}; {suit=Clubs; value=Jack}; 
+       {suit=Clubs; value=Ace}] 12;
+    sum_cards_test "one ace high two ace low" 
+      [{suit=Clubs; value=Ace}; {suit=Clubs; value=Jack}; 
+       {suit=Clubs; value=Ace}; {suit=Clubs; value=Ace}] 13;
+    sum_cards_test "one ace high two ace low, bust" 
+      [{suit=Clubs; value=Ace}; {suit=Clubs; value=Jack}; 
+       {suit=Clubs; value=Ten}; {suit=Clubs; value=Ace}; 
+       {suit=Clubs; value=Ace}] 23;
   ]
 
 let deck_tests =

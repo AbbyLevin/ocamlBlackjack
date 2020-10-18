@@ -2,10 +2,10 @@ open Card
 open Deck
 
 (** The type representing a player. *)
-type player = {name: string; hand: card list; sum: int}
+type player = {name: string; hand: card list}
 
-let create_player name hand sum =
-  {name = name; hand = hand; sum = sum}
+let create_player name hand =
+  {name = name; hand = hand}
 
 (** [get_hand player] is the hand of [player] *)
 let get_hand player =
@@ -13,7 +13,7 @@ let get_hand player =
 
 (** [get_sum player] is the sum of [player] *)
 let get_sum player =
-  player.sum
+  sum_cards player.hand
 
 (** *)
 let hit player deck =

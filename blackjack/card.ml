@@ -110,3 +110,35 @@ let rec add_cards (acc : int) (lst : card list) =
     then use this as opposed to the method above. *)
 let add_card_to (num : int) (c : card) : int = 
   num + (get_value c |> int_of_value)
+
+(** [find_rem_ace cards acc] returns a list of cards but with 1 ace removed
+    if there are any in [cards].*)
+let rec find_rem_ace (cards : card list) acc = 
+  match cards with 
+    [] -> acc 
+  | x :: xs -> if x.value = Ace then acc @ xs 
+    else find_rem_ace xs (x :: acc)
+
+(** [sum_cards_strict cards acc] returns the sum of a list of cards where 
+    aces are counted strictly as 11.*)
+let rec sum_cards_strict (cards : card list) acc = 
+  match cards with 
+    [] -> acc
+  | x :: xs -> let new_acc = int_of_value x.value + acc in 
+    (sum_cards_strict xs new_acc) 
+
+(** [sum_cards cards] returns the sum of a list of cards. Aces are counted as 
+    either 11 or 1 in manner which gets the player closest to 21 without 
+    putting them over 21. *)
+let sum_cards (cards : card list) = 
+  (* adj_cards = cards with one less ace if there is one *)
+  let adj_cards = find_rem_ace cards [] in  
+
+  let len_adj = List.length adj_cards in 
+  let len_cards = List.length cards in 
+
+  (* If lens are same then there was no ace in list of cards *)
+  let sum_cards = sum_cards_strict adj_cards 0 in
+  if len_adj = len_cards then sum_cards 
+  else 
+  if sum_cards + 11 <= 21 then 11 + sum_cards else 1 + sum_cards
