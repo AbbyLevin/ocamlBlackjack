@@ -5,7 +5,6 @@ type suit =
   | Diamonds
 
 type value = 
-  | One
   | Two
   | Three
   | Four
@@ -60,7 +59,6 @@ let string_of_suit (suit : suit) =
 (** [string_of_value value] returns a string representation of [value]. *)
 let string_of_value (value : value) = 
   match value with 
-  | One -> "1"
   | Two -> "2"
   | Three -> "3"
   | Four -> "4"
@@ -80,7 +78,6 @@ let string_of_value (value : value) =
     For now, the default value of Ace is 1. *)
 let int_of_value (value : value) = 
   match value with 
-  | One -> 1
   | Two -> 2
   | Three -> 3
   | Four -> 4
@@ -111,7 +108,7 @@ let rec add_cards (acc : int) (lst : card list) =
 let add_card_to (num : int) (c : card) : int = 
   num + (get_value c |> int_of_value)
 
-(** [find_rem_ace cards acc] returns a list of cards but with 1 ace removed
+(** [find_rem_ace cards acc] returns a [cards] but with 1 ace removed
     if there are any in [cards].*)
 let rec find_rem_ace (cards : card list) acc = 
   match cards with 

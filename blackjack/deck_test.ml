@@ -109,13 +109,13 @@ let sum_cards_test
 let card_tests =
   [
     card_attribute_test "testing that the suit is properly created" get_suit
-      Clubs One Clubs (string_of_suit);
+      Clubs Two Clubs (string_of_suit);
     card_attribute_test "testing that the value is properly created" get_value
-      Clubs One One (string_of_value);
+      Clubs Two Two (string_of_value);
     card_attribute_test "testing that the value is properly created face card" 
       get_value Clubs Ace Ace (string_of_value);
-    card_test "testing card creation for non-face cards" Clubs One 
-      "1 of clubs";
+    card_test "testing card creation for non-face cards" Clubs Two 
+      "2 of clubs";
     card_test "testing card creation for face cards" Diamonds Queen
       "queen of diamonds";
     card_test "testing card creation for ace cards" Spades Ace
@@ -123,13 +123,13 @@ let card_tests =
     card_sum_test "the sum of one card is the value of that card" 
       (create_card_list [] [(Spades, Two)]) 2;
     card_sum_test "the sum of two non-face cards" 
-      (create_card_list [] [(Spades, Two); (Diamonds, One)]) 3;
+      (create_card_list [] [(Spades, Two); (Diamonds, Two)]) 4;
     card_sum_test "the sum of face cards" 
       (create_card_list [] [(Spades, Jack); (Diamonds, Queen)]) 20;
     card_sum_test "the sum of a mix of face and non-face cards" 
       (create_card_list [] 
          [(Spades, Jack); (Clubs, Four); (Hearts, Ten); (Diamonds, Queen)]) 34;
-    add_card_to_test "adding an int to a non-face card" 5 Hearts One 6;
+    add_card_to_test "adding an int to a non-face card" 5 Hearts Two 7;
     add_card_to_test "adding an int to a face card" 100 Spades King 110;
 
     (** Testing sum_cards *)
@@ -167,23 +167,23 @@ let deck_tests =
     standard_deck_test "testing that a standard deck was properly created" 
       create_standard_deck 
       (create_card_list [] 
-         [(Clubs, One); (Clubs, Two); (Clubs, Three); (Clubs, Four); 
-          (Clubs, Five); (Clubs, Six); (Clubs, Seven); (Clubs, Eight); 
-          (Clubs, Nine); (Clubs, Ten); (Clubs, Jack); (Clubs, Queen); 
-          (Clubs, King); (Clubs, Ace); 
-          (Spades, One); (Spades, Two); (Spades, Three); (Spades, Four); 
-          (Spades, Five); (Spades, Six); (Spades, Seven); (Spades, Eight); 
-          (Spades, Nine); (Spades, Ten); (Spades, Jack); (Spades, Queen); 
-          (Spades, King); (Spades, Ace); 
-          (Hearts, One); (Hearts, Two); (Hearts, Three); (Hearts, Four); 
-          (Hearts, Five); (Hearts, Six); (Hearts, Seven); (Hearts, Eight); 
-          (Hearts, Nine); (Hearts, Ten); (Hearts, Jack); (Hearts, Queen); 
-          (Hearts, King); (Hearts, Ace); 
-          (Diamonds, One); (Diamonds, Two); (Diamonds, Three); 
-          (Diamonds, Four); (Diamonds, Five); (Diamonds, Six); 
-          (Diamonds, Seven); (Diamonds, Eight); (Diamonds, Nine); 
-          (Diamonds, Ten); (Diamonds, Jack); (Diamonds, Queen); 
-          (Diamonds, King); (Diamonds, Ace)]);
+         [ (Clubs, Two); (Clubs, Three); (Clubs, Four); 
+           (Clubs, Five); (Clubs, Six); (Clubs, Seven); (Clubs, Eight); 
+           (Clubs, Nine); (Clubs, Ten); (Clubs, Jack); (Clubs, Queen); 
+           (Clubs, King); (Clubs, Ace); 
+           (Spades, Two); (Spades, Three); (Spades, Four); 
+           (Spades, Five); (Spades, Six); (Spades, Seven); (Spades, Eight); 
+           (Spades, Nine); (Spades, Ten); (Spades, Jack); (Spades, Queen); 
+           (Spades, King); (Spades, Ace); 
+           (Hearts, Two); (Hearts, Three); (Hearts, Four); 
+           (Hearts, Five); (Hearts, Six); (Hearts, Seven); (Hearts, Eight); 
+           (Hearts, Nine); (Hearts, Ten); (Hearts, Jack); (Hearts, Queen); 
+           (Hearts, King); (Hearts, Ace); 
+           (Diamonds, Two); (Diamonds, Three); 
+           (Diamonds, Four); (Diamonds, Five); (Diamonds, Six); 
+           (Diamonds, Seven); (Diamonds, Eight); (Diamonds, Nine); 
+           (Diamonds, Ten); (Diamonds, Jack); (Diamonds, Queen); 
+           (Diamonds, King); (Diamonds, Ace)]);
     standard_deck_test "testing that shuffle deck returns the same cards "
       (shuffle create_standard_deck) create_standard_deck;
     shuffle_test "testing that shuffle deck returns the cards in a different 

@@ -17,7 +17,7 @@ let rec standard_deck_maker acc suit_list value_list =
 (** [create_standard_deck] creates a standard 52 card deck. *)
 let create_standard_deck : card list = 
   let suit_list = [Clubs; Spades; Hearts; Diamonds] in 
-  let value_list = [One; Two; Three; Four; Five; Six; Seven; Eight; Nine; Ten; 
+  let value_list = [Two; Three; Four; Five; Six; Seven; Eight; Nine; Ten; 
                     Jack; Queen; King; Ace] in
   standard_deck_maker [] suit_list value_list |> create_card_list []
 
