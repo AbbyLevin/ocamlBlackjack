@@ -89,6 +89,13 @@ let standard_deck_test
       assert_equal expected_output deck ~cmp:cmp_set_like_lists 
         ~printer:(pp_list string_of_card))
 
+let shuffle_test 
+    (name : string) (deck)
+    (expected_output : card list) : test = 
+  name >:: (fun _ -> 
+      (* the [printer] tells OUnit how to convert the output to a string *)
+      (assert (expected_output != deck)))
+
 let card_tests =
   [
     card_attribute_test "testing that the suit is properly created" get_suit
@@ -138,7 +145,13 @@ let deck_tests =
           (Diamonds, Seven); (Diamonds, Eight); (Diamonds, Nine); 
           (Diamonds, Ten); (Diamonds, Jack); (Diamonds, Queen); 
           (Diamonds, King); (Diamonds, Ace)]);
+    standard_deck_test "testing that shuffle deck returns the same cards "
+      (shuffle create_standard_deck) create_standard_deck;
+    shuffle_test "testing that shuffle deck returns the cards in a different 
+    order" (shuffle create_standard_deck) create_standard_deck;
   ]
+
+
 
 let tests =
   "test suite for Blackjack"  >::: List.flatten [

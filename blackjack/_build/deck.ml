@@ -20,3 +20,8 @@ let create_standard_deck : card list =
   let value_list = [One; Two; Three; Four; Five; Six; Seven; Eight; Nine; Ten; 
                     Jack; Queen; King; Ace] in
   standard_deck_maker [] suit_list value_list |> create_card_list []
+
+(** [shuffle deck] returns a new deck with the same elements as [deck] in a 
+    randomized order. *)  
+let shuffle deck = 
+  List.sort (fun x y -> (Random.int 2) - 1) deck
