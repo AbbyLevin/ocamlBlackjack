@@ -117,7 +117,7 @@ let rec find_rem_ace (cards : card list) acc =
     else find_rem_ace xs (x :: acc)
 
 (** [sum_cards_strict cards acc] returns the sum of a list of cards where 
-    aces are counted strictly as 11.*)
+    aces are counted strictly as 1.*)
 let rec sum_cards_strict (cards : card list) acc = 
   match cards with 
     [] -> acc
@@ -137,5 +137,5 @@ let sum_cards (cards : card list) =
   (* If lens are same then there was no ace in list of cards *)
   let sum_cards = sum_cards_strict adj_cards 0 in
   if len_adj = len_cards then sum_cards 
-  else 
-  if sum_cards + 11 <= 21 then 11 + sum_cards else 1 + sum_cards
+  else if sum_cards + 11 <= 21 then 11 + sum_cards 
+  else 1 + sum_cards
