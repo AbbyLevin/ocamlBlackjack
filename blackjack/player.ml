@@ -14,10 +14,3 @@ let get_hand player =
 (** [get_sum player] is the sum of [player] *)
 let get_sum player =
   sum_cards player.hand
-
-(** *)
-let hit player deck =
-  failwith "unimplimented"
-(**   let top_card = List.fst deck in
-      player.hand = top_card :: (get_hand player);
-      List.remove deck top_card *)
