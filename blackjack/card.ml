@@ -117,7 +117,7 @@ let rec find_rem_ace (cards : card list) acc =
     else find_rem_ace xs (x :: acc)
 
 (** [sum_cards_strict cards acc] returns the sum of a list of cards where 
-    aces are counted strictly as 1.*)
+    aces are counted strictly as 1*)
 let rec sum_cards_strict (cards : card list) acc = 
   match cards with 
     [] -> acc
@@ -126,7 +126,7 @@ let rec sum_cards_strict (cards : card list) acc =
 
 (** [sum_cards cards] returns the sum of a list of cards. Aces are counted as 
     either 11 or 1 in manner which gets the player closest to 21 without 
-    putting them over 21. *)
+    putting them over 21 *)
 let sum_cards (cards : card list) = 
   (* adj_cards = cards with one less ace if there is one *)
   let adj_cards = find_rem_ace cards [] in  
