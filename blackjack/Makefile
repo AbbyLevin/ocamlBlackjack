@@ -1,4 +1,4 @@
-MODULES=deck card player
+MODULES=deck card player main
 OBJECTS=$(MODULES:=.cmo)
 TEST=deck_test.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
