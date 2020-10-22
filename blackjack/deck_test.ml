@@ -2,7 +2,6 @@ open OUnit2
 open Deck
 open Card
 open Player
-open Main
 
 (** [cmp_set_like_lists lst1 lst2] compares two lists to see whether
     they are equivalent set-like lists.  That means checking two things.

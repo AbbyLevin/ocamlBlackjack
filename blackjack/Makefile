@@ -1,6 +1,7 @@
 MODULES=deck card player main
 OBJECTS=$(MODULES:=.cmo)
 TEST=deck_test.byte
+MAIN=main.byte
 OCAMLBUILD=ocamlbuild -use-ocamlfind
 
 default: build
@@ -11,6 +12,9 @@ build:
 
 test:
 	$(OCAMLBUILD) -tag 'debug' $(TEST) && ./$(TEST) -runner sequential
+
+play:
+	$(OCAMLBUILD) $(MAIN) && ./$(MAIN)
 
 check:
 	bash checkenv.sh && bash checktypes.sh
