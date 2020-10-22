@@ -65,20 +65,33 @@ let initialize_game initialize =
 
 let determine_big_winner init_state = 
   print_endline "\n";
-  print_string "The winner is .... Congratulatory message"
+  print_string "The winner is .... Congratulatory message";
+  print_endline "\n"
 
 let play_round here = 
   if here |> not then failwith "ROUNDDDD" else print_string "PLEASE"
 
-let repeat_game quit here = 
+let rec repeat quit here = 
+  if here |> not then failwith "dkf" else 
+    print_string "Have you had enough yet? (y/n) ";
+  let str = read_line () in
+  match str with 
+  | "y" -> print_string "Thanks for playing!"
+  | "n" -> play_round true; repeat false true
+  | other -> print_string "Please type a valid input."
+
+(*
+let repeat_game here = 
   if here |> not then failwith "dkf" else 
     let quit_loop = ref false in
-    while not quit do
+    while not !quit_loop do
       print_string "Have you had enough yet? (y/n) ";
       let str = read_line () in
       if str.[0] = 'y' then
         quit_loop := true else play_round true
     done;;
+
+    *)
 
 (** [play_game level] starts the Blackjack game of difficulty [l]. *)
 let play_game initialize =
@@ -86,7 +99,8 @@ let play_game initialize =
   print_string "Here are the rules... Could make this a nice feature
   about looking up the instructions. ";
   let init_state = initialize_game initialize in 
-  repeat_game false true; 
+  (*repeat_game true; *)
+  repeat false true;
   determine_big_winner init_state
 
 (** [main ()] prompts for the game to play, then starts it. *)
