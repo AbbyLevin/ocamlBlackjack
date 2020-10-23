@@ -99,7 +99,7 @@ let play_game here =
 let main () =
   ANSITerminal.(print_string [red]
                   "\n\nWelcome to Blackjack.\n");
-  print_endline "Would you like to start a game?\n";
+  print_endline "Would you like to start a game? (press 'Y' for yes)\n";
   print_string  "> ";
   match read_line () with
   | interested -> if interested = "Y" then play_game true 

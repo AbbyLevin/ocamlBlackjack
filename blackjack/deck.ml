@@ -28,7 +28,10 @@ let shuffle deck =
 
 (** [get_card] returns a random card from a standard 52 card deck *)
 let get_card a = 
-  let deck = shuffle create_standard_deck in 
-  match deck with 
+  (*let deck = shuffle create_standard_deck in 
+    match deck with 
     [] -> failwith "Hmmm"
-  | x :: _ -> x
+    | x :: _ -> x*)
+  let deck = create_standard_deck in
+  let number = Random.int 51 in
+  List.nth deck number
