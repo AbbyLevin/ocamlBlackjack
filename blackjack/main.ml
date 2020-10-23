@@ -2,86 +2,38 @@ open Card
 open Deck
 open Player
 open State
-(*
-  (** [play_game f] starts the adventure in file [f]. *)
-  let play_game f =
-  let init = init_game_state ["Abby"; "Austin"; "Brennan"] in 
-  print_string "WINNER"
 
-  (** [main ()] prompts for the game to play, then starts it. *)
-  let main () =
-  ANSITerminal.(print_string [red]
-                  "\n\nWelcome to BLACKJACK.\n");
-  print_endline "Please enter the name of the game file you want to load.\n";
-  print_string  "> ";
-  match read_line () with
-  | exception End_of_file -> failwith "Un"
-  | interested -> if interested = "Y" then play_game interested else failwith "SDFKJ"
-
-  (* Execute the game engine. *)
-  let () = main ()
-
-*)
-
-
-(** [play_game level] starts the Blackjack game of difficulty [l]. *)
-let prompt_name access =
-  if access |> not then failwith "KSLDJF" else 
-    ANSITerminal.(print_string [red]
-                    "\n\nWelcome new player. What will your name be?.\n");
-  print_endline "\n";
-  print_string  "> ";
-  match read_line with
-  | exception End_of_file -> failwith("TYPE NAME")
-  | name -> name
-
-let set_name_list name_list = 
-  name_list
-
-let append_name next_name name_list = 
-  set_name_list(next_name :: name_list)
-
-(** [play_game level] starts the Blackjack game of difficulty [l]. *)
-let rec get_names (n : int) (name_list : string list) =
-  match n with 
-  | 0 -> name_list
-  | x -> let next_name = prompt_name in get_names (n-1) (next_name true () :: name_list)
-
-(*for i = 1 to n do
-  let next_name = prompt_name in 
-  append_name next_name name_list;
-  done *)
-
-(** [play_easy_game] starts the easy Blackjack game. *)
-let initialize_game initialize =
-  if initialize |> not then failwith "SDLKJF" else
-    ANSITerminal.(print_string [red]
-                    "\n\nHow many players will there be?.\n");
-  print_endline "\n";
-  print_string  "> "; 
-  match read_line () with
-  | exception End_of_file -> failwith "GIVE NUM"
-  | number_of_players -> (get_names (int_of_string(number_of_players)) []) |> init_game_state
-
-let determine_big_winner init_state = 
+(** [determine_big_winner final_state] determines who has won the most money
+    at the end of [final_state]. *)
+let determine_big_winner final_state = 
   print_endline "\n";
   print_string "The winner is .... Congratulatory message";
   print_endline "\n"
 
-let play_round here = 
-  if here |> not then failwith "ROUNDDDD" else print_string "PLEASE"
+(** [play_round state here] carries out all of the functionality of playing a 
+    round of Blackjack with associated game information [state]. [here] 
+    is used to prevent this functionality from occuring when the 
+    file is loaded. *)
+let play_round state here = 
+  if here |> not then failwith "Should never get here" 
+  else print_string "TODO - implement play round"; state
 
-let rec repeat quit here = 
+(** [repeat_rounds state quit here] allows a user to play a round and 
+    update [state] along the way as long as they don't make [quit] true. 
+    [here] is used to prevent this functionality from occuring when the 
+    file is loaded.*)
+let rec repeat_rounds state quit here = 
   if here |> not then failwith "dkf" else 
     print_string "Have you had enough yet? (y/n) ";
   let str = read_line () in
   match str with 
-  | "y" -> print_string "Thanks for playing!"
-  | "n" -> play_round true; repeat false true
-  | other -> print_string "Please type a valid input."
+  | "y" -> print_string "Thanks for playing! TODO - 
+  implement a way for one player to stop, but the game doesn't. "
+  | "n" ->  repeat_rounds (play_round state true) false true
+  | other -> failwith "TODO - Please type a valid input."
 
 (*
-let repeat_game here = 
+let repeat_rounds_fake here = 
   if here |> not then failwith "dkf" else 
     let quit_loop = ref false in
     while not !quit_loop do
@@ -93,15 +45,54 @@ let repeat_game here =
 
     *)
 
-(** [play_game level] starts the Blackjack game of difficulty [l]. *)
-let play_game initialize =
+(** [prompt_name here] prompts a user to enter their name and handles
+    their response. [here] is used to prevent this functionality from 
+    occuring when the file is loaded. *)
+let prompt_name here =
+  if here |> not then failwith "KSLDJF" else 
+    ANSITerminal.(print_string [red]
+                    "\n\nWelcome new player. What will your name be?.\n");
+  print_endline "\n";
+  print_string  "> ";
+  match read_line () with
+  | name -> name
+
+(** [get_names name_list n] returns [name_list] which has the names of the
+    [n] players. *)
+let rec get_names (name_list : string list) (n : int)  =
+  match n with 
+  | 0 -> name_list
+  | x -> let next_name = prompt_name in 
+    get_names (next_name true :: name_list) (n-1)
+
+(** [initialize_game here] initializes the game by gathering the number of
+    players and returning an initial game state with each of these players' 
+    names. [here] is used to prevent this functionality from occuring when the 
+    file is loaded.*)
+let initialize_game here =
+  if here |> not then failwith "Should never get here" else
+    ANSITerminal.(print_string [red]
+                    "\n\nHow many players will there be?.\n");
+  ANSITerminal.(print_string [red] 
+                  "Please enter a number between 1 and 100 inclusive.");
+  print_endline "\n";
+  print_string  "> "; 
+  match read_line () with  
+  | number_of_players -> let n = number_of_players |> int_of_string_opt in 
+    if n = None || n < Some 0 || n > Some 100 
+    then failwith "TODO - handle case where they don't give a valid num"
+    else number_of_players |> int_of_string |> get_names [] |> init_game_state
+
+(** [play_game here] starts the Blackjack game. [here] is used to prevent
+    this functionality from occuring when the file is loaded. *)
+let play_game here =
   print_endline "\n";
   print_string "Here are the rules... Could make this a nice feature
   about looking up the instructions. ";
-  let init_state = initialize_game initialize in 
-  (*repeat_game true; *)
-  repeat false true;
-  determine_big_winner init_state
+  let init_state = initialize_game here in 
+  (*repeat_rounds_fake true; *)
+  let final_round = repeat_rounds init_state false true in 
+  determine_big_winner final_round
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
@@ -111,28 +102,7 @@ let main () =
   print_string  "> ";
   match read_line () with
   | interested -> if interested = "Y" then play_game true 
-    else failwith "Handle a user not typing Y"
+    else failwith "TODO - Handle a user not typing Y"
 
-(* Execute the game engine. *)
+(** Execute the game engine. *)
 let () = main ()
-
-
-(*
-(** [play_game f] starts the adventure in file [f]. *)
-let play_game f =
-  failwith "Unimplemented"
-
-(** [main ()] prompts for the game to play, then starts it. *)
-let main () =
-  ANSITerminal.(print_string [red]
-                  "\n\nWelcome to the 3110 Text Adventure Game engine.\n");
-  print_endline "Please enter the name of the game file you want to load.\n";
-  print_string  "> ";
-  match read_line () with
-  | exception End_of_file -> ()
-  | interested -> if interested = "Y" then play_game interested else print_string interested
-
-(* Execute the game engine. *)
-let () = main () 
-
-*)
