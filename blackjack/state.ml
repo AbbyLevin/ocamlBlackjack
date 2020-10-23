@@ -9,22 +9,28 @@ type state = {deck: card list; players: player list}
 let init_game_state player_names = 
   let deck = shuffle create_standard_deck in 
   let players = (List.map (fun x -> {name=x; hand=[]}) player_names) in 
-  let players_house = players @ [{name="HOUSE"; hand=[]}] in 
+  let players_house = [{name="HOUSE"; hand=[]}] @ players in 
   {deck=deck; players=players_house}
 
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)
 let rec player_turn player state =
   (** Check if cards are over 21 *)
-  ANSITerminal.(print_string [red]
-                  "\n\Press 'h' to hit or press 's' to stay.\n");
-  print_string  "> ";
-  print_hand (get_hand player);
-  match read_line () with
-  | "h" -> let new_player = hit player state in
-    player_turn new_player state 
-  | "s" -> player
-  | _ -> player_turn player state
+  if (get_sum player > 21) then begin
+    print_string (player.name ^ " has busted. Haha loser.\n");
+    player
+  end
+  else begin
+    ANSITerminal.(print_string [red]
+                    "\n\Press 'h' to hit or press 's' to stay.\n");
+    print_string  "> ";
+    print_hand (get_hand player);
+    match read_line () with
+    | "h" -> let new_player = hit player state in
+      player_turn new_player state 
+    | "s" -> player
+    | _ -> player_turn player state
+  end
 
 (** [play_turns] returns a player list with each player's hand updated based
     on how many times they decided to hit *)

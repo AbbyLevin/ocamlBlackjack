@@ -69,7 +69,7 @@ let rec get_names (name_list : string list) (n : int)  =
     players and returning an initial game state with each of these players' 
     names. [here] is used to prevent this functionality from occuring when the 
     file is loaded.*)
-let initialize_game here =
+let rec initialize_game here =
   if here |> not then failwith "Should never get here" else
     ANSITerminal.(print_string [red]
                     "\n\nHow many players will there be?.\n");
@@ -80,7 +80,11 @@ let initialize_game here =
   match read_line () with  
   | number_of_players -> let n = number_of_players |> int_of_string_opt in 
     if n = None || n < Some 0 || n > Some 100 
-    then failwith "TODO - handle case where they don't give a valid num"
+    then begin
+      print_endline "\n";
+      print_string "Invalid input. Try again.";
+      initialize_game here
+    end
     else number_of_players |> int_of_string |> get_names [] |> init_game_state
 
 let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins. \n"
@@ -89,7 +93,7 @@ let rec rules here =
   print_endline "\n";
   print_string rules_string;
   print_endline "\n";
-  print_string "Are you ready to play? (y/n) ";
+  ANSITerminal.(print_string [red] "Are you ready to play? (y/n)" );
   print_endline "\n";
   print_string  "> "; 
   match read_line () with 
@@ -102,7 +106,8 @@ let rec rules here =
     end
   | _ -> begin
       print_endline "\n";
-      print_string "That wasn't a yes, so here are the rules again. Try reading them this time. ";
+      print_string
+        "That wasn't a yes, so here are the rules again. Try reading them this time. ";
       rules here
     end  
 
@@ -110,7 +115,7 @@ let rec rules here =
     this functionality from occuring when the file is loaded. *)
 let rec play_game here =
   print_endline "\n";
-  print_string "Would you like to see the rules? (y/n) ";
+  ANSITerminal.(print_string [red] "Would you like to see the rules? (y/n) ");
   print_endline "\n";
   print_string  "> "; 
   match read_line () with 
@@ -132,11 +137,15 @@ let rec play_game here =
 let main () =
   ANSITerminal.(print_string [red]
                   "\n\nWelcome to Blackjack.\n");
-  print_endline "Would you like to start a game? (press 'y' for yes)\n";
+  ANSITerminal.(print_string [red] 
+                  "Would you like to start a game? (press 'y' for yes)\n");
   print_string  "> ";
   match read_line () with
   | interested -> if interested = "y" then play_game true 
-    else failwith "TODO - Handle a user not typing y"
+    else begin
+      print_string "Why did you even start the game in the first place?\nBye";
+      print_endline "\n"
+    end
 
 (** Execute the game engine. *)
 let () = main ()
