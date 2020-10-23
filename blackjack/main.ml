@@ -83,27 +83,60 @@ let initialize_game here =
     then failwith "TODO - handle case where they don't give a valid num"
     else number_of_players |> int_of_string |> get_names [] |> init_game_state
 
+let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins. \n"
+
+let rec rules here =
+  print_endline "\n";
+  print_string rules_string;
+  print_endline "\n";
+  print_string "Are you ready to play? (y/n) ";
+  print_endline "\n";
+  print_string  "> "; 
+  match read_line () with 
+  | "y" -> begin
+      let init_state = initialize_game here in 
+      let final_state = start_round init_state in 
+      (*repeat_rounds_fake true; *)
+      let final_round = repeat_rounds final_state false true in 
+      determine_big_winner final_round
+    end
+  | _ -> begin
+      print_endline "\n";
+      print_string "That wasn't a yes, so here are the rules again. Try reading them this time. ";
+      rules here
+    end  
+
 (** [play_game here] starts the Blackjack game. [here] is used to prevent
     this functionality from occuring when the file is loaded. *)
-let play_game here =
+let rec play_game here =
   print_endline "\n";
-  print_string "Here are the rules... Could make this a nice feature
-  about looking up the instructions. ";
-  let init_state = initialize_game here in 
-  let final_state = start_round init_state in 
-  (*repeat_rounds_fake true; *)
-  let final_round = repeat_rounds final_state false true in 
-  determine_big_winner final_round
+  print_string "Would you like to see the rules? (y/n) ";
+  print_endline "\n";
+  print_string  "> "; 
+  match read_line () with 
+  | "y" -> rules here
+  | "n" -> begin
+      let init_state = initialize_game here in 
+      let final_state = start_round init_state in 
+      (*repeat_rounds_fake true; *)
+      let final_round = repeat_rounds final_state false true in 
+      determine_big_winner final_round
+    end
+  | _ -> begin
+      print_endline "\n";
+      print_string "Please type a valid input. ";
+      play_game here
+    end
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
   ANSITerminal.(print_string [red]
                   "\n\nWelcome to Blackjack.\n");
-  print_endline "Would you like to start a game? (press 'Y' for yes)\n";
+  print_endline "Would you like to start a game? (press 'y' for yes)\n";
   print_string  "> ";
   match read_line () with
-  | interested -> if interested = "Y" then play_game true 
-    else failwith "TODO - Handle a user not typing Y"
+  | interested -> if interested = "y" then play_game true 
+    else failwith "TODO - Handle a user not typing y"
 
 (** Execute the game engine. *)
 let () = main ()
