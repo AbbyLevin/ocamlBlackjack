@@ -137,8 +137,8 @@ let sum_cards (cards : card list) =
   (* If lens are same then there was no ace in list of cards *)
   let sum_cards = sum_cards_strict adj_cards 0 in
   if len_adj = len_cards then sum_cards 
-  else if sum_cards + 11 <= 21 then 11 + sum_cards 
-  else 1 + sum_cards
+  else begin if (sum_cards + 11 <= 21) then (sum_cards + 11)
+    else (sum_cards + 1) end
 
 (** [string_of_card] returns a string representation of a card *)
 let string_of_card card = 

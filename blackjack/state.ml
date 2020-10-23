@@ -17,6 +17,8 @@ let init_game_state player_names =
 let rec player_turn player state =
   (** Check if cards are over 21 *)
   if (get_sum player > 21) then begin
+    print_hand player.hand;
+    print_string "\n";
     print_string (player.name ^ " has busted. Haha loser.\n");
     player
   end
