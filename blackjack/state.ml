@@ -12,39 +12,47 @@ let init_game_state player_names =
   let players_house = players @ [{name="HOUSE"; hand=[]}] in 
   {deck=deck; players=players_house}
 
-
-(** *)
-let hit player state =
-  failwith "hit"
-(**   let top_card = List.fst deck in
-      player.hand = top_card :: (get_hand player);
-      List.remove deck top_card *)
-
-(**  *)
-let stay player state = 
-  failwith "stay"
-
-(** use while loop to hit until they decide to stay *)
+(** [player_turn] returns a player with their hand updated based on how 
+    many times they hit *)
 let rec player_turn player state =
+  (** Check if cards are over 21 *)
   ANSITerminal.(print_string [red]
                   "\n\Press 'h' to hit or press 's' to stay.\n");
   print_string  "> ";
+  print_hand (get_hand player);
   match read_line () with
-  | "h" -> hit player state 
-  | "s" -> stay player state
+  | "h" -> let new_player = hit player state in
+    player_turn new_player state 
+  | "s" -> player
   | _ -> player_turn player state
 
-
-let rec play_turns state = 
+(** [play_turns] returns a player list with each player's hand updated based
+    on how many times they decided to hit *)
+let rec play_turns state acc = 
   match state.players with 
-    [] -> state
-  | x :: xs -> let new_state = player_turn x state in 
-    play_turns new_state 
+    [] -> acc
+  | x :: xs -> let new_player = player_turn x state in 
+    let new_state = {deck=state.deck; players=xs} in 
+    play_turns new_state (new_player :: acc)
 
-(**  *)
+(** [deal_cards] returns a player list where each player's hand is updated 
+    to contain two cards randomly selected from the deck *)
+let rec deal_cards state acc = 
+  match state.players with 
+    [] -> acc 
+  | x :: xs -> let new_player = initialize_hand x in 
+    let new_state = {deck=state.deck; players=xs} in 
+    deal_cards new_state (new_player :: acc)
+
+
+
+(** [start_round] starts a new round of blackjack and returns the state once 
+    the game is finished *)
 let start_round state = 
   (* take cur_rotation and call the function that plays their turn *)
-  (* Deal cards *)
+  let players_w_hands = deal_cards state [] in 
+  let state_w_hands = {deck=state.deck; players=players_w_hands} in  
   (* place bets *)
-  let new_state = play_turns state in 
+  let players_after_turns = play_turns state_w_hands [] in 
+  let new_state = {deck=state.deck; players = players_after_turns} in 
   new_state

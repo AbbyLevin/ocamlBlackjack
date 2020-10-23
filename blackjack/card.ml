@@ -139,3 +139,19 @@ let sum_cards (cards : card list) =
   if len_adj = len_cards then sum_cards 
   else if sum_cards + 11 <= 21 then 11 + sum_cards 
   else 1 + sum_cards
+
+(** [string_of_card] returns a string representation of a card *)
+let string_of_card card = 
+  let string_suit = string_of_suit card.suit in 
+  let string_value = string_of_value card.value in 
+  "[" ^ string_value ^ "," ^ string_suit ^ "]"
+
+(** [print_hand] prints a list of cards *)
+let print_hand cards = 
+  let string_cards = List.map string_of_card cards in 
+  let string_cards = List.fold_left ( ^ ) "" string_cards in 
+  let string_sum = string_of_int (sum_cards cards) in 
+  let cards = "\n\Current Hand: \n" ^ string_cards ^ " Sum: " ^ string_sum in 
+  ANSITerminal.(print_string [red]
+                  cards);
+  print_string  "> ";

@@ -90,8 +90,9 @@ let play_game here =
   print_string "Here are the rules... Could make this a nice feature
   about looking up the instructions. ";
   let init_state = initialize_game here in 
+  let final_state = start_round init_state in 
   (*repeat_rounds_fake true; *)
-  let final_round = repeat_rounds init_state false true in 
+  let final_round = repeat_rounds final_state false true in 
   determine_big_winner final_round
 
 (** [main ()] prompts for the game to play, then starts it. *)

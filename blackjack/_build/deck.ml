@@ -25,3 +25,10 @@ let create_standard_deck : card list =
     randomized order. *)  
 let shuffle deck = 
   List.sort (fun x y -> (Random.int 2) - 1) deck
+
+(** [get_card] returns a random card from a standard 52 card deck *)
+let get_card a = 
+  let deck = shuffle create_standard_deck in 
+  match deck with 
+    [] -> failwith "Hmmm"
+  | x :: _ -> x
