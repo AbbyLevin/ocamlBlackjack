@@ -1,4 +1,4 @@
-MODULES=deck card player main
+MODULES=deck card player main author
 OBJECTS=$(MODULES:=.cmo)
 TEST=deck_test.byte
 MAIN=main.byte
@@ -18,4 +18,8 @@ play:
 
 check:
 	bash checkenv.sh && bash checktypes.sh
+
+zip:
+	zip blackjack.ml *.ml* *.md _tags Makefile
+
 	
