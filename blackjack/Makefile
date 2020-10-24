@@ -20,6 +20,6 @@ check:
 	bash checkenv.sh && bash checktypes.sh
 
 zip:
-	zip blackjack.ml *.ml* *.md _tags Makefile
+	zip blackjack.zip *.ml* *.md _tags Makefile
 
 	
