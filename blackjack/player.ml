@@ -26,3 +26,8 @@ let hit player state =
   let new_card = get_card () in 
   let new_hand = new_card :: player.hand in 
   {name=player.name; hand=new_hand}
+
+let house_turn player state = 
+  if sum player.hand < 17 
+  then hit player state 
+  else player 
