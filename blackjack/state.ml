@@ -52,8 +52,6 @@ let rec deal_cards state acc =
     let new_state = {deck=state.deck; players=xs} in 
     deal_cards new_state (new_player :: acc)
 
-
-
 (** [start_round] starts a new round of blackjack and returns the state once 
     the game is finished *)
 let start_round state = 
