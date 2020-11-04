@@ -28,6 +28,6 @@ let hit player state =
   {name=player.name; hand=new_hand}
 
 let house_turn player state = 
-  if sum player.hand < 17 
+  if sum_cards player.hand < 17 
   then hit player state 
   else player 
