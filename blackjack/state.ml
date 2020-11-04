@@ -12,10 +12,15 @@ let init_game_state player_names =
   let players_house = [{name="HOUSE"; hand=[]}] @ players in 
   {deck=deck; players=players_house}
 
+let quit state = 
+  failwith "Unimplimented"
+(* ANSITerminal.(print_string [blue] "Thanks for playing!") *)
+
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)
 let rec player_turn player state =
   (** Check if cards are over 21 *)
+  ANSITerminal.(print_string [green] ("\n" ^ player.name ^ "'s turn: \n"));
   if (get_sum player > 21) then begin
     print_hand player.hand;
     print_string "\n";
@@ -31,6 +36,7 @@ let rec player_turn player state =
     | "h" -> let new_player = hit player state in
       player_turn new_player state 
     | "s" -> player
+    | "quit" -> quit state; player
     | _ -> player_turn player state
   end
 
@@ -52,8 +58,6 @@ let rec deal_cards state acc =
     let new_state = {deck=state.deck; players=xs} in 
     deal_cards new_state (new_player :: acc)
 
-
-
 (** [start_round] starts a new round of blackjack and returns the state once 
     the game is finished *)
 let start_round state = 
@@ -62,5 +66,5 @@ let start_round state =
   let state_w_hands = {deck=state.deck; players=players_w_hands} in  
   (* place bets *)
   let players_after_turns = play_turns state_w_hands [] in 
-  let new_state = {deck=state.deck; players = players_after_turns} in 
+  let new_state = {deck = state.deck; players = players_after_turns} in 
   new_state
