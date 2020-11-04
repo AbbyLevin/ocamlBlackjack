@@ -19,7 +19,6 @@ let quit state =
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)
 let rec player_turn player state =
-  (** Check if cards are over 21 *)
   ANSITerminal.(print_string [green] ("\n" ^ player.name ^ "'s turn: \n"));
   if (get_sum player > 21) then begin
     print_hand player.hand;
@@ -32,12 +31,14 @@ let rec player_turn player state =
                     "\nPress 'h' to hit or press 's' to stay.\n");
     print_string  "> ";
     print_hand (get_hand player);
-    match read_line () with
-    | "h" -> let new_player = hit player state in
-      player_turn new_player state 
-    | "s" -> player
-    | "quit" -> quit state; player
-    | _ -> player_turn player state
+    if player.name = "HOUSE" then player_turn (house_turn player state) state
+    else 
+      match read_line () with
+      | "h" -> let new_player = hit player state in
+        player_turn new_player state 
+      | "s" -> player
+      | "quit" -> quit state; player
+      | _ -> player_turn player state
   end
 
 (** [play_turns] returns a player list with each player's hand updated based
