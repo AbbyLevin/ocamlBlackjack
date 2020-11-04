@@ -54,7 +54,7 @@ let card_test
     (expected_output : string) : test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
-      assert_equal expected_output (string_of_card(create_card suit value)) 
+      assert_equal expected_output (string_of_card_test(create_card suit value)) 
         ~printer:(fun x -> x))
 
 (** [cards_sum_test name card_list expected_output] constructs an OUnit test 

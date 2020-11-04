@@ -33,5 +33,7 @@ let get_card a =
     [] -> failwith "Hmmm"
     | x :: _ -> x*)
   let deck = create_standard_deck in
-  let number = Random.int 51 in
-  List.nth deck number
+  let deck_array = Array.of_list deck in
+  Random.self_init ();
+  let number = Random.int 52 in
+  Array.get deck_array number
