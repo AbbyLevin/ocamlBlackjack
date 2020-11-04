@@ -24,7 +24,7 @@ let rec player_turn player state =
   end
   else begin
     ANSITerminal.(print_string [red]
-                    "\n\Press 'h' to hit or press 's' to stay.\n");
+                    "\nPress 'h' to hit or press 's' to stay.\n");
     print_string  "> ";
     print_hand (get_hand player);
     match read_line () with

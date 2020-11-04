@@ -151,7 +151,7 @@ let print_hand cards =
   let string_cards = List.map string_of_card cards in 
   let string_cards = List.fold_left ( ^ ) "" string_cards in 
   let string_sum = string_of_int (sum_cards cards) in 
-  let cards = "\n\Current Hand: \n" ^ string_cards ^ " Sum: " ^ string_sum in 
+  let cards = "\nCurrent Hand: \n" ^ string_cards ^ " Sum: " ^ string_sum in 
   ANSITerminal.(print_string [red]
                   cards);
   print_string  "> ";
