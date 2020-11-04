@@ -93,7 +93,7 @@ let int_of_value (value : value) =
   | Ace -> 1
 
 (** [string_of_card c] returns a string representation of [c]. *)
-let string_of_card (c : card) = 
+let string_of_card_test (c : card) = 
   (get_value c |> string_of_value) ^ " of " ^ (get_suit c |> string_of_suit)
 
 (* [add_cards acc lst] returns the sum of the values of the cards in [lst]. *)
