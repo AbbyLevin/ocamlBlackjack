@@ -31,7 +31,14 @@ let rec player_turn player state =
                     "\nPress 'h' to hit or press 's' to stay.\n");
     print_string  "> ";
     print_hand (get_hand player);
-    if player.name = "HOUSE" then player_turn (house_turn player state) state
+    if player.name = "HOUSE" 
+    then let card_sum = sum_cards (get_hand player) in 
+      begin 
+        match card_sum with 
+        | s when s < 17 -> player_turn (house_turn player state) state
+        | s when s <= 21 -> player 
+        | _ -> player_turn (house_turn player state) state
+      end
     else 
       match read_line () with
       | "h" -> let new_player = hit player state in
@@ -40,6 +47,7 @@ let rec player_turn player state =
       | "quit" -> quit state; player
       | _ -> player_turn player state
   end
+
 
 (** [play_turns] returns a player list with each player's hand updated based
     on how many times they decided to hit *)

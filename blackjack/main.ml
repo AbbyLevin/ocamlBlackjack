@@ -24,7 +24,7 @@ let play_round state here =
     file is loaded.*)
 let rec repeat_rounds state quit here = 
   if here |> not then failwith "dkf" else 
-    print_string "Have you had enough yet? (y/n) ";
+    print_string "\nHave you had enough yet? (y/n) ";
   let str = read_line () in
   match str with 
   | "y" -> print_string "Thanks for playing! TODO - 
