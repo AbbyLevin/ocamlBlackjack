@@ -24,15 +24,16 @@ let play_round state here =
     file is loaded.*)
 let rec repeat_rounds state quit here = 
   if here |> not then failwith "dkf" else 
-    print_string "\nHave you had enough yet? (y/n) ";
+    print_string "\nWould you like to play another round? (y/n) ";
   let str = read_line () in
   match str with 
-  | "y" -> print_string (determine_round_winners state);
+  | "n" -> print_string (determine_round_winners state);
     print_string "Thanks for playing! TODO - 
   implement a way for one player to stop, but the game doesn't. "
-  | "n" ->  print_string (determine_round_winners state);
+  | "y" ->  print_string (determine_round_winners state);
     repeat_rounds (play_round state true) false true
-  | other -> failwith "TODO - Please type a valid input."
+  | other -> print_string "\nPlease type a valid input.\n";
+    repeat_rounds state quit here
 
 (*
 let repeat_rounds_fake here = 

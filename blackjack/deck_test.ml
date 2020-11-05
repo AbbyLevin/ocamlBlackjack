@@ -80,24 +80,6 @@ let add_card_to_test
       assert_equal expected_output (add_card_to num (create_card suit value)) 
         ~printer:(string_of_int))
 
-(** [standard_deck_test name deck expected_output] constructs an 
-    OUnit test named [name] that asserts the quality of [expected_output] with 
-    [deck]. *)
-let standard_deck_test 
-    (name : string) (deck)
-    (expected_output : card list) : test = 
-  name >:: (fun _ -> 
-      (* the [printer] tells OUnit how to convert the output to a string *)
-      assert_equal expected_output deck ~cmp:cmp_set_like_lists 
-        ~printer:(pp_list string_of_card))
-
-let shuffle_test 
-    (name : string) (deck)
-    (expected_output : card list) : test = 
-  name >:: (fun _ -> 
-      (* the [printer] tells OUnit how to convert the output to a string *)
-      (assert (expected_output != deck)))
-
 (** [sum_cards name card_list expected_output] constructs an OUnit test 
     named [name] that asserts the quality of [expected_output] with 
     [sum_cards card_list]. *)
@@ -107,44 +89,6 @@ let sum_cards_test
   name >:: (fun _ -> 
       assert_equal expected_output (sum_cards card_list) 
         ~printer:(string_of_int)) 
-
-(** [sum_cards name card_list expected_output] constructs an OUnit test 
-    named [name] that asserts the quality of [expected_output] with 
-    [sum_cards card_list]. *)
-let state_test 
-    (name : string) (state)
-    (expected_output : int) : test = 
-  name >:: (fun _ -> 
-      assert_equal expected_output (state) 
-        ~printer:(string_of_int)) 
-
-let print_player_int tuple = 
-  ((fst tuple).name ^ ", " ^ string_of_int(snd tuple))
-
-let rec string_of_player_sum acc (lst : (Player.player * int) list) = 
-  match lst with 
-  | [] -> acc
-  | h :: t -> string_of_player_sum ((fst h).name ^ ", " ^ string_of_int(snd h)) t     
-
-(** [sum_cards name card_list expected_output] constructs an OUnit test 
-    named [name] that asserts the quality of [expected_output] with 
-    [sum_cards card_list]. *)
-let player_sums_test 
-    (name : string) (state)
-    (expected_output) : test = 
-  name >:: (fun _ -> 
-      assert_equal expected_output (state) 
-        ~printer:(pp_list print_player_int))
-
-(** [sum_cards name card_list expected_output] constructs an OUnit test 
-    named [name] that asserts the quality of [expected_output] with 
-    [sum_cards card_list]. *)
-let winner_test 
-    (name : string) (state)
-    (expected_output : string) : test = 
-  name >:: (fun _ -> 
-      assert_equal expected_output (state) 
-        ~printer:(fun x -> x)) 
 
 let card_tests =
   [
@@ -202,6 +146,28 @@ let card_tests =
        {suit=Clubs; value=Ace}] 23;
   ]
 
+(** [standard_deck_test name deck expected_output] constructs an 
+    OUnit test named [name] that asserts the quality of [expected_output] with 
+    [deck]. *)
+let standard_deck_test 
+    (name : string) (deck)
+    (expected_output : card list) : test = 
+  name >:: (fun _ -> 
+      (* the [printer] tells OUnit how to convert the output to a string *)
+      assert_equal expected_output deck ~cmp:cmp_set_like_lists 
+        ~printer:(pp_list string_of_card))
+
+(** [shuffle_test name deck expected_output] constructs an 
+    OUnit test named [name] that asserts the lack of quality of 
+    [expected_output] with [deck] to ensure a deck has been properly 
+    shuffled. *)
+let shuffle_test 
+    (name : string) (deck)
+    (expected_output : card list) : test = 
+  name >:: (fun _ -> 
+      (* the [printer] tells OUnit how to convert the output to a string *)
+      (assert (expected_output != deck)))
+
 let deck_tests =
   [
     standard_deck_test "testing that a standard deck was properly created" 
@@ -230,25 +196,58 @@ let deck_tests =
     order" (shuffle create_standard_deck) create_standard_deck;
   ]
 
+(** [state_test name state expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [List.length state]. *)
+let state_test 
+    (name : string) (state)
+    (expected_output : int) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (List.length state) 
+        ~printer:(string_of_int)) 
+
+(** [print_player_int tuple] returns a string representation of [tuple]. *)
+let print_player_int (tuple : Player.player * int) = 
+  ((fst tuple).name ^ ", " ^ string_of_int(snd tuple))    
+
+(** [player_sums_test name state expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [player_sums_list]. *)
+let player_sums_test 
+    (name : string) (player_sums_list : (Player.player * int) list)
+    (expected_output) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (player_sums_list) 
+        ~printer:(pp_list print_player_int))
+
+(** [winner_test name state expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [determine_round_winners state]. *)
+let winner_test 
+    (name : string) (state)
+    (expected_output : string) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (determine_round_winners state)  
+        ~printer:(fun x -> x)) 
+
 let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"]
 let player_sums = get_player_sums [] standard_state.players
 
 let state_tests =
   [
+    state_test "testing that init_game_state creates the proper size 
+    player list" standard_state.players 4;
     state_test "testing that init_game_state works as intended" 
-      (List.length standard_state.players) 4;
-    state_test "testing that init_game_state works as intended" 
-      (List.length player_sums) 4;
+      player_sums 4;
     (*player_sums_test "testing player sums" 
       (get_player_sums [] standard_state.players) [];*)
     (* player_sums_test "testing winners_list" 
        (winners_list player_sums) []; *)
-    (*winner_test "testing get_winner of standard state" (get_winner player_sums) "";   *)
+    (*winner_test "testing get_winner of standard state" 
+      (get_winner player_sums) "";   *)
 
-    (* winner_test "testing round winner" (determine_round_winners standard_state)
-       "Austin"; *)
-
-
+    winner_test "testing round winner" standard_state
+      "HOUSE, Austin, Abby, Brennan, are tied, so they all won this round. Congrats!"; 
   ]
 
 

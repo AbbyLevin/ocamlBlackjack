@@ -77,7 +77,6 @@ let start_round state =
   let new_state = {deck = state.deck; players = players_after_turns} in 
   new_state
 
-
 (** [winners_list lst] returns a list of all of the winners of a round 
     represented by [lst] and their scores. *)
 let winners_list (lst : (Player.player * int) list) = 
@@ -86,23 +85,28 @@ let winners_list (lst : (Player.player * int) list) =
 
 (** [output_multiple_winners winners_list] returns a string that contains the 
     names of all of the winners separated by a semicolon. *)
-let rec output_multiple_winners winners_list = 
+let rec output_multiple_winners winners_list score = 
   match winners_list with
-  | [] -> "are tied" ^ 
+  | [] -> "are tied with a score of " ^ score ^ 
           (* (List.hd winners_list |> snd |> string_of_int) *)
-          ", so they all won this round. Congrats!"
-  | h :: t -> (fst h).name ^ ", " ^ output_multiple_winners t
+          ", so they all won this round. Congrats!\n\n"
+  | h :: t -> if t = [] 
+    then "and " ^ (fst h).name ^ " " ^ output_multiple_winners t score
+    else if List.length t = 1 
+    then (fst h).name ^ " " ^ output_multiple_winners t score
+    else (fst h).name ^ ", " ^ output_multiple_winners t score
 
 (** [get_winner player_sums] determines the winner(s) of a list of players 
     and their scores [player_sums]. *)
 let get_winner (player_sums : (Player.player * int) list) : string =  
   let winners = winners_list player_sums in
-  if List.length winners = 1 then (fst (List.hd winners)).name 
+  if List.length winners = 1 then "\n" ^ (fst (List.hd winners)).name 
                                   ^ " won this round with a score of " 
                                   ^ (List.hd winners |> snd |> string_of_int) 
-                                  ^ ". Congrats!\n"
-  else if List.length winners = 0 then "The House won this round." 
-  else output_multiple_winners winners
+                                  ^ ". Congrats!\n\n"
+  else if List.length winners = 0 then "The House won this round.\n\n" 
+  else output_multiple_winners winners 
+      (List.hd winners |> snd |> string_of_int)
 
 (** [get_player_sums acc players] returns a dictionary [acc] where the key 
     is each player's name in [players] and the associated value is their 
@@ -114,9 +118,9 @@ let rec get_player_sums acc (players : Player.player list) =
 
 (** [compare_players x y] compares [x] and [y] based on their scores. *)
 let compare_players x y = 
-  if snd x > snd y then 1 else
-  if snd x < snd y then -1 else
-    0
+  if snd x > snd y then 1 
+  else if snd x < snd y then -1 
+  else 0
 
 (** [determine_round_winner determines the winner(s) of round [curr]. *)
 let determine_round_winners curr = 
