@@ -48,7 +48,6 @@ let rec player_turn player state =
       | _ -> player_turn player state
   end
 
-
 (** [play_turns] returns a player list with each player's hand updated based
     on how many times they decided to hit *)
 let rec play_turns state acc = 
@@ -77,3 +76,52 @@ let start_round state =
   let players_after_turns = play_turns state_w_hands [] in 
   let new_state = {deck = state.deck; players = players_after_turns} in 
   new_state
+
+
+(** [winners_list lst] returns a list of all of the winners of a round 
+    represented by [lst] and their scores. *)
+let winners_list (lst : (Player.player * int) list) = 
+  let max_vote_total = (snd (List.hd lst)) in
+  List.filter (fun x -> snd(x) = max_vote_total) lst  
+
+(** [output_multiple_winners winners_list] returns a string that contains the 
+    names of all of the winners separated by a semicolon. *)
+let rec output_multiple_winners winners_list = 
+  match winners_list with
+  | [] -> "are tied" ^ 
+          (* (List.hd winners_list |> snd |> string_of_int) *)
+          ", so they all won this round. Congrats!"
+  | h :: t -> (fst h).name ^ ", " ^ output_multiple_winners t
+
+(** [get_winner player_sums] determines the winner(s) of a list of players 
+    and their scores [player_sums]. *)
+let get_winner (player_sums : (Player.player * int) list) : string =  
+  let winners = winners_list player_sums in
+  if List.length winners = 1 then (fst (List.hd winners)).name 
+                                  ^ " won this round with a score of " 
+                                  ^ (List.hd winners |> snd |> string_of_int) 
+                                  ^ ". Congrats!\n"
+  else if List.length winners = 0 then "The House won this round." 
+  else output_multiple_winners winners
+
+(** [get_player_sums acc players] returns a dictionary [acc] where the key 
+    is each player's name in [players] and the associated value is their 
+    score at the end of the round. *)
+let rec get_player_sums acc (players : Player.player list) = 
+  match players with 
+  | [] -> acc
+  | h :: t -> get_player_sums ((h, (get_sum h)) :: acc) t
+
+(** [compare_players x y] compares [x] and [y] based on their scores. *)
+let compare_players x y = 
+  if snd x > snd y then 1 else
+  if snd x < snd y then -1 else
+    0
+
+(** [determine_round_winner determines the winner(s) of round [curr]. *)
+let determine_round_winners curr = 
+  let player_sums = get_player_sums [] curr.players in
+  let not_elim = List.filter (fun x -> snd(x) <= 21) player_sums in  
+  let sorted = List.sort compare_players not_elim |> List.rev in 
+  let round_winners = get_winner sorted in 
+  round_winners

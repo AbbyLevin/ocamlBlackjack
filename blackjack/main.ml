@@ -16,7 +16,7 @@ let determine_big_winner final_state =
     file is loaded. *)
 let play_round state here = 
   if here |> not then failwith "Should never get here" 
-  else print_string "TODO - implement play round"; state
+  else start_round state
 
 (** [repeat_rounds state quit here] allows a user to play a round and 
     update [state] along the way as long as they don't make [quit] true. 
@@ -27,9 +27,11 @@ let rec repeat_rounds state quit here =
     print_string "\nHave you had enough yet? (y/n) ";
   let str = read_line () in
   match str with 
-  | "y" -> print_string "Thanks for playing! TODO - 
+  | "y" -> print_string (determine_round_winners state);
+    print_string "Thanks for playing! TODO - 
   implement a way for one player to stop, but the game doesn't. "
-  | "n" ->  repeat_rounds (play_round state true) false true
+  | "n" ->  print_string (determine_round_winners state);
+    repeat_rounds (play_round state true) false true
   | other -> failwith "TODO - Please type a valid input."
 
 (*

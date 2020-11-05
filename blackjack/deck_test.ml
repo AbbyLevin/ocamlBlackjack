@@ -2,6 +2,7 @@ open OUnit2
 open Deck
 open Card
 open Player
+open State
 
 (** [cmp_set_like_lists lst1 lst2] compares two lists to see whether
     they are equivalent set-like lists.  That means checking two things.
@@ -107,6 +108,44 @@ let sum_cards_test
       assert_equal expected_output (sum_cards card_list) 
         ~printer:(string_of_int)) 
 
+(** [sum_cards name card_list expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [sum_cards card_list]. *)
+let state_test 
+    (name : string) (state)
+    (expected_output : int) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (state) 
+        ~printer:(string_of_int)) 
+
+let print_player_int tuple = 
+  ((fst tuple).name ^ ", " ^ string_of_int(snd tuple))
+
+let rec string_of_player_sum acc (lst : (Player.player * int) list) = 
+  match lst with 
+  | [] -> acc
+  | h :: t -> string_of_player_sum ((fst h).name ^ ", " ^ string_of_int(snd h)) t     
+
+(** [sum_cards name card_list expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [sum_cards card_list]. *)
+let player_sums_test 
+    (name : string) (state)
+    (expected_output) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (state) 
+        ~printer:(pp_list print_player_int))
+
+(** [sum_cards name card_list expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [sum_cards card_list]. *)
+let winner_test 
+    (name : string) (state)
+    (expected_output : string) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (state) 
+        ~printer:(fun x -> x)) 
+
 let card_tests =
   [
     card_attribute_test "testing that the suit is properly created" get_suit
@@ -191,12 +230,33 @@ let deck_tests =
     order" (shuffle create_standard_deck) create_standard_deck;
   ]
 
+let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"]
+let player_sums = get_player_sums [] standard_state.players
+
+let state_tests =
+  [
+    state_test "testing that init_game_state works as intended" 
+      (List.length standard_state.players) 4;
+    state_test "testing that init_game_state works as intended" 
+      (List.length player_sums) 4;
+    (*player_sums_test "testing player sums" 
+      (get_player_sums [] standard_state.players) [];*)
+    (* player_sums_test "testing winners_list" 
+       (winners_list player_sums) []; *)
+    (*winner_test "testing get_winner of standard state" (get_winner player_sums) "";   *)
+
+    (* winner_test "testing round winner" (determine_round_winners standard_state)
+       "Austin"; *)
+
+
+  ]
 
 
 let tests =
   "test suite for Blackjack"  >::: List.flatten [
     card_tests;
     deck_tests;
+    state_tests;
   ]
 
 let _ = run_test_tt_main tests
