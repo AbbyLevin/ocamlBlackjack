@@ -146,12 +146,179 @@ let string_of_card card =
   let string_value = string_of_value card.value in 
   "[" ^ string_value ^ "," ^ string_suit ^ "]"
 
+let rec print_top_or_bottom = function
+  | [] -> print_string ("\n")
+  | h :: t -> if h.suit = Hearts || h.suit = Diamonds then 
+      ANSITerminal.(print_string [red] "*********  ") 
+    else ANSITerminal.(print_string [default] "*********  "); 
+    print_top_or_bottom t
+
+let clubs_second_line = function
+  | Two -> ANSITerminal.(print_string [default] "* 2   C *  ")
+  | Three -> ANSITerminal.(print_string [default] "* 3   C *  ")
+  | Four -> ANSITerminal.(print_string [default] "* 4   C *  ")
+  | Five -> ANSITerminal.(print_string [default] "* 5   C *  ")
+  | Six -> ANSITerminal.(print_string [default] "* 6   C *  ")
+  | Seven -> ANSITerminal.(print_string [default] "* 7   C *  ")
+  | Eight -> ANSITerminal.(print_string [default] "* 8   C *  ")
+  | Nine -> ANSITerminal.(print_string [default] "* 9   C *  ")
+  | Ten -> ANSITerminal.(print_string [default] "* 10  C *  ")
+  | Jack -> ANSITerminal.(print_string [default] "* J   C *  ")
+  | Queen -> ANSITerminal.(print_string [default] "* Q   C *  ")
+  | King -> ANSITerminal.(print_string [default] "* K   C *  ")
+  | Ace -> ANSITerminal.(print_string [default] "* A   C *  ")
+
+let spades_second_line = function
+  | Two -> ANSITerminal.(print_string [default] "* 2   S *  ")
+  | Three -> ANSITerminal.(print_string [default] "* 3   S *  ")
+  | Four -> ANSITerminal.(print_string [default] "* 4   S *  ")
+  | Five -> ANSITerminal.(print_string [default] "* 5   S *  ")
+  | Six -> ANSITerminal.(print_string [default] "* 6   S *  ")
+  | Seven -> ANSITerminal.(print_string [default] "* 7   S *  ")
+  | Eight -> ANSITerminal.(print_string [default] "* 8   S *  ")
+  | Nine -> ANSITerminal.(print_string [default] "* 9   S *  ")
+  | Ten -> ANSITerminal.(print_string [default] "* 10  S *  ")
+  | Jack -> ANSITerminal.(print_string [default] "* J   S *  ")
+  | Queen -> ANSITerminal.(print_string [default] "* Q   S *  ")
+  | King -> ANSITerminal.(print_string [default] "* K   S *  ")
+  | Ace -> ANSITerminal.(print_string [default] "* A   S *  ")
+
+let hearts_second_line = function
+  | Two -> ANSITerminal.(print_string [red] "* 2   H *  ")
+  | Three -> ANSITerminal.(print_string [red] "* 3   H *  ")
+  | Four -> ANSITerminal.(print_string [red] "* 4   H *  ")
+  | Five -> ANSITerminal.(print_string [red] "* 5   H *  ")
+  | Six -> ANSITerminal.(print_string [red] "* 6   H *  ")
+  | Seven -> ANSITerminal.(print_string [red] "* 7   H *  ")
+  | Eight -> ANSITerminal.(print_string [red] "* 8   H *  ")
+  | Nine -> ANSITerminal.(print_string [red] "* 9   H *  ")
+  | Ten -> ANSITerminal.(print_string [red] "* 10  H *  ")
+  | Jack -> ANSITerminal.(print_string [red] "* J   H *  ")
+  | Queen -> ANSITerminal.(print_string [red] "* Q   H *  ")
+  | King -> ANSITerminal.(print_string [red] "* K   H *  ")
+  | Ace -> ANSITerminal.(print_string [red] "* A   H *  ")
+
+let diamonds_second_line = function
+  | Two -> ANSITerminal.(print_string [red] "* 2   D *  ")
+  | Three -> ANSITerminal.(print_string [red] "* 3   D *  ")
+  | Four -> ANSITerminal.(print_string [red] "* 4   D *  ")
+  | Five -> ANSITerminal.(print_string [red] "* 5   D *  ")
+  | Six -> ANSITerminal.(print_string [red] "* 6   D *  ")
+  | Seven -> ANSITerminal.(print_string [red] "* 7   D *  ")
+  | Eight -> ANSITerminal.(print_string [red] "* 8   D *  ")
+  | Nine -> ANSITerminal.(print_string [red] "* 9   D *  ")
+  | Ten -> ANSITerminal.(print_string [red] "* 10  D *  ")
+  | Jack -> ANSITerminal.(print_string [red] "* J   D *  ")
+  | Queen -> ANSITerminal.(print_string [red] "* Q   D *  ")
+  | King -> ANSITerminal.(print_string [red] "* K   D *  ")
+  | Ace -> ANSITerminal.(print_string [red] "* A   D *  ")
+
+let clubs_fourth_line = function
+  | Two -> ANSITerminal.(print_string [default] "* C   2 *  ")
+  | Three -> ANSITerminal.(print_string [default] "* C   3 *  ")
+  | Four -> ANSITerminal.(print_string [default] "* C   4 *  ")
+  | Five -> ANSITerminal.(print_string [default] "* C   5 *  ")
+  | Six -> ANSITerminal.(print_string [default] "* C   6 *  ")
+  | Seven -> ANSITerminal.(print_string [default] "* C   7 *  ")
+  | Eight -> ANSITerminal.(print_string [default] "* C   8 *  ")
+  | Nine -> ANSITerminal.(print_string [default] "* C   9 *  ")
+  | Ten -> ANSITerminal.(print_string [default] "* C  10 *  ")
+  | Jack -> ANSITerminal.(print_string [default] "* C   J *  ")
+  | Queen -> ANSITerminal.(print_string [default] "* C   Q *  ")
+  | King -> ANSITerminal.(print_string [default] "* C   K *  ")
+  | Ace -> ANSITerminal.(print_string [default] "* C   A *  ")
+
+let spades_fourth_line = function
+  | Two -> ANSITerminal.(print_string [default] "* S   2 *  ")
+  | Three -> ANSITerminal.(print_string [default] "* S   3 *  ")
+  | Four -> ANSITerminal.(print_string [default] "* S   4 *  ")
+  | Five -> ANSITerminal.(print_string [default] "* S   5 *  ")
+  | Six -> ANSITerminal.(print_string [default] "* S   6 *  ")
+  | Seven -> ANSITerminal.(print_string [default] "* S   7 *  ")
+  | Eight -> ANSITerminal.(print_string [default] "* S   8 *  ")
+  | Nine -> ANSITerminal.(print_string [default] "* S   9 *  ")
+  | Ten -> ANSITerminal.(print_string [default] "* S  10 *  ")
+  | Jack -> ANSITerminal.(print_string [default] "* S   J *  ")
+  | Queen -> ANSITerminal.(print_string [default] "* S   Q *  ")
+  | King -> ANSITerminal.(print_string [default] "* S   K *  ")
+  | Ace -> ANSITerminal.(print_string [default] "* S   A *  ")
+
+let hearts_fourth_line = function
+  | Two -> ANSITerminal.(print_string [red] "* H   2 *  ")
+  | Three -> ANSITerminal.(print_string [red] "* H   3 *  ")
+  | Four -> ANSITerminal.(print_string [red] "* H   4 *  ")
+  | Five -> ANSITerminal.(print_string [red] "* H   5 *  ")
+  | Six -> ANSITerminal.(print_string [red] "* H   6 *  ")
+  | Seven -> ANSITerminal.(print_string [red] "* H   7 *  ")
+  | Eight -> ANSITerminal.(print_string [red] "* H   8 *  ")
+  | Nine -> ANSITerminal.(print_string [red] "* H   9 *  ")
+  | Ten -> ANSITerminal.(print_string [red] "* H  10 *  ")
+  | Jack -> ANSITerminal.(print_string [red] "* H   J *  ")
+  | Queen -> ANSITerminal.(print_string [red] "* H   Q *  ")
+  | King -> ANSITerminal.(print_string [red] "* H   K *  ")
+  | Ace -> ANSITerminal.(print_string [red] "* H   A *  ")
+
+let diamonds_fourth_line = function
+  | Two -> ANSITerminal.(print_string [red] "* D   2 *  ")
+  | Three -> ANSITerminal.(print_string [red] "* D   3 *  ")
+  | Four -> ANSITerminal.(print_string [red] "* D   4 *  ")
+  | Five -> ANSITerminal.(print_string [red] "* D   5 *  ")
+  | Six -> ANSITerminal.(print_string [red] "* D   6 *  ")
+  | Seven -> ANSITerminal.(print_string [red] "* D   7 *  ")
+  | Eight -> ANSITerminal.(print_string [red] "* D   8 *  ")
+  | Nine -> ANSITerminal.(print_string [red] "* D   9 *  ")
+  | Ten -> ANSITerminal.(print_string [red] "* D  10 *  ")
+  | Jack -> ANSITerminal.(print_string [red] "* D   J *  ")
+  | Queen -> ANSITerminal.(print_string [red] "* D   Q *  ")
+  | King -> ANSITerminal.(print_string [red] "* D   K *  ")
+  | Ace -> ANSITerminal.(print_string [red] "* D   A *  ")
+
+
+let rec print_second_line = function
+  | [] -> print_string ("\n")
+  | h :: t -> begin
+      match h.suit with
+      | Clubs -> clubs_second_line h.value; print_second_line t
+      | Spades -> spades_second_line h.value; print_second_line t
+      | Hearts -> hearts_second_line h.value; print_second_line t
+      | Diamonds -> diamonds_second_line h.value; print_second_line t
+    end
+
+let rec print_third_line = function
+  | [] -> print_string ("\n")
+  | h :: t -> if h.suit = Hearts || h.suit = Diamonds then 
+      ANSITerminal.(print_string [red] "*       *  ") 
+    else ANSITerminal.(print_string [default] "*       *  "); 
+    print_third_line t
+
+let rec print_fourth_line = function
+  | [] -> print_string ("\n")
+  | h :: t -> begin
+      match h.suit with
+      | Clubs -> clubs_fourth_line h.value; print_fourth_line t
+      | Spades -> spades_fourth_line h.value; print_fourth_line t
+      | Hearts -> hearts_fourth_line h.value; print_fourth_line t
+      | Diamonds -> diamonds_fourth_line h.value; print_fourth_line t
+    end
+
+let print_cards cards =
+  print_top_or_bottom cards;
+  print_second_line cards;
+  print_third_line cards;
+  print_fourth_line cards;
+  print_top_or_bottom cards
+
 (** [print_hand] prints a list of cards *)
 let print_hand cards = 
-  let string_cards = List.map string_of_card cards in 
-  let string_cards = List.fold_left ( ^ ) "" string_cards in 
-  let string_sum = string_of_int (sum_cards cards) in 
-  let cards = "\nCurrent Hand: \n" ^ string_cards ^ " Sum: " ^ string_sum in 
-  ANSITerminal.(print_string [red]
-                  cards);
-  print_string  "> ";
+  print_string "Current Hand:\n";
+  print_cards cards;
+  let string_sum = string_of_int (sum_cards cards) in
+  print_string ("Sum:" ^ string_sum ^ "\n")
+
+(* let string_cards = List.map string_of_card cards in 
+   let string_cards = List.fold_left ( ^ ) "" string_cards in 
+   let string_sum = string_of_int (sum_cards cards) in 
+   let cards = "\nCurrent Hand: \n" ^ string_cards ^ "\nSum: " ^ string_sum in 
+   ANSITerminal.(print_string [red]
+                cards);
+   print_string  "> "; *)

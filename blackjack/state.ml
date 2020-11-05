@@ -27,10 +27,10 @@ let rec player_turn player state =
     player
   end
   else begin
+    print_hand (get_hand player);
     ANSITerminal.(print_string [red]
                     "\nPress 'h' to hit or press 's' to stay.\n");
     print_string  "> ";
-    print_hand (get_hand player);
     if player.name = "HOUSE" 
     then let card_sum = sum_cards (get_hand player) in 
       begin 
