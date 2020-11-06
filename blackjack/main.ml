@@ -92,7 +92,7 @@ let rec initialize_game here =
 
 let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins. \n"
 
-let rec rules here =
+let rec rules here start_amount =
   print_endline "\n";
   print_string rules_string;
   print_endline "\n";
@@ -101,7 +101,7 @@ let rec rules here =
   print_string  "> "; 
   match read_line () with 
   | "y" -> begin
-      let init_state = initialize_game here in 
+      let init_state = initialize_game here start_amount in 
       let final_state = start_round init_state in 
       (*repeat_rounds_fake true; *)
       let final_round = repeat_rounds final_state false true in 
@@ -111,20 +111,24 @@ let rec rules here =
       print_endline "\n";
       print_string
         "That wasn't a yes, so here are the rules again. Try reading them this time. ";
-      rules here
+      rules here start_amount
     end  
 
 (** [play_game here] starts the Blackjack game. [here] is used to prevent
     this functionality from occuring when the file is loaded. *)
 let rec play_game here =
   print_endline "\n";
+  ANSITerminal.(print_string [red] "How much money should each player start with?");
+  print_endline "\n";
+  print_string  "> "; 
+  let start_amount = read_line () |> int_of_string in 
   ANSITerminal.(print_string [red] "Would you like to see the rules? (y/n) ");
   print_endline "\n";
   print_string  "> "; 
   match read_line () with 
-  | "y" -> rules here
+  | "y" -> rules here start_amount 
   | "n" -> begin
-      let init_state = initialize_game here in 
+      let init_state = initialize_game here start_amount in 
       let final_state = start_round init_state in 
       (*repeat_rounds_fake true; *)
       let final_round = repeat_rounds final_state false true in 

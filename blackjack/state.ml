@@ -6,10 +6,13 @@ type state = {deck: card list; players: player list}
 
 (** [init_game_state player_names] returns a game state with as many players
     as are in [player_names] plus the house *)
-let init_game_state player_names = 
+let init_game_state player_names start_bal= 
   let deck = shuffle create_standard_deck in 
-  let players = (List.map (fun x -> {name=x; hand=[]}) player_names) in 
-  let players_house = [{name="HOUSE"; hand=[]}] @ players in 
+  let players = (List.map 
+                   (fun x -> {name=x; hand=[]; balance=start_bal; current_bet=0}) 
+                   player_names) in 
+  let players_house = [{name="HOUSE"; hand=[]; balance=max_int; current_bet=0}] 
+                      @ players in 
   {deck=deck; players=players_house}
 
 let quit state = 
@@ -20,6 +23,8 @@ let quit state =
     many times they hit *)
 let rec player_turn player state =
   ANSITerminal.(print_string [green] ("\n" ^ player.name ^ "'s turn: \n"));
+  print_string ("Current balance: " ^ string_of_int player.balance ^ "\n");
+  print_string ("This round's bet: " ^ string_of_int player.current_bet ^ "\n"); 
   if (get_sum player > 21) then begin
     print_hand player.hand;
     print_string "\n";
@@ -66,14 +71,36 @@ let rec deal_cards state acc =
     let new_state = {deck=state.deck; players=xs} in 
     deal_cards new_state (new_player :: acc)
 
+(** [place_bets] returns a players list where every player's bets for the 
+    current round have been placed *)
+let rec place_bets state acc = 
+  match state.players with 
+  | [] -> acc
+  | x :: xs -> 
+    (* if x.name = "HOUSE" then let new_state = {deck=state.deck; players=xs} in 
+       place_bets new_state (x :: acc) 
+       else  *)
+    print_string (x.name ^ "'s " ^ "hand and current balance:\n");
+    print_cards x.hand;
+    print_string ("Current balance: " ^ string_of_int x.balance ^ "\n");
+    ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
+    print_string  "> ";
+    let amount_bet = int_of_string (read_line ()) in 
+    let new_player = update_player_bet x amount_bet in 
+    let new_state = {deck=state.deck; players=xs} in 
+    place_bets new_state (acc @ [new_player])
+
 (** [start_round] starts a new round of blackjack and returns the state once 
     the game is finished *)
 let start_round state = 
   (* take cur_rotation and call the function that plays their turn *)
   let players_w_hands = deal_cards state [] in 
   let state_w_hands = {deck=state.deck; players=players_w_hands} in  
-  (* place bets *)
-  let players_after_turns = play_turns state_w_hands [] in 
+
+  let players_w_bets = place_bets state_w_hands [] in 
+  let state_w_bets = {deck=state_w_hands.deck; players=players_w_bets} in 
+
+  let players_after_turns = play_turns state_w_bets [] in 
   let new_state = {deck = state.deck; players = players_after_turns} in 
   new_state
 

@@ -14,11 +14,16 @@ ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -module
 # Target: player.cmo, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, extension:cmo, extension:ml, file:player.cmo, file:player.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -package ounit2 -package yojson -package ANSITerminal -o player.cmo player.ml # cached
 # Target: state.ml.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), extension:ml, file:state.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules state.ml > state.ml.depends # cached
+ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules state.ml > state.ml.depends
 # Target: state.cmo, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, extension:cmo, extension:ml, file:state.cmo, file:state.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package ounit2 -package yojson -package ANSITerminal -o state.cmo state.ml # cached
+ocamlfind ocamlc -c -package ounit2 -package yojson -package ANSITerminal -o state.cmo state.ml
++ ocamlfind ocamlc -c -package ounit2 -package yojson -package ANSITerminal -o state.cmo state.ml
+File "state.ml", line 52, characters 18-28:
+52 |       | "quit" -> quit state; player
+                       ^^^^^^^^^^
+Warning 21: this statement never returns (or has an unsound type.)
 # Target: main.cmo, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -package ounit2 -package yojson -package ANSITerminal -o main.cmo main.ml # cached
+ocamlfind ocamlc -c -package ounit2 -package yojson -package ANSITerminal -o main.cmo main.ml
 # Target: main.byte, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, dont_link_with, extension:byte, file:main.byte, link, ocaml, program, quiet, traverse }
-ocamlfind ocamlc -linkpkg -package ounit2 -package yojson -package ANSITerminal card.cmo deck.cmo player.cmo state.cmo main.cmo -o main.byte # cached
+ocamlfind ocamlc -linkpkg -package ounit2 -package yojson -package ANSITerminal card.cmo deck.cmo player.cmo state.cmo main.cmo -o main.byte
 # Compilation successful.
