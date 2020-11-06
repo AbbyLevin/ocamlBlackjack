@@ -85,28 +85,45 @@ let winners_list (lst : (Player.player * int) list) =
 
 (** [output_multiple_winners winners_list] returns a string that contains the 
     names of all of the winners separated by a semicolon. *)
-let rec output_multiple_winners winners_list score = 
+let rec output_multiple_winners winners_list score house_win= 
   match winners_list with
-  | [] -> "are tied with a score of " ^ score ^ 
-          (* (List.hd winners_list |> snd |> string_of_int) *)
-          ", so they all won this round. Congrats!\n\n"
+  | [] -> if house_win = false 
+    then "are tied with a score of " ^ score ^ 
+         (* (List.hd winners_list |> snd |> string_of_int) *)
+         ", so they all won this round. Congrats!\n\n" 
+    else "are tied with a score of " ^ score ^ 
+         ", so nobody won this round. Tough luck.\n\n"
   | h :: t -> if t = [] 
-    then "and " ^ (fst h).name ^ " " ^ output_multiple_winners t score
+    then "and " ^ (fst h).name ^ " " ^ output_multiple_winners t score house_win
     else if List.length t = 1 
-    then (fst h).name ^ " " ^ output_multiple_winners t score
-    else (fst h).name ^ ", " ^ output_multiple_winners t score
+    then (fst h).name ^ " " ^ output_multiple_winners t score house_win
+    else (fst h).name ^ ", " ^ output_multiple_winners t score house_win
+
+(** [house_win player_sums] determines whether the house won *)
+let house_win (player_sums : (Player.player * int) list) : bool =
+  let house_won = List.filter (fun x -> (fst(x)).name = "HOUSE") player_sums in
+  if List.length house_won = 1 then true else false
 
 (** [get_winner player_sums] determines the winner(s) of a list of players 
     and their scores [player_sums]. *)
 let get_winner (player_sums : (Player.player * int) list) : string =  
   let winners = winners_list player_sums in
+  let house_win = house_win player_sums in
+  if List.length winners = 1 && house_win
+  then "\nThe House won this round with a score of " ^ 
+       (List.hd winners |> snd |> string_of_int) 
+       ^ ". Tough luck. \n\n"else
   if List.length winners = 1 then "\n" ^ (fst (List.hd winners)).name 
                                   ^ " won this round with a score of " 
                                   ^ (List.hd winners |> snd |> string_of_int) 
                                   ^ ". Congrats!\n\n"
-  else if List.length winners = 0 then "The House won this round.\n\n" 
-  else output_multiple_winners winners 
-      (List.hd winners |> snd |> string_of_int)
+  else if List.length winners = 0 
+  then "The House won this round. Tough luck.\n\n" 
+  else if house_win
+  then output_multiple_winners winners 
+      (List.hd winners |> snd |> string_of_int) true else 
+    output_multiple_winners winners 
+      (List.hd winners |> snd |> string_of_int) false
 
 (** [get_player_sums acc players] returns a dictionary [acc] where the key 
     is each player's name in [players] and the associated value is their 
