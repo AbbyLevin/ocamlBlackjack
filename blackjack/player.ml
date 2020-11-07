@@ -15,6 +15,17 @@ let get_hand player =
 let get_sum player =
   sum_cards player.hand
 
+(** [update_balance] updates a player's balance at the end of a round according 
+    to how they did in comparison to the house *)
+let update_balance player house_score = 
+  let player_score = get_sum player in 
+  if player_score > 21 then player 
+  else if house_score > 21 || player_score > house_score then 
+    let new_bal = player.balance+player.current_bet*2 in 
+    {player with balance=new_bal}
+  else 
+    player
+
 (** [update_player_bet player] returns a new player record with the same 
     fields as [player] except for the sum field which is [new_sum] *)
 let update_player_bet player new_sum = 
