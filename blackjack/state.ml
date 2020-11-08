@@ -2,15 +2,17 @@ open Player
 open Card 
 open Deck 
 
-type state = {deck: card list; players: player list}
+type state = {players: player list; house: player}
 
 (** [init_game_state player_names] returns a game state with as many players
     as are in [player_names] plus the house *)
-let init_game_state player_names = 
-  let deck = shuffle create_standard_deck in 
-  let players = (List.map (fun x -> {name=x; hand=[]}) player_names) in 
-  let players_house = [{name="HOUSE"; hand=[]}] @ players in 
-  {deck=deck; players=players_house}
+let init_game_state player_names start_bal= 
+  (* let deck = shuffle create_standard_deck in  *)
+  let players = (List.map 
+                   (fun x -> {name=x; hand=[]; balance=start_bal; current_bet=0}) 
+                   player_names) in 
+  let house = {name="HOUSE"; hand=[]; balance=max_int; current_bet=0} in 
+  {players=players; house=house}
 
 let quit state = 
   failwith "Unimplimented"
@@ -20,6 +22,8 @@ let quit state =
     many times they hit *)
 let rec player_turn player state =
   ANSITerminal.(print_string [green] ("\n" ^ player.name ^ "'s turn: \n"));
+  print_string ("Current balance: " ^ string_of_int player.balance ^ "\n");
+  print_string ("This round's bet: " ^ string_of_int player.current_bet ^ "\n"); 
   if (get_sum player > 21) then begin
     print_hand player.hand;
     print_string "\n";
@@ -54,7 +58,7 @@ let rec play_turns state acc =
   match state.players with 
     [] -> acc
   | x :: xs -> let new_player = player_turn x state in 
-    let new_state = {deck=state.deck; players=xs} in 
+    let new_state = {players=xs; house=state.house} in 
     play_turns new_state (new_player :: acc)
 
 (** [deal_cards] returns a player list where each player's hand is updated 
@@ -63,19 +67,63 @@ let rec deal_cards state acc =
   match state.players with 
     [] -> acc 
   | x :: xs -> let new_player = initialize_hand x in 
-    let new_state = {deck=state.deck; players=xs} in 
+    let new_state = {players=xs; house=state.house} in 
     deal_cards new_state (new_player :: acc)
+
+(** [place_bets] returns a players list where every player's bets for the 
+    current round have been placed *)
+let rec place_bets state acc = 
+  match state.players with 
+  | [] -> acc
+  | x :: xs -> 
+    (* if x.name = "HOUSE" then let new_state = {deck=state.deck; players=xs} in 
+       place_bets new_state (x :: acc) 
+       else  *)
+    print_string (x.name ^ "'s " ^ "hand and current balance:\n");
+    print_cards x.hand;
+    print_string ("Current balance: " ^ string_of_int x.balance ^ "\n");
+    ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
+    print_string  "> ";
+    let amount_bet = int_of_string (read_line ()) in 
+    let new_player = update_player_bet x amount_bet in 
+    let new_state = {players=xs; house=state.house} in 
+    place_bets new_state (acc @ [new_player])
+
+(** [determine_balances] returns a players list with updated balances based 
+    on how every player did against the house *)
+let determine_balances state = 
+  let house_score = get_sum state.house in 
+  let rec determine_balances_helper players acc = 
+    match players with 
+    | [] -> acc 
+    | x :: xs -> let new_player = update_balance x house_score in 
+      determine_balances_helper xs (new_player :: acc) in 
+  determine_balances_helper state.players []
+
 
 (** [start_round] starts a new round of blackjack and returns the state once 
     the game is finished *)
 let start_round state = 
   (* take cur_rotation and call the function that plays their turn *)
-  let players_w_hands = deal_cards state [] in 
-  let state_w_hands = {deck=state.deck; players=players_w_hands} in  
-  (* place bets *)
-  let players_after_turns = play_turns state_w_hands [] in 
-  let new_state = {deck = state.deck; players = players_after_turns} in 
-  new_state
+  let players_w_hands = deal_cards state [] in
+  let house_with_hand = initialize_hand state.house in    
+  let state_w_hands = {players=players_w_hands; 
+                       house=house_with_hand} in  
+
+  let players_w_bets = place_bets state_w_hands [] in 
+  let state_w_bets = {players=players_w_bets; 
+                      house=state.house} in 
+
+  let players_after_turns = play_turns state_w_bets [] in 
+  let house_after_turn = player_turn state_w_bets.house state_w_bets in 
+
+  let state_after_turns = {players = players_after_turns;
+                           house=house_after_turn} in
+
+  let players_w_balances = determine_balances state_after_turns in 
+  let state_w_balances = {players=players_w_balances; 
+                          house=state_after_turns.house} in 
+  state_w_balances
 
 (** [winners_list lst] returns a list of all of the winners of a round 
     represented by [lst] and their scores. *)
