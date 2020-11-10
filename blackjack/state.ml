@@ -22,8 +22,11 @@ let quit state =
     many times they hit *)
 let rec player_turn player state =
   ANSITerminal.(print_string [green] ("\n" ^ player.name ^ "'s turn: \n"));
-  print_string ("Current balance: " ^ string_of_int player.balance ^ "\n");
-  print_string ("This round's bet: " ^ string_of_int player.current_bet ^ "\n"); 
+  if player.name <> "HOUSE" then begin
+    print_string ("Current balance: " ^ string_of_int player.balance ^ "\n");
+    print_string ("This round's bet: " ^ string_of_int player.current_bet ^ "\n"); 
+  end 
+  else ();
   if (get_sum player > 21) then begin
     print_hand player.hand;
     print_string "\n";
@@ -32,9 +35,6 @@ let rec player_turn player state =
   end
   else begin
     print_hand (get_hand player);
-    ANSITerminal.(print_string [red]
-                    "\nPress 'h' to hit or press 's' to stay.\n");
-    print_string  "> ";
     if player.name = "HOUSE" 
     then let card_sum = sum_cards (get_hand player) in 
       begin 
@@ -43,13 +43,17 @@ let rec player_turn player state =
         | s when s <= 21 -> player 
         | _ -> player_turn (house_turn player state) state
       end
-    else 
+    else begin
+      ANSITerminal.(print_string [red]
+                      "\nPress 'h' to hit or press 's' to stay.\n");
+      print_string  "> ";
       match read_line () with
       | "h" -> let new_player = hit player state in
         player_turn new_player state 
       | "s" -> player
       | "quit" -> failwith "unimplimented"
       | _ -> player_turn player state
+    end
   end
 
 (** [play_turns] returns a player list with each player's hand updated based
