@@ -86,6 +86,8 @@ let rec place_bets state acc =
     print_string (x.name ^ "'s " ^ "hand and current balance:\n");
     print_cards x.hand;
     print_string ("Current balance: " ^ string_of_int x.balance ^ "\n");
+    print_string "HOUSE's card:\n";
+    print_cards [(List.hd (state.house.hand))];
     ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
     print_string  "> ";
     let amount_bet = int_of_string (read_line ()) in 
@@ -197,7 +199,7 @@ let get_winner_game (player_money : (Player.player * int) list) : string =
   if List.length winners = 1 then "\n" ^ (fst (List.hd winners)).name 
                                   ^ " won this game with a balance of $" 
                                   ^ (List.hd winners |> snd |> string_of_int) 
-                                  ^ ". Congrats!\n"
+                                  ^ ". Congrats!\n\n"
   else output_multiple_winners_game winners 
       (List.hd winners |> snd |> string_of_int)
 
