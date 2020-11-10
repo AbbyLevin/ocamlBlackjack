@@ -16,9 +16,6 @@ let get_hand player =
 let get_sum player =
   sum_cards player.hand
 
-<<<<<<< HEAD
-(** [initialize_hand player] deals two cards to [player]. *)
-=======
 (** [update_balance] updates a player's balance at the end of a round according 
     to how they did in comparison to the house *)
 let update_balance player house_score = 
@@ -36,7 +33,6 @@ let update_player_bet player new_sum =
   {name = player.name; hand = player.hand; balance = player.balance-new_sum; 
    current_bet = new_sum}
 
->>>>>>> 3439f9c92f663bb02dd61229e1e84bdcd1395697
 let initialize_hand player = 
   let card1 = get_card () in 
   let card2 = get_card () in 
