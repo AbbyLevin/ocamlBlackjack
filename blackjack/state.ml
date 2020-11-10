@@ -48,7 +48,7 @@ let rec player_turn player state =
       | "h" -> let new_player = hit player state in
         player_turn new_player state 
       | "s" -> player
-      | "quit" -> quit state; player
+      | "quit" -> failwith "unimplimented"
       | _ -> player_turn player state
   end
 
@@ -128,8 +128,11 @@ let start_round state =
 (** [winners_list lst] returns a list of all of the winners of a round 
     represented by [lst] and their scores. *)
 let winners_list (lst : (Player.player * int) list) = 
-  let max_vote_total = (snd (List.hd lst)) in
-  List.filter (fun x -> snd(x) = max_vote_total) lst  
+  match lst with
+  | (p, s) :: t -> List.filter (fun x -> snd(x) = s) lst
+  | [] -> failwith "no players"
+(* let max_vote_total = (snd (List.hd lst)) in
+   List.filter (fun x -> snd(x) = max_vote_total) lst   *)
 
 (** [output_multiple_winners winners_list] returns a string that contains the 
     names of all of the winners separated by a semicolon. *)
