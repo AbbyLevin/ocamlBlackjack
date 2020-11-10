@@ -231,14 +231,14 @@ let winner_test
         ~printer:(fun x -> x)) 
 
 let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"]
-let player_sums = get_player_sums [] standard_state.players
+(* let player_sums = get_player_sums [] standard_state.players *)
 
 let state_tests =
   [
-    state_test "testing that init_game_state creates the proper size 
-    player list" standard_state.players 4;
-    state_test "testing that init_game_state works as intended" 
-      player_sums 4;
+    (* state_test "testing that init_game_state creates the proper size 
+       player list" standard_state.players 4; *)
+    (* state_test "testing that init_game_state works as intended" 
+       player_sums 4; *)
     (*player_sums_test "testing player sums" 
       (get_player_sums [] standard_state.players) [];*)
     (* player_sums_test "testing winners_list" 
@@ -246,8 +246,8 @@ let state_tests =
     (*winner_test "testing get_winner of standard state" 
       (get_winner player_sums) "";   *)
 
-    winner_test "testing round winner" standard_state
-      "HOUSE, Austin, Abby, Brennan, are tied, so they all won this round. Congrats!"; 
+    (* winner_test "testing round winner" standard_state
+       "HOUSE, Austin, Abby, Brennan, are tied, so they all won this round. Congrats!";  *)
   ]
 
 
