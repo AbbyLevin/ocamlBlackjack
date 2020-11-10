@@ -134,7 +134,7 @@ let start_round state =
 let winners_list (lst : (Player.player * int) list) = 
   match lst with
   | (p, s) :: t -> List.filter (fun x -> snd(x) = s) lst
-  | [] -> failwith "no players"
+  | [] -> []
 (* let max_vote_total = (snd (List.hd lst)) in
    List.filter (fun x -> snd(x) = max_vote_total) lst   *)
 
@@ -145,9 +145,9 @@ let rec output_multiple_winners winners_list score house_win=
   | [] -> if house_win = false 
     then "are tied with a score of " ^ score ^ 
          (* (List.hd winners_list |> snd |> string_of_int) *)
-         ", so they all won this round. Congrats!\n\n" 
+         ", so they all won this round. Congrats!\n" 
     else "are tied with a score of " ^ score ^ 
-         ", so nobody won this round. Tough luck.\n\n"
+         ", so nobody won this round. Tough luck.\n"
   | h :: t -> if t = [] 
     then "and " ^ (fst h).name ^ " " ^ output_multiple_winners t score house_win
     else if List.length t = 1 
@@ -167,18 +167,39 @@ let get_winner (player_sums : (Player.player * int) list) : string =
   if List.length winners = 1 && house_win
   then "\nThe House won this round with a score of " ^ 
        (List.hd winners |> snd |> string_of_int) 
-       ^ ". Tough luck. \n\n"else
+       ^ ". Tough luck. \n"else
   if List.length winners = 1 then "\n" ^ (fst (List.hd winners)).name 
                                   ^ " won this round with a score of " 
                                   ^ (List.hd winners |> snd |> string_of_int) 
-                                  ^ ". Congrats!\n\n"
+                                  ^ ". Congrats!\n"
   else if List.length winners = 0 
-  then "The House won this round. Tough luck.\n\n" 
+  then "\nThe House won this round. Tough luck.\n" 
   else if house_win
   then output_multiple_winners winners 
       (List.hd winners |> snd |> string_of_int) true else 
     output_multiple_winners winners 
       (List.hd winners |> snd |> string_of_int) false
+
+let rec output_multiple_winners_game winners_list balance = 
+  match winners_list with
+  | [] ->  "are tied with a balance of " ^ balance ^ 
+           ", so nobody won this game. Tough luck.\n"
+  | h :: t -> if t = [] 
+    then "and " ^ (fst h).name ^ " " ^ output_multiple_winners_game t balance
+    else if List.length t = 1 
+    then (fst h).name ^ " " ^ output_multiple_winners_game t balance
+    else (fst h).name ^ ", " ^ output_multiple_winners_game t balance
+
+(** [get_winner player_money] determines the winner(s) of a list of players 
+    and their balances [player_sums]. *)
+let get_winner_game (player_money : (Player.player * int) list) : string =  
+  let winners = winners_list player_money in
+  if List.length winners = 1 then "\n" ^ (fst (List.hd winners)).name 
+                                  ^ " won this game with a balance of $" 
+                                  ^ (List.hd winners |> snd |> string_of_int) 
+                                  ^ ". Congrats!\n"
+  else output_multiple_winners_game winners 
+      (List.hd winners |> snd |> string_of_int)
 
 (** [get_player_sums acc players] returns a dictionary [acc] where the key 
     is each player's name in [players] and the associated value is their 
@@ -187,6 +208,11 @@ let rec get_player_sums acc (players : Player.player list) =
   match players with 
   | [] -> acc
   | h :: t -> get_player_sums ((h, (get_sum h)) :: acc) t
+
+let rec get_player_money acc (players : Player.player list) = 
+  match players with 
+  | [] -> acc
+  | h :: t -> get_player_money ((h, (get_balance h)) :: acc) t
 
 (** [compare_players x y] compares [x] and [y] based on their scores. *)
 let compare_players x y = 
@@ -201,3 +227,10 @@ let determine_round_winners curr =
   let sorted = List.sort compare_players not_elim |> List.rev in 
   let round_winners = get_winner sorted in 
   round_winners
+
+(** [determine_round_winner determines the winner(s) of round [curr]. *)
+let determine_game_winners curr = 
+  let player_money = get_player_money [] curr.players in  
+  let sorted = List.sort compare_players player_money |> List.rev in 
+  let game_winners = get_winner_game sorted in 
+  game_winners

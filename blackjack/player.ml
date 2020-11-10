@@ -16,6 +16,10 @@ let get_hand player =
 let get_sum player =
   sum_cards player.hand
 
+(** [get_balance player] is the balance of [player]. *)
+let get_balance player =
+  player.balance
+
 (** [update_balance] updates a player's balance at the end of a round according 
     to how they did in comparison to the house *)
 let update_balance player house_score = 

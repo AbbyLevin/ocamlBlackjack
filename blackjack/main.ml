@@ -29,6 +29,7 @@ let rec repeat_rounds state quit here =
   let str = read_line () in
   match str with 
   | "n" -> print_string (determine_round_winners state);
+    print_string (determine_game_winners state);
     print_string "Thanks for playing!"
   | "y" ->  print_string (determine_round_winners state);
     repeat_rounds (play_round state true) false true
