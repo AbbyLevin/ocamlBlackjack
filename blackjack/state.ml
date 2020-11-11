@@ -9,7 +9,8 @@ type state = {players: player list; house: player}
 let init_game_state player_names start_bal= 
   (* let deck = shuffle create_standard_deck in  *)
   let players = (List.map 
-                   (fun x -> {name=x; hand=[]; balance=start_bal; current_bet=0}) 
+                   (fun x -> 
+                      {name=x; hand=[]; balance=start_bal; current_bet=0}) 
                    player_names) in 
   let house = {name="HOUSE"; hand=[]; balance=max_int; current_bet=0} in 
   {players=players; house=house}
@@ -24,7 +25,8 @@ let rec player_turn player state =
   ANSITerminal.(print_string [green] ("\n" ^ player.name ^ "'s turn: \n"));
   if player.name <> "HOUSE" then begin
     print_string ("Current balance: " ^ string_of_int player.balance ^ "\n");
-    print_string ("This round's bet: " ^ string_of_int player.current_bet ^ "\n"); 
+    print_string 
+      ("This round's bet: " ^ string_of_int player.current_bet ^ "\n"); 
   end 
   else ();
   if (get_sum player > 21) then begin
@@ -122,7 +124,7 @@ let start_round state =
 
   let players_w_bets = place_bets state_w_hands [] in 
   let state_w_bets = {players=players_w_bets; 
-                      house=state.house} in 
+                      house=state_w_hands.house} in 
 
   let players_after_turns = play_turns state_w_bets [] in 
   let house_after_turn = player_turn state_w_bets.house state_w_bets in 
