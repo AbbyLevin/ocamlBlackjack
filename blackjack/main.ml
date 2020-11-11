@@ -5,11 +5,11 @@ open State
 
 (** [determine_big_winner final_state] determines who has won the most money
     at the end of [final_state]. *)
-let determine_big_winner final_state = 
-  print_endline "\n";
-  print_string (determine_round_winners final_state);
-  print_string "\nThanks for playing!";
-  print_endline "\n"
+(* let determine_big_winner final_state = 
+   print_endline "\n";
+   print_string (determine_round_winners final_state);
+   print_string "\nThanks for playing!";
+   print_endline "\n" *)
 
 (** [play_round state here] carries out all of the functionality of playing a 
     round of Blackjack with associated game information [state]. [here] 
@@ -30,7 +30,7 @@ let rec repeat_rounds state quit here =
   match str with 
   | "n" -> print_string (determine_round_winners state);
     print_string (determine_game_winners state);
-    print_string "Thanks for playing!"
+    print_string "Thanks for playing!\n"
   | "y" ->  print_string (determine_round_winners state);
     repeat_rounds (play_round state true) false true
   | other -> print_string "\nPlease type a valid input.\n";
@@ -102,7 +102,8 @@ let rec rules here =
   print_string  "> "; 
   match read_line () with 
   | "y" -> begin
-      ANSITerminal.(print_string [red] "How much money should each player start with?");
+      ANSITerminal.(print_string [red] 
+                      "How much money should each player start with?");
       print_endline "\n";
       print_string  "> "; 
       let start_amount = read_line () |> int_of_string in 
@@ -129,7 +130,8 @@ let rec play_game here =
   match read_line () with 
   | "y" -> rules here 
   | "n" -> begin
-      ANSITerminal.(print_string [red] "\nHow much money should each player start with?");
+      ANSITerminal.(print_string [red] 
+                      "\nHow much money should each player start with?");
       print_endline "\n";
       print_string  "> "; 
       let start_amount = read_line () |> int_of_string in 

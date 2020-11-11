@@ -90,10 +90,14 @@ let rec place_bets state acc =
     print_cards [(List.hd (state.house.hand))];
     ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
     print_string  "> ";
-    let amount_bet = int_of_string (read_line ()) in 
-    let new_player = update_player_bet x amount_bet in 
-    let new_state = {players=xs; house=state.house} in 
-    place_bets new_state (acc @ [new_player])
+    match int_of_string_opt (read_line()) with
+    | Some n when n <= x.balance ->
+      let new_player = update_player_bet x n in 
+      let new_state = {players=xs; house=state.house} in 
+      place_bets new_state (acc @ [new_player])
+    | Some n -> print_string "\nYoud cannot bet more than you have.\n"; 
+      place_bets state acc  
+    | None -> print_string "\nInvalid input. Try again.\n"; place_bets state acc
 
 (** [determine_balances] returns a players list with updated balances based 
     on how every player did against the house *)
