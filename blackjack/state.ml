@@ -22,7 +22,7 @@ let quit state =
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)
 let rec player_turn player state =
-  ANSITerminal.(print_string [green] ("\n" ^ player.name ^ "'s turn: \n"));
+  ANSITerminal.(print_string [green] ("\n\n" ^ player.name ^ "'s turn: \n"));
   if player.name <> "HOUSE" then begin
     print_string ("Current balance: " ^ string_of_int player.balance ^ "\n");
     print_string 
@@ -31,7 +31,7 @@ let rec player_turn player state =
   else ();
   if (get_sum player > 21) then begin
     print_hand player.hand;
-    print_string "\n";
+    print_string "\n\n";
     print_string (player.name ^ " has busted. Haha loser.\n");
     player
   end
@@ -47,7 +47,7 @@ let rec player_turn player state =
       end
     else begin
       ANSITerminal.(print_string [red]
-                      "\nPress 'h' to hit or press 's' to stay.\n");
+                      "Press 'h' to hit or press 's' to stay.\n");
       print_string  "> ";
       match read_line () with
       | "h" -> let new_player = hit player state in
@@ -82,9 +82,7 @@ let rec place_bets state acc =
   match state.players with 
   | [] -> acc
   | x :: xs -> 
-    (* if x.name = "HOUSE" then let new_state = {deck=state.deck; players=xs} in 
-       place_bets new_state (x :: acc) 
-       else  *)
+    print_endline "\n";
     print_string (x.name ^ "'s " ^ "hand and current balance:\n");
     print_cards x.hand;
     print_string ("Current balance: " ^ string_of_int x.balance ^ "\n");
@@ -97,7 +95,8 @@ let rec place_bets state acc =
       let new_player = update_player_bet x n in 
       let new_state = {players=xs; house=state.house} in 
       place_bets new_state (acc @ [new_player])
-    | Some n -> print_string "\nYoud cannot bet more than you have.\n"; 
+    | Some n -> ANSITerminal.(print_string [red] 
+                                "\n\nYou cannot bet more than you have."); 
       place_bets state acc  
     | None -> print_string "\nInvalid input. Try again.\n"; place_bets state acc
 

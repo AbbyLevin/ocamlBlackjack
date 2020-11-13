@@ -17,13 +17,17 @@ let play_round state here =
     file is loaded.*)
 let rec repeat_rounds state quit here = 
   if here |> not then failwith "repeat_rounds here = not" else 
-    print_string "\nWould you like to play another round? (y/n) ";
+    print_string "\n\nWould you like to play another round? (y/n) ";
   let str = read_line () in
   match str with 
-  | "n" -> print_string (determine_round_winners state);
+  | "n" -> 
+    print_string "\n";
+    print_string (determine_round_winners state);
     print_string (determine_game_winners state);
-    print_string "Thanks for playing!\n"
-  | "y" ->  print_string (determine_round_winners state);
+    print_string "Thanks for playing!\n\n\n"
+  | "y" ->  
+    print_string "\n\n\n";
+    print_string (determine_round_winners state);
     repeat_rounds (play_round state true) false true
   | other -> print_string "\nPlease type a valid input.\n";
     repeat_rounds state quit here
@@ -34,8 +38,8 @@ let rec repeat_rounds state quit here =
 let prompt_name here =
   if here |> not then failwith "prompt_name here = not" else 
     ANSITerminal.(print_string [red]
-                    "\n\nWelcome new player. What will your name be?.\n");
-  print_endline "\n";
+                    "\n\nWelcome new player. What will your name be?.");
+  print_string "\n";
   print_string  "> ";
   match read_line () with
   | name -> name
@@ -58,7 +62,7 @@ let rec initialize_game here =
                     "\n\nHow many players will there be?.\n");
   ANSITerminal.(print_string [red] 
                   "Please enter a number between 1 and 100 inclusive.");
-  print_endline "\n";
+  print_string "\n";
   print_string  "> "; 
   match read_line () with  
   | number_of_players -> let n = number_of_players |> int_of_string_opt in 
@@ -70,20 +74,20 @@ let rec initialize_game here =
     end
     else number_of_players |> int_of_string |> get_names [] |> init_game_state
 
-let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins.\n Press control c at any time to exit the game.\n"
+let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins.\nPress control c at any time to exit the game.\n"
 
 let rec rules here =
   print_endline "\n";
   print_string rules_string;
   print_endline "\n";
   ANSITerminal.(print_string [red] "Are you ready to play? (y/n)" );
-  print_endline "\n";
+  print_string "\n";
   print_string  "> "; 
   match read_line () with 
   | "y" -> begin
       ANSITerminal.(print_string [red] 
-                      "How much money should each player start with?");
-      print_endline "\n";
+                      "\n\nHow much money should each player start with?");
+      print_string "\n";
       print_string  "> "; 
       let start_amount = read_line () |> int_of_string in 
       let init_state = initialize_game here start_amount in 
@@ -104,14 +108,14 @@ let rec rules here =
 let rec play_game here =
   print_endline "\n";
   ANSITerminal.(print_string [red] "Would you like to see the rules? (y/n) ");
-  print_endline "\n";
+  print_string "\n";
   print_string  "> "; 
   match read_line () with 
   | "y" -> rules here 
   | "n" -> begin
       ANSITerminal.(print_string [red] 
-                      "\nHow much money should each player start with?");
-      print_endline "\n";
+                      "\n\nHow much money should each player start with?");
+      print_string "\n";
       print_string  "> "; 
       let start_amount = read_line () |> int_of_string in 
       let init_state = initialize_game here start_amount in 

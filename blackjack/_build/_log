@@ -1,6 +1,6 @@
 ### Starting build.
 # Target: main.ml.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules main.ml > main.ml.depends # cached
+ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules main.ml > main.ml.depends
 # Target: card.ml.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), extension:ml, file:card.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules card.ml > card.ml.depends # cached
 # Target: card.cmo, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, extension:cmo, extension:ml, file:card.cmo, file:card.ml, implem, ocaml, quiet, traverse }
