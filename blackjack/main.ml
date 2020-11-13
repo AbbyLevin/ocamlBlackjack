@@ -3,14 +3,6 @@ open Deck
 open Player
 open State
 
-(** [determine_big_winner final_state] determines who has won the most money
-    at the end of [final_state]. *)
-(* let determine_big_winner final_state = 
-   print_endline "\n";
-   print_string (determine_round_winners final_state);
-   print_string "\nThanks for playing!";
-   print_endline "\n" *)
-
 (** [play_round state here] carries out all of the functionality of playing a 
     round of Blackjack with associated game information [state]. [here] 
     is used to prevent this functionality from occuring when the 
@@ -35,19 +27,6 @@ let rec repeat_rounds state quit here =
     repeat_rounds (play_round state true) false true
   | other -> print_string "\nPlease type a valid input.\n";
     repeat_rounds state quit here
-
-(*
-let repeat_rounds_fake here = 
-  if here |> not then failwith "dkf" else 
-    let quit_loop = ref false in
-    while not !quit_loop do
-      print_string "Have you had enough yet? (y/n) ";
-      let str = read_line () in
-      if str.[0] = 'y' then
-        quit_loop := true else play_round true
-    done;;
-
-    *)
 
 (** [prompt_name here] prompts a user to enter their name and handles
     their response. [here] is used to prevent this functionality from 
@@ -91,7 +70,7 @@ let rec initialize_game here =
     end
     else number_of_players |> int_of_string |> get_names [] |> init_game_state
 
-let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins. \n"
+let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins.\n Press control c at any time to exit the game.\n"
 
 let rec rules here =
   print_endline "\n";

@@ -153,6 +153,8 @@ let rec print_top_or_bottom = function
     else ANSITerminal.(print_string [default] "*********  "); 
     print_top_or_bottom t
 
+(** [clubs_second_line card] takes in a card and prints the second line of the
+    card with the value followed by the C for clubs, spaced appropriately.*)  
 let clubs_second_line = function
   | Two -> ANSITerminal.(print_string [default] "* 2   C *  ")
   | Three -> ANSITerminal.(print_string [default] "* 3   C *  ")
@@ -168,6 +170,8 @@ let clubs_second_line = function
   | King -> ANSITerminal.(print_string [default] "* K   C *  ")
   | Ace -> ANSITerminal.(print_string [default] "* A   C *  ")
 
+(** [spades_second_line card] takes in a card and prints the second line of the
+    card with the value followed by the S for spades, spaced appropriately.*) 
 let spades_second_line = function
   | Two -> ANSITerminal.(print_string [default] "* 2   S *  ")
   | Three -> ANSITerminal.(print_string [default] "* 3   S *  ")
@@ -183,6 +187,8 @@ let spades_second_line = function
   | King -> ANSITerminal.(print_string [default] "* K   S *  ")
   | Ace -> ANSITerminal.(print_string [default] "* A   S *  ")
 
+(** [hearts_second_line card] takes in a card and prints the second line of the
+    card with the value followed by the H for hearts, spaced appropriately.*) 
 let hearts_second_line = function
   | Two -> ANSITerminal.(print_string [red] "* 2   H *  ")
   | Three -> ANSITerminal.(print_string [red] "* 3   H *  ")
@@ -198,6 +204,8 @@ let hearts_second_line = function
   | King -> ANSITerminal.(print_string [red] "* K   H *  ")
   | Ace -> ANSITerminal.(print_string [red] "* A   H *  ")
 
+(** [diamonds_second_line card] takes in a card and prints the second line of 
+    the card with the value followed by the D for diamonds, spaced appropriately.*) 
 let diamonds_second_line = function
   | Two -> ANSITerminal.(print_string [red] "* 2   D *  ")
   | Three -> ANSITerminal.(print_string [red] "* 3   D *  ")
@@ -213,6 +221,8 @@ let diamonds_second_line = function
   | King -> ANSITerminal.(print_string [red] "* K   D *  ")
   | Ace -> ANSITerminal.(print_string [red] "* A   D *  ")
 
+(** [clubs_fourth_line card] takes in a card and prints the fourth line of the
+    card with a C for clubs followed by the value, spaced appropriately.*) 
 let clubs_fourth_line = function
   | Two -> ANSITerminal.(print_string [default] "* C   2 *  ")
   | Three -> ANSITerminal.(print_string [default] "* C   3 *  ")
@@ -228,6 +238,8 @@ let clubs_fourth_line = function
   | King -> ANSITerminal.(print_string [default] "* C   K *  ")
   | Ace -> ANSITerminal.(print_string [default] "* C   A *  ")
 
+(** [spades_fourth_line card] takes in a card and prints the fourth line of the
+    card with a S for spades followed by the value, spaced appropriately.*) 
 let spades_fourth_line = function
   | Two -> ANSITerminal.(print_string [default] "* S   2 *  ")
   | Three -> ANSITerminal.(print_string [default] "* S   3 *  ")
@@ -243,6 +255,8 @@ let spades_fourth_line = function
   | King -> ANSITerminal.(print_string [default] "* S   K *  ")
   | Ace -> ANSITerminal.(print_string [default] "* S   A *  ")
 
+(** [hearts_fourth_line card] takes in a card and prints the fourth line of the
+    card with an H for hearts followed by the value, spaced appropriately.*) 
 let hearts_fourth_line = function
   | Two -> ANSITerminal.(print_string [red] "* H   2 *  ")
   | Three -> ANSITerminal.(print_string [red] "* H   3 *  ")
@@ -258,6 +272,8 @@ let hearts_fourth_line = function
   | King -> ANSITerminal.(print_string [red] "* H   K *  ")
   | Ace -> ANSITerminal.(print_string [red] "* H   A *  ")
 
+(** [diamonds_fourth_line card] takes in a card and prints the fourthline of the
+    card with a D for diamonds followed by the value, spaced appropriately.*) 
 let diamonds_fourth_line = function
   | Two -> ANSITerminal.(print_string [red] "* D   2 *  ")
   | Three -> ANSITerminal.(print_string [red] "* D   3 *  ")
@@ -273,7 +289,8 @@ let diamonds_fourth_line = function
   | King -> ANSITerminal.(print_string [red] "* D   K *  ")
   | Ace -> ANSITerminal.(print_string [red] "* D   A *  ")
 
-
+(** [print_second_line hand] takes in a list of cards and prints the second
+    line of each card with the appropriate suit and value.*) 
 let rec print_second_line = function
   | [] -> print_string ("\n")
   | h :: t -> begin
@@ -284,6 +301,8 @@ let rec print_second_line = function
       | Diamonds -> diamonds_second_line h.value; print_second_line t
     end
 
+(** [print_third_line hand] takes in a list of cards and prints the third
+    line of each card.*) 
 let rec print_third_line = function
   | [] -> print_string ("\n")
   | h :: t -> if h.suit = Hearts || h.suit = Diamonds then 
@@ -291,6 +310,8 @@ let rec print_third_line = function
     else ANSITerminal.(print_string [default] "*       *  "); 
     print_third_line t
 
+(** [print_fourth_line hand] takes in a list of cards and prints the fourth
+    line of each card with the appropriate suit and value.*) 
 let rec print_fourth_line = function
   | [] -> print_string ("\n")
   | h :: t -> begin
@@ -301,6 +322,7 @@ let rec print_fourth_line = function
       | Diamonds -> diamonds_fourth_line h.value; print_fourth_line t
     end
 
+(** [print_cards cards] prints each line of each card in [cards].*) 
 let print_cards cards =
   print_top_or_bottom cards;
   print_second_line cards;
