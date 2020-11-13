@@ -157,17 +157,6 @@ let standard_deck_test
       assert_equal expected_output deck ~cmp:cmp_set_like_lists 
         ~printer:(pp_list string_of_card))
 
-(** [shuffle_test name deck expected_output] constructs an 
-    OUnit test named [name] that asserts the lack of quality of 
-    [expected_output] with [deck] to ensure a deck has been properly 
-    shuffled. *)
-let shuffle_test 
-    (name : string) (deck)
-    (expected_output : card list) : test = 
-  name >:: (fun _ -> 
-      (* the [printer] tells OUnit how to convert the output to a string *)
-      (assert (expected_output != deck)))
-
 let deck_tests =
   [
     standard_deck_test "testing that a standard deck was properly created" 
@@ -190,10 +179,6 @@ let deck_tests =
            (Diamonds, Seven); (Diamonds, Eight); (Diamonds, Nine); 
            (Diamonds, Ten); (Diamonds, Jack); (Diamonds, Queen); 
            (Diamonds, King); (Diamonds, Ace)]);
-    standard_deck_test "testing that shuffle deck returns the same cards "
-      (shuffle create_standard_deck) create_standard_deck;
-    shuffle_test "testing that shuffle deck returns the cards in a different 
-    order" (shuffle create_standard_deck) create_standard_deck;
   ]
 
 (** [state_test name state expected_output] constructs an OUnit test 
@@ -205,6 +190,16 @@ let state_test
   name >:: (fun _ -> 
       assert_equal expected_output (List.length state) 
         ~printer:(string_of_int)) 
+
+(** [state_test name state expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [List.length state]. *)
+let house_test 
+    (name : string) (state)
+    (expected_output : string) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (state) 
+        ~printer:(fun x -> x)) 
 
 (** [print_player_int tuple] returns a string representation of [tuple]. *)
 let print_player_int (tuple : Player.player * int) = 
@@ -227,27 +222,94 @@ let winner_test
     (name : string) (state)
     (expected_output : string) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (determine_round_winners state)  
+      assert_equal expected_output (state)  
         ~printer:(fun x -> x)) 
 
-let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"]
-(* let player_sums = get_player_sums [] standard_state.players *)
+let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"] 100
+let player_sums = get_player_sums [] standard_state.players
+
+let string_of_hand hand = 
+  pp_list string_of_card_test hand
+
+let string_of_player player = 
+  "Name: " ^ player.name ^ ", Current Balance = $"  
+  ^ string_of_int (player.balance) ^ ", Hand: " ^ string_of_hand player.hand 
+  ^ ", Current Bet: " ^ string_of_int player.current_bet ^ "\n"
+
+let rec state_cycle acc = function
+  | [] -> acc
+  | h :: t -> state_cycle (acc ^ string_of_player h) t
+
+let string_of_state curr = 
+  string_of_player curr.house ^ state_cycle "" curr.players
+
+(** [winner_test name state expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [determine_round_winners state]. *)
+let create_state_test 
+    (name : string) (state)
+    (expected_output : string) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (string_of_state state)  
+        ~printer:(fun x -> x))  
+
+let p1 = {name= "Brennan"; hand = []; balance =  100; current_bet =  0} 
+let p2 = {name= "Austin"; hand = []; balance =  100; current_bet =  0} 
+let p3 = {name= "Abby"; hand = []; balance =  100; current_bet =  0} 
+let default_house = {name="HOUSE"; hand=[]; 
+                     balance=max_int; current_bet=0}
+let default_state = {players = [p1; p2; p3]; house = default_house}
+
+let p2_10 = {name="Austin"; hand=[{suit=Diamonds;value=Ten}]; 
+             balance=max_int; current_bet=0}
+let house_10 = {name="HOUSE"; hand=[{suit=Hearts;value=Ten}]; 
+                balance=max_int; current_bet=0}
+let p2_8 = {name="Austin"; hand=[{suit=Spades;value=Eight}]; 
+            balance=max_int; current_bet=0}
+let p1_8 = {name="Brennan"; hand=[{suit=Clubs;value=Eight}]; 
+            balance=max_int; current_bet=0}
+
+let house_win_state = {players = [p1; p2; p3]; house = house_10}
+let house_tie_state = {players = [p1; p2_10; p3]; house = house_10}
+let p2_8_win_state = {players = [p1; p2_8; p3]; house = default_house}
+let p1_p2_tie_state = {players = [p1_8; p2_8; p3]; house = default_house}
 
 let state_tests =
   [
-    (* state_test "testing that init_game_state creates the proper size 
-       player list" standard_state.players 4; *)
-    (* state_test "testing that init_game_state works as intended" 
-       player_sums 4; *)
-    (*player_sums_test "testing player sums" 
-      (get_player_sums [] standard_state.players) [];*)
+    state_test "testing that init_game_state creates the proper size 
+       player list" standard_state.players 3;
+    house_test "testing that init_game_state creates the proper size 
+       house list" standard_state.house.name "HOUSE";
+    state_test "testing that init_game_state works as intended" 
+      player_sums 3;
+    (* player_sums_test "testing player sums" 
+       (get_player_sums [] standard_state.players) []; *)
     (* player_sums_test "testing winners_list" 
        (winners_list player_sums) []; *)
-    (*winner_test "testing get_winner of standard state" 
-      (get_winner player_sums) "";   *)
+    winner_test "testing get_winner of standard state" (get_winner player_sums) 
+      "Brennan, Abby and Austin are tied with a score of 0, so they all won this round. Congrats!\n";  
 
-    (* winner_test "testing round winner" standard_state
-       "HOUSE, Austin, Abby, Brennan, are tied, so they all won this round. Congrats!";  *)
+    create_state_test "testing default state creation" (default_state) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
+Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
+Name: Austin, Current Balance = $100, Hand: [], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
+";
+    winner_test "testing determine_round_winner with all tied with house" 
+      (determine_round_winners default_state) 
+      "HOUSE, Brennan, Austin and Abby are tied with a score of 0, so nobody won this round. Tough luck.\n";
+    winner_test "testing determine_round_winner with house solo dub" 
+      (determine_round_winners house_win_state) 
+      "\nThe House won this round with a score of 10. Tough luck. \n"; 
+    winner_test "testing determine_round_winner with one tied with house" 
+      (determine_round_winners house_tie_state) 
+      "HOUSE and Austin are tied with a score of 10, so nobody won this round. Tough luck.\n"; 
+    winner_test "testing determine_round_winner with non-house winner" 
+      (determine_round_winners p2_8_win_state) 
+      "\nAustin won this round with a score of 8. Congrats!\n";
+    winner_test "testing determine_round_winner with non-house winners" 
+      (determine_round_winners p1_p2_tie_state) 
+      "Brennan and Austin are tied with a score of 8, so they all won this round. Congrats!\n";  
   ]
 
 

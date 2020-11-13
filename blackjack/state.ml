@@ -170,7 +170,7 @@ let house_win (player_sums : (Player.player * int) list) : bool =
     and their scores [player_sums]. *)
 let get_winner (player_sums : (Player.player * int) list) : string =  
   let winners = winners_list player_sums in
-  let house_win = house_win player_sums in
+  let house_win = house_win winners in
   if List.length winners = 1 && house_win
   then "\nThe House won this round with a score of " ^ 
        (List.hd winners |> snd |> string_of_int) 
@@ -229,7 +229,8 @@ let compare_players x y =
 
 (** [determine_round_winner determines the winner(s) of round [curr]. *)
 let determine_round_winners curr = 
-  let player_sums = get_player_sums [] curr.players in
+  let house_and_players = curr.house :: curr.players in 
+  let player_sums = get_player_sums [] house_and_players in
   let not_elim = List.filter (fun x -> snd(x) <= 21) player_sums in  
   let sorted = List.sort compare_players not_elim |> List.rev in 
   let round_winners = get_winner sorted in 
