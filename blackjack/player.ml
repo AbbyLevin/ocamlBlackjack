@@ -37,6 +37,8 @@ let update_player_bet player new_sum =
   {name = player.name; hand = player.hand; balance = player.balance-new_sum; 
    current_bet = new_sum}
 
+(** [initialize_hand player] initializes the hand of [player] by "drawing"
+    two cards for them. *)
 let initialize_hand player = 
   let card1 = get_card () in 
   let card2 = get_card () in 

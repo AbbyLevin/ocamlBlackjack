@@ -111,7 +111,6 @@ let determine_balances state =
       determine_balances_helper xs (new_player :: acc) in 
   determine_balances_helper state.players []
 
-
 (** [start_round] starts a new round of blackjack and returns the state once 
     the game is finished *)
 let start_round state = 
@@ -187,6 +186,8 @@ let get_winner (player_sums : (Player.player * int) list) : string =
     output_multiple_winners winners 
       (List.hd winners |> snd |> string_of_int) false
 
+(** [output_multiple_winners_game winners_list balance] prints the 
+    winners within [winners_list] and their [balance]. *)
 let rec output_multiple_winners_game winners_list balance = 
   match winners_list with
   | [] ->  "are tied with a balance of " ^ balance ^ 
@@ -216,6 +217,9 @@ let rec get_player_sums acc (players : Player.player list) =
   | [] -> acc
   | h :: t -> get_player_sums ((h, (get_sum h)) :: acc) t
 
+(** [get_player_money acc players] returns a dictionary [acc] where the key 
+    is each player's name in [players] and the associated value is their 
+    balance at the end of the round. *)
 let rec get_player_money acc (players : Player.player list) = 
   match players with 
   | [] -> acc

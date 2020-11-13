@@ -181,10 +181,10 @@ let deck_tests =
            (Diamonds, King); (Diamonds, Ace)]);
   ]
 
-(** [state_test name state expected_output] constructs an OUnit test 
+(** [init_state_test name state expected_output] constructs an OUnit test 
     named [name] that asserts the quality of [expected_output] with 
     [List.length state]. *)
-let state_test 
+let init_state_test 
     (name : string) (state)
     (expected_output : int) : test = 
   name >:: (fun _ -> 
@@ -228,18 +228,23 @@ let winner_test
 let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"] 100
 let player_sums = get_player_sums [] standard_state.players
 
+(** [string_of_hand hand] returns a string represenatation of [hand]. *)
 let string_of_hand hand = 
   pp_list string_of_card_test hand
 
+(** [string_of_player player] returns a string represenatation of [player]. *)
 let string_of_player player = 
   "Name: " ^ player.name ^ ", Current Balance = $"  
   ^ string_of_int (player.balance) ^ ", Hand: " ^ string_of_hand player.hand 
   ^ ", Current Bet: " ^ string_of_int player.current_bet ^ "\n"
 
+(** [state_cycle acc] cycles through each of the players in a given state 
+    and concatenates their string representation. *)
 let rec state_cycle acc = function
   | [] -> acc
   | h :: t -> state_cycle (acc ^ string_of_player h) t
 
+(** [string_of_state acc] returns a string represenatation of [curr]. *)
 let string_of_state curr = 
   string_of_player curr.house ^ state_cycle "" curr.players
 
@@ -256,36 +261,52 @@ let create_state_test
 let p1 = {name= "Brennan"; hand = []; balance =  100; current_bet =  0} 
 let p2 = {name= "Austin"; hand = []; balance =  100; current_bet =  0} 
 let p3 = {name= "Abby"; hand = []; balance =  100; current_bet =  0} 
-let default_house = {name="HOUSE"; hand=[]; 
-                     balance=max_int; current_bet=0}
+let default_house = {name="HOUSE"; hand=[]; balance=max_int; current_bet=0}
+
 let default_state = {players = [p1; p2; p3]; house = default_house}
 
 let p2_10 = {name="Austin"; hand=[{suit=Diamonds;value=Ten}]; 
-             balance=max_int; current_bet=0}
+             balance=100; current_bet=0}
 let house_10 = {name="HOUSE"; hand=[{suit=Hearts;value=Ten}]; 
                 balance=max_int; current_bet=0}
 let p2_8 = {name="Austin"; hand=[{suit=Spades;value=Eight}]; 
-            balance=max_int; current_bet=0}
+            balance=100; current_bet=0}
 let p1_8 = {name="Brennan"; hand=[{suit=Clubs;value=Eight}]; 
-            balance=max_int; current_bet=0}
+            balance=100; current_bet=0}
+let p3_busted = {name="Abby"; 
+                 hand=[{suit=Diamonds;value=Eight}; 
+                       {suit=Diamonds;value=Nine}; 
+                       {suit=Diamonds;value=Ten}]; 
+                 balance=100; current_bet=0}           
+let house_busted = {name="HOUSE"; 
+                    hand=[{suit=Clubs;value=Eight}; 
+                          {suit=Clubs;value=Nine}; 
+                          {suit=Clubs;value=Ten}]; 
+                    balance=max_int; current_bet=0} 
+let rich_p1 ={name= "Brennan"; hand = [{suit=Clubs;value=Two}]; 
+              balance = 3110; current_bet = 1000} 
 
 let house_win_state = {players = [p1; p2; p3]; house = house_10}
 let house_tie_state = {players = [p1; p2_10; p3]; house = house_10}
 let p2_8_win_state = {players = [p1; p2_8; p3]; house = default_house}
 let p1_p2_tie_state = {players = [p1_8; p2_8; p3]; house = default_house}
+let p1_p2_win_busted = {players = [p1_8; p2_8; p3_busted]; 
+                        house = house_busted}
+let p2_win_busted_rich = {players = [rich_p1; p2_8; p3_busted]; 
+                          house = house_busted}
 
 let state_tests =
   [
-    state_test "testing that init_game_state creates the proper size 
+    init_state_test "testing that init_game_state creates the proper size 
        player list" standard_state.players 3;
     house_test "testing that init_game_state creates the proper size 
        house list" standard_state.house.name "HOUSE";
-    state_test "testing that init_game_state works as intended" 
+    init_state_test "testing that init_game_state works as intended" 
       player_sums 3;
-    (* player_sums_test "testing player sums" 
-       (get_player_sums [] standard_state.players) []; *)
-    (* player_sums_test "testing winners_list" 
-       (winners_list player_sums) []; *)
+    player_sums_test "testing player sums" 
+      (get_player_sums [] standard_state.players) [(p1,0);(p3,0);(p2,0)];
+    player_sums_test "testing winners_list" 
+      (winners_list player_sums) [(p1,0);(p3,0);(p2,0)];
     winner_test "testing get_winner of standard state" (get_winner player_sums) 
       "Brennan, Abby and Austin are tied with a score of 0, so they all won this round. Congrats!\n";  
 
@@ -310,6 +331,19 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
     winner_test "testing determine_round_winner with non-house winners" 
       (determine_round_winners p1_p2_tie_state) 
       "Brennan and Austin are tied with a score of 8, so they all won this round. Congrats!\n";  
+    winner_test 
+      "testing determine_round_winner with non-house winners and busted players" 
+      (determine_round_winners p1_p2_win_busted) 
+      "Brennan and Austin are tied with a score of 8, so they all won this round. Congrats!\n"; 
+    winner_test 
+      "testing determine_game_winner with non-house winners and busted players" 
+      (determine_game_winners p1_p2_win_busted) 
+      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";  
+    winner_test 
+      "testing determine_game_winner with non-house winners and busted players
+      and one rich player" 
+      (determine_game_winners p2_win_busted_rich) 
+      "\nBrennan won this game with a balance of $3110. Congrats!\n\n"; 
   ]
 
 

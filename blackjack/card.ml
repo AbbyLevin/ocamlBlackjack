@@ -146,6 +146,7 @@ let string_of_card card =
   let string_value = string_of_value card.value in 
   "[" ^ string_value ^ "," ^ string_suit ^ "]"
 
+(** [print_top_or_bottom] prints the upper / lower borders of a card. *)
 let rec print_top_or_bottom = function
   | [] -> print_string ("\n")
   | h :: t -> if h.suit = Hearts || h.suit = Diamonds then 

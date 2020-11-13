@@ -76,6 +76,7 @@ let rec initialize_game here =
 
 let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins.\nPress control c at any time to exit the game.\n"
 
+(** [rules here] handles outputting the rules if a player desires them. *)
 let rec rules here =
   print_endline "\n";
   print_string rules_string;
