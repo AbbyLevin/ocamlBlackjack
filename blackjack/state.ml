@@ -15,10 +15,6 @@ let init_game_state player_names start_bal=
   let house = {name="HOUSE"; hand=[]; balance=max_int; current_bet=0} in 
   {players=players; house=house}
 
-let quit state = 
-  failwith "Unimplimented"
-(* ANSITerminal.(print_string [blue] "Thanks for playing!") *)
-
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)
 let rec player_turn player state =
@@ -93,7 +89,7 @@ let rec place_bets state acc =
     match int_of_string_opt (read_line()) with
     | Some n when n <= x.balance ->
       let new_player = update_player_bet x n in 
-      let new_state = {players=xs; house=state.house} in 
+      let new_state = {players=xs; house=state.house} in
       place_bets new_state (acc @ [new_player])
     | Some n -> ANSITerminal.(print_string [red] 
                                 "\n\nYou cannot bet more than you have."); 
@@ -137,7 +133,7 @@ let start_round state =
 
 (** [winners_list lst] returns a list of all of the winners of a round 
     represented by [lst] and their scores. *)
-let winners_list (lst : (Player.player * int) list) = 
+let winners_list (lst : (player * int) list) = 
   match lst with
   | (p, s) :: t -> List.filter (fun x -> snd(x) = s) lst
   | [] -> []
@@ -151,7 +147,7 @@ let rec output_multiple_winners winners_list score house_win=
   | [] -> if house_win = false 
     then "are tied with a score of " ^ score ^ 
          (* (List.hd winners_list |> snd |> string_of_int) *)
-         ", so they all won this round. Congrats!\n" 
+         ", so they won this round. Congrats!\n" 
     else "are tied with a score of " ^ score ^ 
          ", so nobody won this round. Tough luck.\n"
   | h :: t -> if t = [] 
@@ -161,13 +157,13 @@ let rec output_multiple_winners winners_list score house_win=
     else (fst h).name ^ ", " ^ output_multiple_winners t score house_win
 
 (** [house_win player_sums] determines whether the house won *)
-let house_win (player_sums : (Player.player * int) list) : bool =
+let house_win (player_sums : (player * int) list) : bool =
   let house_won = List.filter (fun x -> (fst(x)).name = "HOUSE") player_sums in
   if List.length house_won = 1 then true else false
 
 (** [get_winner player_sums] determines the winner(s) of a list of players 
     and their scores [player_sums]. *)
-let get_winner (player_sums : (Player.player * int) list) : string =  
+let get_winner (player_sums : (player * int) list) : string =  
   let winners = winners_list player_sums in
   let house_win = house_win winners in
   if List.length winners = 1 && house_win
@@ -200,7 +196,7 @@ let rec output_multiple_winners_game winners_list balance =
 
 (** [get_winner player_money] determines the winner(s) of a list of players 
     and their balances [player_sums]. *)
-let get_winner_game (player_money : (Player.player * int) list) : string =  
+let get_winner_game (player_money : (player * int) list) : string =  
   let winners = winners_list player_money in
   if List.length winners = 1 then "\n" ^ (fst (List.hd winners)).name 
                                   ^ " won this game with a balance of $" 
@@ -212,7 +208,7 @@ let get_winner_game (player_money : (Player.player * int) list) : string =
 (** [get_player_sums acc players] returns a dictionary [acc] where the key 
     is each player's name in [players] and the associated value is their 
     score at the end of the round. *)
-let rec get_player_sums acc (players : Player.player list) = 
+let rec get_player_sums acc (players : player list) = 
   match players with 
   | [] -> acc
   | h :: t -> get_player_sums ((h, (get_sum h)) :: acc) t
@@ -220,7 +216,7 @@ let rec get_player_sums acc (players : Player.player list) =
 (** [get_player_money acc players] returns a dictionary [acc] where the key 
     is each player's name in [players] and the associated value is their 
     balance at the end of the round. *)
-let rec get_player_money acc (players : Player.player list) = 
+let rec get_player_money acc (players : player list) = 
   match players with 
   | [] -> acc
   | h :: t -> get_player_money ((h, (get_balance h)) :: acc) t

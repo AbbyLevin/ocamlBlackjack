@@ -1,7 +1,8 @@
 open Card
 (** [combine_suit_and_values curr suit value_list] creates and combines tuples
     of the form ([suit], value) for each value in [value_list]. *) 
-let rec combine_suit_and_values curr suit value_list = 
+let rec combine_suit_and_values (curr : (suit * value) list) 
+    (suit : suit) (value_list : value list) : ((suit * value) list) = 
   match value_list with 
   | [] -> curr
   | h :: t -> combine_suit_and_values ((suit, h) :: curr) suit t
@@ -23,10 +24,6 @@ let create_standard_deck : card list =
 
 (** [get_card] returns a random card from a standard 52 card deck *)
 let get_card a = 
-  (*let deck = shuffle create_standard_deck in 
-    match deck with 
-    [] -> failwith "Hmmm"
-    | x :: _ -> x*)
   let deck = create_standard_deck in
   let deck_array = Array.of_list deck in
   Random.self_init ();
