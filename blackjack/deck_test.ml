@@ -308,7 +308,7 @@ let state_tests =
     player_sums_test "testing winners_list" 
       (winners_list player_sums) [(p1,0);(p3,0);(p2,0)];
     winner_test "testing get_winner of standard state" (get_winner player_sums) 
-      "Brennan, Abby and Austin are tied with a score of 0, so they all won this round. Congrats!\n";  
+      "Brennan, Abby and Austin are tied with a score of 0, so they won this round. Congrats!\n";  
 
     create_state_test "testing default state creation" (default_state) 
       "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
@@ -330,11 +330,11 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
       "\nAustin won this round with a score of 8. Congrats!\n";
     winner_test "testing determine_round_winner with non-house winners" 
       (determine_round_winners p1_p2_tie_state) 
-      "Brennan and Austin are tied with a score of 8, so they all won this round. Congrats!\n";  
+      "Brennan and Austin are tied with a score of 8, so they won this round. Congrats!\n";  
     winner_test 
       "testing determine_round_winner with non-house winners and busted players" 
       (determine_round_winners p1_p2_win_busted) 
-      "Brennan and Austin are tied with a score of 8, so they all won this round. Congrats!\n"; 
+      "Brennan and Austin are tied with a score of 8, so they won this round. Congrats!\n"; 
     winner_test 
       "testing determine_game_winner with non-house winners and busted players" 
       (determine_game_winners p1_p2_win_busted) 
