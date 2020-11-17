@@ -295,6 +295,21 @@ let p1_p2_win_busted = {players = [p1_8; p2_8; p3_busted];
 let p2_win_busted_rich = {players = [rich_p1; p2_8; p3_busted]; 
                           house = house_busted}
 
+let long_name = {name= "ABCDEFGHIJKLMNOPQRSTUV"; 
+                 hand = [{suit=Clubs;value=Two}; {suit=Clubs;value=Six}]; 
+                 balance = 2110; current_bet = 500}
+
+let long_name_game = {players = [rich_p1; p2_8; p3_busted; long_name]; 
+                      house = house_busted}    
+
+let large_nums = {name= "ZZZZZZZZZZZZZ"; 
+                  hand = [{suit=Clubs;value=Two}; {suit=Clubs;value=Eight}]; 
+                  balance = max_int; current_bet = max_int}      
+
+let large_name_num_game = {players = [rich_p1; p2_8; p3_busted; 
+                                      long_name; large_nums]; 
+                           house = house_busted}     
+
 let state_tests =
   [
     init_state_test "testing that init_game_state creates the proper size 
@@ -344,6 +359,17 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
       and one rich player" 
       (determine_game_winners p2_win_busted_rich) 
       "\nBrennan won this game with a balance of $3110. Congrats!\n\n"; 
+    (* winner_test 
+       "testing determine_game_winner with non-house winners and busted players
+       and one rich player" 
+       (print_round_leaderboard long_name_game) 
+       "\nBrennan won this game with a balance of $3110. Congrats!\n\n";  *)
+
+    winner_test 
+      "testing determine_game_winner with non-house winners and busted players
+       and one rich player" 
+      (print_round_leaderboard large_name_num_game) 
+      "\nBrennan won this game with a balance of $3110. Congrats!\n\n";
   ]
 
 

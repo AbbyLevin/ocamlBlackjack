@@ -242,3 +242,45 @@ let determine_game_winners curr =
   let sorted = List.sort compare_players player_money |> List.rev in 
   let game_winners = get_winner_game sorted in 
   game_winners
+
+let rec add_spaces name n = 
+  let len = String.length(name) in
+  match len with 
+  | x -> if x = n then name else add_spaces (name ^ " ") n
+
+let standardize_name (name : string) = 
+  let len = String.length(name) in
+  if len >= 14 then String.sub name 0 14 
+  else add_spaces name 14
+
+let standardize_output (output : string) = 
+  let len = String.length(output) in
+  if len >= 13 then String.sub output 0 13 
+  else add_spaces output 13
+
+(** [leader_entry acc lst] creates a leaderboard entry for each player in 
+    [lst]. *)
+let rec leader_entry acc lst = 
+  match lst with 
+  | [] -> acc
+  | h :: t -> leader_entry 
+                (acc ^ "* " ^ standardize_name((fst h).name) 
+                 ^ "\t||\t$" ^ 
+                 ((fst h).current_bet |> string_of_int |> standardize_output) 
+                 ^ "\t||\t$"
+                 ^ (snd h |> string_of_int |> standardize_output) 
+                 ^ " \t*\n") t
+
+(** [print_round_leaderboard curr] prints the leaderboard at the end of 
+    a given round [curr]. *)
+let print_round_leaderboard curr = 
+  let player_money = get_player_money [] curr.players in  
+  let sorted = List.sort compare_players player_money |> List.rev in 
+  let leaderboard_entries = leader_entry "" sorted in 
+  "\n*************************************************************************\n"
+  ^ 
+  "*        PLAYER\t        ||    ROUND EARNINGS    ||    CURRENT BALANCE   *\n"
+  ^ 
+  "*-----------------------------------------------------------------------*\n"
+  ^ leaderboard_entries ^ 
+  "*************************************************************************\n"
