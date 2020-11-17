@@ -262,15 +262,20 @@ let standardize_output (output : string) =
   if len >= 13 then String.sub output 0 13 
   else add_spaces output 13
 
+(** [determine_win player state] determines if [player] won in the round 
+    represented by [state]. *)
+let determine_win player state = 
+  let house_score = sum_cards (get_hand state.house) in 
+  let player_score = sum_cards (get_hand player) in 
+  if player_score > 21 then false
+  else if house_score > 21 || player_score > house_score then true else false
+
 (** [determine_sign curr elt] determines the sign of the earnings of [elt] 
     at the end of round [curr]. *)
 let determine_sign curr elt = 
-  let player = fst elt in 
-  let house_score = sum_cards (get_hand curr.house) in 
-  let player_score = sum_cards (get_hand player) in 
+  let player = fst elt in  
   if player.current_bet = 0 then "" else 
-  if player_score > 21 then "-" 
-  else if house_score > 21 || player_score > house_score then "" else "-"
+  if determine_win player curr then "" else "-"
 
 (** [leader_entry acc lst] creates a leaderboard entry for each player in 
     [lst]. *)
@@ -299,26 +304,72 @@ let print_round_leaderboard curr =
   ^ leaderboard_entries ^ 
   "*************************************************************************\n"
 
+(** [return_player player players] returns the corresponding [player] within
+    [players]. *)
+let rec return_player player players = 
+  match players with
+  | [] -> failwith "should never get here"
+  | h :: t -> if h.name = player.name then h else return_player player t 
+
+(** [determine_player_wins acc past_states player] determines the number of 
+    rounds won by [player] in all prior rounds [past_states]. *)
+let rec determine_player_wins acc past_states player = 
+  match past_states with 
+  | [] -> acc 
+  | h :: t -> if determine_win (return_player player h.players) h
+    then determine_player_wins (1 + acc) t player
+    else determine_player_wins (acc) t player
+
+(** [to_dollar] converts [float] into USD format. *)
+let to_dollar float = 
+  let float_string = string_of_float (float) in
+  let period_spot = String.index float_string '.' in 
+  let pre_decimal = String.sub float_string 0 (period_spot) in
+  let post_decimal = if period_spot = (String.length float_string) - 1 
+    then "00" else String.sub float_string (period_spot + 1) 2
+  in pre_decimal ^ "." ^ post_decimal
+
+(** [return_player_bet player players] returns the bet of [player] within 
+    [players]. *)
+let rec return_player_bet player players = 
+  float_of_int (return_player player players).current_bet 
+
+(** [determine_average_bet_amount acc past_states size player] determines
+    the average bet amount of [player] throughout all prior rounds 
+    [past_states]. *)
+let rec determine_average_bet_amount acc past_states size player =   
+  match past_states with 
+  | [] -> acc /. float_of_int size
+  | h :: t -> 
+    determine_average_bet_amount 
+      (return_player_bet player h.players  +. acc) t size player
+
 (** [final_leader_entry acc lst] creates a leaderboard entry for each player in 
     [lst] at the end of the game. *)
-let rec final_leader_entry acc lst curr = 
+let rec final_leader_entry acc lst curr past_states = 
   match lst with 
   | [] -> acc
   | h :: t -> final_leader_entry 
                 (acc ^ "* " ^ standardize_name((fst h).name) 
                  ^ "\t||\t$" ^ (snd h |> string_of_int |> standardize_output) 
-                 ^ " \t*\n") t curr
+                 ^ "\t||\t" ^ (fst h |> determine_player_wins 0 past_states 
+                               |> string_of_int |> standardize_output) 
+                 ^ "\t||\t$" ^ 
+                 (fst h |> determine_average_bet_amount 0.0 
+                    past_states (List.length past_states) 
+                  |>  to_dollar |> standardize_output) 
+                 ^" \t*\n") t curr past_states
 
 (** [print_game_leaderboard curr] prints the final leaderboard at the end of 
     a given round [curr]. *)
-let print_game_leaderboard curr = 
+let print_game_leaderboard curr past_states = 
   let player_money = get_player_money [] curr.players in  
   let sorted = List.sort compare_players player_money |> List.rev in 
-  let leaderboard_entries = final_leader_entry "" sorted curr in 
-  "\n*************************************************\n"
+  let leaderboard_entries = final_leader_entry "" sorted curr past_states in 
+  "\n*************************************************************************************************\n"
   ^ 
-  "*        PLAYER\t        ||     FINAL BALANCE    *\n"
+  "*        PLAYER\t        ||     FINAL BALANCE    ||     ROUNDS WON       ||  AVERAGE BET AMOUNT  *\n"
   ^ 
-  "*-----------------------------------------------*\n"
+  "*-----------------------------------------------------------------------------------------------*\n"
   ^ leaderboard_entries ^ 
-  "*************************************************\n"
+  "*************************************************************************************************\n"

@@ -79,4 +79,4 @@ val determine_game_winners : state -> string
 val print_round_leaderboard : state -> string 
 
 (** [print_game_leaderboard] prints the leaderboard at the end of a game. *)
-val print_game_leaderboard : state -> string 
+val print_game_leaderboard : state -> state list -> string 

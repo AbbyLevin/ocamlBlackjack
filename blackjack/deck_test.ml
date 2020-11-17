@@ -297,7 +297,7 @@ let p2_win_busted_rich = {players = [rich_p1; p2_8; p3_busted];
 
 let long_name = {name= "ABCDEFGHIJKLMNOPQRSTUV"; 
                  hand = [{suit=Clubs;value=Two}; {suit=Clubs;value=Six}]; 
-                 balance = 2110; current_bet = 500}
+                 balance = 2110; current_bet = 503}
 
 let long_name_game = {players = [rich_p1; p2_8; p3_busted; long_name]; 
                       house = house_busted}    
@@ -379,10 +379,17 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
        ^ "* Abby                  ||      $0              ||      $100            *\n"
        ^ "*************************************************************************\n"); *)
 
+    (* winner_test 
+       "testing determine_game_winner with non-house winners and busted players
+       and one rich player" 
+       (print_game_leaderboard long_name_game 
+         [long_name_game; long_name_game]) ""; *)
+
     winner_test 
       "testing determine_game_winner with non-house winners and busted players
        and one rich player" 
-      (print_game_leaderboard large_name_num_game) "";
+      (print_game_leaderboard p2_win_busted_rich 
+         [p1_p2_tie_state; p1_p2_win_busted; p2_win_busted_rich]) "";
   ]
 
 
