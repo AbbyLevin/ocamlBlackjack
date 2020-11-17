@@ -75,4 +75,8 @@ val determine_round_winners : state -> string
 (** [determine_round_winner determines the winner(s) of round [curr]. *)
 val determine_game_winners : state -> string
 
+(** [print_round_leaderboard] prints the leaderboard at the end of a round. *)
 val print_round_leaderboard : state -> string 
+
+(** [print_game_leaderboard] prints the leaderboard at the end of a game. *)
+val print_game_leaderboard : state -> string 

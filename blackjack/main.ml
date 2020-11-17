@@ -24,10 +24,12 @@ let rec repeat_rounds state quit here =
     print_string "\n";
     print_string (determine_round_winners state);
     print_string (determine_game_winners state);
+    print_string (print_game_leaderboard state);
     print_string "Thanks for playing!\n\n\n"
   | "y" ->  
     print_string "\n\n\n";
     print_string (determine_round_winners state);
+    print_string (print_round_leaderboard state);
     repeat_rounds (play_round state true) false true
   | other -> print_string "\nPlease type a valid input.\n";
     repeat_rounds state quit here

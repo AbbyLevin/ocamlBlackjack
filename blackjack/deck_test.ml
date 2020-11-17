@@ -365,11 +365,24 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
        (print_round_leaderboard long_name_game) 
        "\nBrennan won this game with a balance of $3110. Congrats!\n\n";  *)
 
+    (* winner_test 
+       "testing determine_game_winner with non-house winners and busted players
+       and one rich player" 
+       (print_round_leaderboard large_name_num_game) 
+       ("\n*************************************************************************\n"
+       ^"*        PLAYER\t        ||    ROUND EARNINGS    ||    CURRENT BALANCE   *\n" 
+       ^ "*-----------------------------------------------------------------------*\n" 
+       ^ "* ZZZZZZZZZZZZZ         ||      $4611686018427  ||      $4611686018427  *\n"
+       ^ "* Brennan               ||      $1000           ||      $3110           *\n"
+       ^ "* ABCDEFGHIJKLMN        ||      $500            ||      $2110           *\n"
+       ^ "* Austin                ||      $0              ||      $100            *\n"
+       ^ "* Abby                  ||      $0              ||      $100            *\n"
+       ^ "*************************************************************************\n"); *)
+
     winner_test 
       "testing determine_game_winner with non-house winners and busted players
        and one rich player" 
-      (print_round_leaderboard large_name_num_game) 
-      "\nBrennan won this game with a balance of $3110. Congrats!\n\n";
+      (print_game_leaderboard large_name_num_game) "";
   ]
 
 
