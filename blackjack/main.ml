@@ -91,11 +91,16 @@ let rec rules here =
   match read_line () with 
   | "y" -> begin
       ANSITerminal.(print_string [red] 
+                      "\nWhat would you like the name of this game to be?");
+      print_string "\n";
+      print_string  "> "; 
+      let game_name = read_line () in 
+      ANSITerminal.(print_string [red] 
                       "\n\nHow much money should each player start with?");
       print_string "\n";
       print_string  "> "; 
       let start_amount = read_line () |> int_of_string in 
-      let init_state = initialize_game here start_amount in 
+      let init_state = initialize_game here start_amount (game_name^".json") in 
       let final_state = start_round init_state in 
       (*repeat_rounds_fake true; *)
       repeat_rounds final_state [final_state] false true
@@ -122,11 +127,16 @@ let rec select_game here =
     load_game name 
   | "n" -> 
     ANSITerminal.(print_string [red] 
+                    "\nWhat would you like the name of this game to be?");
+    print_string "\n";
+    print_string  "> "; 
+    let game_name = read_line () in 
+    ANSITerminal.(print_string [red] 
                     "\n\nHow much money should each player start with?");
     print_string "\n";
     print_string  "> "; 
     let start_amount = read_line () |> int_of_string in 
-    initialize_game here start_amount 
+    initialize_game here start_amount game_name 
   | _ -> 
     print_endline "\n";
     print_string "Please type a valid input. ";

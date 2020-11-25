@@ -12,8 +12,9 @@ let player_of_savedp saved_p =
 (** [load_game name] returns a game state based on the contents from the json
     file whose name is [name]. *)
 let load_game name = 
-  let json = Yojson.Basic.from_file name in 
+  let json = Yojson.Basic.from_file (name ^ ".json") in 
   let players = json |> member "players" |> 
                 to_list |> List.map player_of_savedp in
   {players=players; house=
-                      {name="HOUSE"; hand=[]; balance=max_int; current_bet=0}}
+                      {name="HOUSE"; hand=[]; balance=max_int; current_bet=0};
+   game_name=name}

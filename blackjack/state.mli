@@ -2,11 +2,11 @@ open Player
 open Card 
 open Deck 
 
-type state = {players: player list; house: player}
+type state = {players: player list; house: player; game_name: string}
 
 (** [init_game_state player_names] returns a game state with as many players
     as are in [player_names] plus the house *)
-val init_game_state : string list -> int -> state
+val init_game_state : string list -> int -> string -> state
 
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)

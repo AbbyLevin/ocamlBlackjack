@@ -28,7 +28,7 @@ val get_names : string list -> int -> string list
     players and returning an initial game state with each of these players' 
     names. [here] is used to prevent this functionality from occuring when the 
     file is loaded.*)
-val initialize_game : bool -> int -> state 
+val initialize_game : bool -> int -> string -> state 
 
 (** [rules here] handles outputting the rules if a player desires them. *)
 val rules : bool -> unit 

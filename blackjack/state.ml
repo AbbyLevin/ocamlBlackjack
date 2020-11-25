@@ -2,18 +2,18 @@ open Player
 open Card 
 open Deck 
 
-type state = {players: player list; house: player}
+type state = {players: player list; house: player; game_name: string}
 
 (** [init_game_state player_names] returns a game state with as many players
     as are in [player_names] plus the house *)
-let init_game_state player_names start_bal= 
+let init_game_state player_names start_bal game_name = 
   (* let deck = shuffle create_standard_deck in  *)
   let players = (List.map 
                    (fun x -> 
                       {name=x; hand=[]; balance=start_bal; current_bet=0}) 
                    player_names) in 
   let house = {name="HOUSE"; hand=[]; balance=max_int; current_bet=0} in 
-  {players=players; house=house}
+  {players=players; house=house; game_name=game_name}
 
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)
@@ -60,7 +60,7 @@ let rec play_turns state acc =
   match state.players with 
     [] -> acc
   | x :: xs -> let new_player = player_turn x state in 
-    let new_state = {players=xs; house=state.house} in 
+    let new_state = {state with players=xs} in 
     play_turns new_state (new_player :: acc)
 
 (** [deal_cards] returns a player list where each player's hand is updated 
@@ -69,7 +69,7 @@ let rec deal_cards state acc =
   match state.players with 
     [] -> acc 
   | x :: xs -> let new_player = initialize_hand x in 
-    let new_state = {players=xs; house=state.house} in 
+    let new_state = {state with players=xs} in 
     deal_cards new_state (new_player :: acc)
 
 (** [place_bets] returns a players list where every player's bets for the 
@@ -89,7 +89,7 @@ let rec place_bets state acc =
     match int_of_string_opt (read_line()) with
     | Some n when n <= x.balance ->
       let new_player = update_player_bet x n in 
-      let new_state = {players=xs; house=state.house} in
+      let new_state = {state with players=xs} in
       place_bets new_state (acc @ [new_player])
     | Some n -> ANSITerminal.(print_string [red] 
                                 "\n\nYou cannot bet more than you have."); 
@@ -110,25 +110,30 @@ let determine_balances state =
 (** [start_round] starts a new round of blackjack and returns the state once 
     the game is finished *)
 let start_round state = 
+  let game_name = state.game_name in
   (* take cur_rotation and call the function that plays their turn *)
   let players_w_hands = deal_cards state [] in
   let house_with_hand = initialize_hand state.house in    
   let state_w_hands = {players=players_w_hands; 
-                       house=house_with_hand} in  
+                       house=house_with_hand;
+                       game_name=game_name} in  
 
   let players_w_bets = place_bets state_w_hands [] in 
   let state_w_bets = {players=players_w_bets; 
-                      house=state_w_hands.house} in 
+                      house=state_w_hands.house;
+                      game_name=game_name} in 
 
   let players_after_turns = play_turns state_w_bets [] in 
   let house_after_turn = player_turn state_w_bets.house state_w_bets in 
 
   let state_after_turns = {players = players_after_turns;
-                           house=house_after_turn} in
+                           house=house_after_turn;
+                           game_name=game_name} in
 
   let players_w_balances = determine_balances state_after_turns in 
   let state_w_balances = {players=players_w_balances; 
-                          house=state_after_turns.house} in 
+                          house=state_after_turns.house;
+                          game_name=game_name} in 
   state_w_balances
 
 (** [winners_list lst] returns a list of all of the winners of a round 
