@@ -1,4 +1,4 @@
-MODULES=deck card player main author state
+MODULES=deck card player main author state save
 OBJECTS=$(MODULES:=.cmo)
 TEST=deck_test.byte
 MAIN=main.byte

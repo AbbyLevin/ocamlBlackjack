@@ -2,6 +2,7 @@ open Card
 open Deck
 open Player
 open State
+open Save
 
 (** [play_round state here] carries out all of the functionality of playing a 
     round of Blackjack with associated game information [state]. [here] 
@@ -107,6 +108,30 @@ let rec rules here =
       rules here
     end  
 
+let rec select_game here = 
+  ANSITerminal.(print_string [red] 
+                  "\nWould you like to load an existing game? (y/n)");
+  print_string "\n";
+  print_string  "> "; 
+  match read_line () with 
+  | "y" -> ANSITerminal.(print_string [red] 
+                           "\nEnter the name of the game file:");
+    print_string "\n";
+    print_string  "> "; 
+    let name = read_line () in 
+    load_game name 
+  | "n" -> 
+    ANSITerminal.(print_string [red] 
+                    "\n\nHow much money should each player start with?");
+    print_string "\n";
+    print_string  "> "; 
+    let start_amount = read_line () |> int_of_string in 
+    initialize_game here start_amount 
+  | _ -> 
+    print_endline "\n";
+    print_string "Please type a valid input. ";
+    select_game here
+
 (** [play_game here] starts the Blackjack game. [here] is used to prevent
     this functionality from occuring when the file is loaded. *)
 let rec play_game here =
@@ -117,12 +142,7 @@ let rec play_game here =
   match read_line () with 
   | "y" -> rules here 
   | "n" -> begin
-      ANSITerminal.(print_string [red] 
-                      "\n\nHow much money should each player start with?");
-      print_string "\n";
-      print_string  "> "; 
-      let start_amount = read_line () |> int_of_string in 
-      let init_state = initialize_game here start_amount in 
+      let init_state = select_game true in 
       let final_state = start_round init_state in 
       (*repeat_rounds_fake true; *)
       repeat_rounds final_state [final_state] false true 

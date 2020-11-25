@@ -1,0 +1,16 @@
+{
+  "players": [
+    {
+      "name": "Austin",
+      "balance": 545
+    },
+    {
+      "name": "Abby",
+      "balance": 400
+    },
+    {
+      "name": "Brennan",
+      "balance": 150
+    }
+  ]
+}
