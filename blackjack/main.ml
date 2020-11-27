@@ -12,6 +12,14 @@ let play_round state here =
   if here |> not then failwith "Should never get here" 
   else start_round state
 
+let rec save_game_qry state = 
+  print_string "\nWould you like to save your game? (y/n) ";
+  let save_game_str = read_line () in 
+  match save_game_str with 
+  | "y" -> save_game state 
+  | "n" -> ()
+  | _ -> print_string "Please input a valid response\n"; save_game_qry state
+
 (** [repeat_rounds state quit here] allows a user to play a round and 
     update [state] along the way as long as they don't make [quit] true. 
     [here] is used to prevent this functionality from occuring when the 
@@ -22,6 +30,7 @@ let rec repeat_rounds state past_states quit here =
   let str = read_line () in
   match str with 
   | "n" -> 
+    save_game_qry state;
     print_string "\n";
     print_string (determine_round_winners state);
     print_string (determine_game_winners state);
@@ -119,8 +128,10 @@ let rec select_game here =
   print_string "\n";
   print_string  "> "; 
   match read_line () with 
-  | "y" -> ANSITerminal.(print_string [red] 
-                           "\nEnter the name of the game file:");
+  | "y" -> 
+    ANSITerminal.
+      (print_string [red]
+         "\nEnter the name of the game file (ommit the .json extension):");
     print_string "\n";
     print_string  "> "; 
     let name = read_line () in 
