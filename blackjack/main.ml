@@ -131,7 +131,7 @@ let rec select_game here =
   | "y" -> 
     ANSITerminal.
       (print_string [red]
-         "\nEnter the name of the game file (ommit the .json extension):");
+         "\nEnter the name of the game file (omit the .json extension):");
     print_string "\n";
     print_string  "> "; 
     let name = read_line () in 
