@@ -30,6 +30,8 @@ let remove_l_comma str =
   let res = String.sub str 0 (len_str-1) in 
   res
 
+(** [json_of_players state] returns a Yojson.Safe.t object based on the players
+    in the current game in [state]. *)
 let json_of_players state = 
   let players = state.players in 
   let res = List.fold_right (fun a b -> 
@@ -39,6 +41,10 @@ let json_of_players state =
   let json_string = {|{"players": [|} ^ res_formatted ^ {|]}|} in 
   Yojson.Safe.from_string json_string
 
+(** [save_game state] saves the data in a games state object [state] to 
+    a json file with the game's name (also stored in [state]). 
+    If a json file with the name exists already it will write to that file
+    and otherwise a new json file will be created.  *)
 let save_game state =
   let game_name = state.game_name in 
   let json_to_write = json_of_players state in 

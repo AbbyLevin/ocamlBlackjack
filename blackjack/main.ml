@@ -122,6 +122,10 @@ let rec rules here =
       rules here
     end  
 
+(** [select_game here] returns a state object afting prompting the players
+    to choose whether they want to start a new game or load an existing one. If 
+    they decide to load an existing game it then prompts them to enter the name 
+    of the game they would like to load.  *)
 let rec select_game here = 
   ANSITerminal.(print_string [red] 
                   "\nWould you like to load an existing game? (y/n)");
