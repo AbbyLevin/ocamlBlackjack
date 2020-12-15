@@ -2,7 +2,8 @@ open Card
 open Deck
 
 (** The type representing a player. *)
-type player = {name: string; hand: card list; balance: int; current_bet: int}
+type player = {name: string; hand: card list; 
+               balance: int; current_bet: int; diff: string}
 
 (** [create_player name hand] creates a player with [name] and [hand]. *)
 val create_player : string -> card list -> player

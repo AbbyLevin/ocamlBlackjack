@@ -7,7 +7,8 @@ open State
 let player_of_savedp saved_p = 
   let name = saved_p |> member "name" |> to_string in 
   let balance = saved_p |> member "balance" |> to_int in 
-  {name=name; hand=[]; balance=balance; current_bet=0}
+  let diff = saved_p |> member "diff" |> to_string in
+  {name=name; hand=[]; balance=balance; current_bet=0; diff=diff}
 
 (** [load_game name] returns a game state based on the contents from the json
     file whose name is [name]. 
@@ -19,7 +20,7 @@ let load_game name =
   let players = json |> member "players" |> 
                 to_list |> List.map player_of_savedp in
   {players=players; house=
-                      {name="HOUSE"; hand=[]; balance=max_int; current_bet=0};
+                      {name="HOUSE"; hand=[]; balance=max_int; current_bet=0; diff = "House"};
    game_name=name}
 
 (** [remove_l_comma str] removes the last character from the string [str]. 

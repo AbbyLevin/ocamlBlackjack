@@ -57,13 +57,52 @@ let prompt_name here =
   match read_line () with
   | name -> name
 
-(** [get_names name_list n] returns [name_list] which has the names of the
-    [n] players. *)
-let rec get_names (name_list : string list) (n : int)  =
+(** [prompt_diff here name] prompts a user to enter their difficulty level 
+    of an AI player named [name] and handles their response. [here] is used 
+    to prevent this functionality from occuring when the file is loaded. *)
+let rec prompt_diff here name =
+  if here |> not then failwith "prompt_diff here = not" else 
+    ANSITerminal.(print_string [red]
+                    ("\n\nWhat difficulty will "^ name ^ " be?\n" ^
+                     "Enter [\"Easy\"] for Easy or [\"Hard\"] for Hard."));
+  print_string "\n";
+  print_string  "> ";
+  let diff = read_line () in 
+  match diff with
+  | "Easy" -> "Easy"
+  | "Hard" -> "Hard"
+  | _ -> print_string "\nPlease type a valid input.\n";
+    prompt_diff here name
+
+(** [prompt_user_or_ai here] prompts a user to enter their name and handles
+    their response. It also handles determining the difficulty level of the 
+    player if they are an AI player. [here] is used to prevent this 
+    functionality from occuring when the file is loaded. *)
+let rec prompt_user_or_ai here name =
+  if here |> not then failwith "prompt_diff here = not" else 
+    ANSITerminal.(print_string [red] (
+        "\n\nWill " ^ name ^ 
+        " be a user-controlled player or an AI-controlled player?\n" ^ 
+        "Enter [\"user\"] for a user-controlled player or " ^ 
+        "[\"AI\"] for an AI player."));
+  print_string "\n";
+  print_string  "> ";
+  let player_type = read_line () in 
+  match player_type with
+  | "user" -> "User" 
+  | "AI" -> prompt_diff true name
+  | _ -> print_string "\nPlease type a valid input.\n";
+    prompt_user_or_ai here name
+
+(** [get_names name_list n] returns [name_and_diff_list] which has the names 
+    and associated difficulties of the [n] players. *)
+let rec get_names_and_diff (name_and_diff_list : (string * string) list) 
+    (n : int) : (string * string) list =
   match n with 
-  | 0 -> name_list
-  | x -> let next_name = prompt_name in 
-    get_names (next_name true :: name_list) (n-1)
+  | 0 -> name_and_diff_list
+  | x -> let next_name = prompt_name true in 
+    let next_diff = prompt_user_or_ai true next_name in 
+    get_names_and_diff ((next_name, next_diff) :: name_and_diff_list) (n-1)
 
 (** [initialize_game here] initializes the game by gathering the number of
     players and returning an initial game state with each of these players' 
@@ -85,7 +124,10 @@ let rec initialize_game here =
       print_string "Invalid input. Try again.";
       initialize_game here
     end
-    else number_of_players |> int_of_string |> get_names [] |> init_game_state
+    else number_of_players 
+         |> int_of_string 
+         |> get_names_and_diff [] 
+         |> init_game_state
 
 let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins.\nPress control c at any time to exit the game.\n"
 

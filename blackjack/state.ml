@@ -6,14 +6,18 @@ type state = {players: player list; house: player; game_name: string}
 
 (** [init_game_state player_names] returns a game state with as many players
     as are in [player_names] plus the house *)
-let init_game_state player_names start_bal game_name = 
+let init_game_state (player_names_and_diff : (string * string) list) (
+    start_bal : int) (game_name : string) = 
   (* let deck = shuffle create_standard_deck in  *)
   let players = (List.map 
                    (fun x -> 
-                      {name=x; hand=[]; balance=start_bal; current_bet=0}) 
-                   player_names) in 
-  let house = {name="HOUSE"; hand=[]; balance=max_int; current_bet=0} in 
-  {players=players; house=house; game_name=game_name}
+                      {name= fst x; hand=[]; balance=start_bal; 
+                       current_bet=0; diff = snd x}) 
+                   player_names_and_diff) in 
+  List.iter (fun x -> print_string x.diff) players;
+  let house = 
+    {name="HOUSE"; hand=[]; balance=max_int; current_bet=0; diff = "House"} in 
+  {players=players; house=house; game_name=game_name}  
 
 (** [player_turn] returns a player with their hand updated based on how 
     many times they hit *)
@@ -41,6 +45,8 @@ let rec player_turn player state =
         | s when s <= 21 -> player 
         | _ -> player_turn (house_turn player state) state
       end
+    else if player.diff = "Easy" then easy_turn player state
+    else if player.diff = "Hard" then hard_turn player state     
     else begin
       ANSITerminal.(print_string [red]
                       "Press 'h' to hit or press 's' to stay.\n");
@@ -52,6 +58,28 @@ let rec player_turn player state =
       | "quit" -> failwith "unimplimented"
       | _ -> player_turn player state
     end
+  end
+
+(** [easy_turn player state] carries out the gameplay for an Easy difficulty
+    AI player. *)
+and easy_turn player state = 
+  let card_sum = sum_cards (get_hand player) in 
+  begin 
+    match card_sum with 
+    | s when s < 17 -> player_turn (house_turn player state) state
+    | s when s <= 21 -> player 
+    | _ -> player_turn (house_turn player state) state
+  end
+
+(** [hard_turn player state] carries out the gameplay for a Hard difficulty
+    AI player. *)
+and hard_turn player state = 
+  let card_sum = sum_cards (get_hand player) in 
+  begin 
+    match card_sum with 
+    | s when s < 17 -> player_turn (house_turn player state) state
+    | s when s <= 21 -> player 
+    | _ -> player_turn (house_turn player state) state
   end
 
 (** [play_turns] returns a player list with each player's hand updated based

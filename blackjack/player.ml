@@ -2,11 +2,12 @@ open Card
 open Deck
 
 (** The type representing a player. *)
-type player = {name: string; hand: card list; balance: int; current_bet: int}
+type player = {name: string; hand: card list; balance: int; 
+               current_bet: int; diff: string}
 
 (** [create_player name hand] creates a player with [name] and [hand]. *)
 let create_player name hand =
-  {name = name; hand = hand; balance = 0; current_bet = 0}
+  {name = name; hand = hand; balance = 0; current_bet = 0; diff = "User"}
 
 (** [get_hand player] is the hand of [player]. *)
 let get_hand player =
@@ -35,7 +36,7 @@ let update_balance player house_score =
     fields as [player] except for the sum field which is [new_sum] *)
 let update_player_bet player new_sum = 
   {name = player.name; hand = player.hand; balance = player.balance-new_sum; 
-   current_bet = new_sum}
+   current_bet = new_sum; diff = player.diff}
 
 (** [initialize_hand player] initializes the hand of [player] by "drawing"
     two cards for them. *)
@@ -44,7 +45,7 @@ let initialize_hand player =
   let card2 = get_card () in 
   let init_hand = [card1; card2] in 
   {name=player.name; hand=init_hand; 
-   balance=player.balance; current_bet=player.current_bet}
+   balance=player.balance; current_bet=player.current_bet; diff = player.diff}
 
 (** [hit player state] carries out the functionality of hit by updating 
     [player] and [state]. *)
@@ -52,7 +53,7 @@ let hit player state =
   let new_card = get_card () in 
   let new_hand = new_card :: player.hand in 
   {name=player.name; hand=new_hand; 
-   balance=player.balance; current_bet=player.current_bet}
+   balance=player.balance; current_bet=player.current_bet; diff = player.diff}
 
 (** [house_turn player state] takes the houses turn according to house rules. *)
 let house_turn player state = 

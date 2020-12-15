@@ -22,7 +22,7 @@ val prompt_name : bool -> string
 
 (** [get_names name_list n] returns [name_list] which has the names of the
     [n] players. *)
-val get_names : string list -> int -> string list
+val get_names_and_diff : (string * string) list -> int -> (string * string) list
 
 (** [initialize_game here] initializes the game by gathering the number of
     players and returning an initial game state with each of these players' 
