@@ -225,7 +225,7 @@ let winner_test
       assert_equal expected_output (state)  
         ~printer:(fun x -> x)) 
 
-let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"] 100
+let standard_state = init_game_state ["Austin"; "Abby"; "Brennan"] 100 "standard"
 let player_sums = get_player_sums [] standard_state.players
 
 (** [string_of_hand hand] returns a string represenatation of [hand]. *)
@@ -263,7 +263,7 @@ let p2 = {name= "Austin"; hand = []; balance =  100; current_bet =  0}
 let p3 = {name= "Abby"; hand = []; balance =  100; current_bet =  0} 
 let default_house = {name="HOUSE"; hand=[]; balance=max_int; current_bet=0}
 
-let default_state = {players = [p1; p2; p3]; house = default_house}
+let default_state = {players = [p1; p2; p3]; house = default_house; game_name = "default"}
 
 let p2_10 = {name="Austin"; hand=[{suit=Diamonds;value=Ten}]; 
              balance=100; current_bet=0}
@@ -286,21 +286,21 @@ let house_busted = {name="HOUSE";
 let rich_p1 ={name= "Brennan"; hand = [{suit=Clubs;value=Two}]; 
               balance = 3110; current_bet = 1000} 
 
-let house_win_state = {players = [p1; p2; p3]; house = house_10}
-let house_tie_state = {players = [p1; p2_10; p3]; house = house_10}
-let p2_8_win_state = {players = [p1; p2_8; p3]; house = default_house}
-let p1_p2_tie_state = {players = [p1_8; p2_8; p3]; house = default_house}
+let house_win_state = {players = [p1; p2; p3]; house = house_10; game_name = "default"}
+let house_tie_state = {players = [p1; p2_10; p3]; house = house_10; game_name = "default"}
+let p2_8_win_state = {players = [p1; p2_8; p3]; house = default_house; game_name = "default"}
+let p1_p2_tie_state = {players = [p1_8; p2_8; p3]; house = default_house; game_name = "default"}
 let p1_p2_win_busted = {players = [p1_8; p2_8; p3_busted]; 
-                        house = house_busted}
+                        house = house_busted; game_name = "default"}
 let p2_win_busted_rich = {players = [rich_p1; p2_8; p3_busted]; 
-                          house = house_busted}
+                          house = house_busted; game_name = "default"}
 
 let long_name = {name= "ABCDEFGHIJKLMNOPQRSTUV"; 
                  hand = [{suit=Clubs;value=Two}; {suit=Clubs;value=Six}]; 
                  balance = 2110; current_bet = 503}
 
 let long_name_game = {players = [rich_p1; p2_8; p3_busted; long_name]; 
-                      house = house_busted}    
+                      house = house_busted; game_name = "default"}    
 
 let large_nums = {name= "ZZZZZZZZZZZZZ"; 
                   hand = [{suit=Clubs;value=Two}; {suit=Clubs;value=Eight}]; 
@@ -308,7 +308,7 @@ let large_nums = {name= "ZZZZZZZZZZZZZ";
 
 let large_name_num_game = {players = [rich_p1; p2_8; p3_busted; 
                                       long_name; large_nums]; 
-                           house = house_busted}     
+                           house = house_busted; game_name = "default"}     
 
 let state_tests =
   [
@@ -385,11 +385,11 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
        (print_game_leaderboard long_name_game 
          [long_name_game; long_name_game]) ""; *)
 
-    winner_test 
-      "testing determine_game_winner with non-house winners and busted players
+    (* winner_test 
+       "testing determine_game_winner with non-house winners and busted players
        and one rich player" 
-      (print_game_leaderboard p2_win_busted_rich 
-         [p1_p2_tie_state; p1_p2_win_busted; p2_win_busted_rich]) "";
+       (print_game_leaderboard p2_win_busted_rich 
+         [p1_p2_tie_state; p1_p2_win_busted; p2_win_busted_rich]) ""; *)
   ]
 
 
