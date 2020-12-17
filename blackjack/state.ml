@@ -107,23 +107,42 @@ let rec place_bets state acc =
   match state.players with 
   | [] -> acc
   | x :: xs -> 
-    print_endline "\n";
-    print_string (x.name ^ "'s " ^ "hand and current balance:\n");
-    print_cards x.hand;
-    print_string ("Current balance: " ^ string_of_int x.balance ^ "\n");
-    print_string "HOUSE's card:\n";
-    print_cards [(List.hd (state.house.hand))];
-    ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
-    print_string  "> ";
-    match int_of_string_opt (read_line()) with
-    | Some n when n <= x.balance ->
-      let new_player = update_player_bet x n in 
-      let new_state = {state with players=xs} in
-      place_bets new_state (acc @ [new_player])
-    | Some n -> ANSITerminal.(print_string [red] 
-                                "\n\nYou cannot bet more than you have."); 
-      place_bets state acc  
-    | None -> print_string "\nInvalid input. Try again.\n"; place_bets state acc
+    if x.diff <> "User" then 
+      place_ai_bet x state xs acc 
+    else 
+      begin
+        print_endline "\n";
+        print_string (x.name ^ "'s " ^ "hand and current balance:\n");
+        print_cards x.hand;
+        print_string ("Current balance: " ^ string_of_int x.balance ^ "\n");
+        print_string "HOUSE's card:\n";
+        print_cards [(List.hd (state.house.hand))];
+        ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
+        print_string  "> ";
+        begin
+          match int_of_string_opt (read_line()) with
+          | Some n when n <= x.balance ->
+            let new_player = update_player_bet x n in 
+            let new_state = {state with players=xs} in
+            place_bets new_state (acc @ [new_player])
+          | Some n -> ANSITerminal.(print_string [red] 
+                                      "\n\nYou cannot bet more than you have."); 
+            place_bets state acc  
+          | None -> print_string "\nInvalid input. Try again.\n"; place_bets state acc
+        end
+      end
+
+and place_ai_bet player state players acc = 
+  if player.balance = 1 then 
+    let bet = 1 in 
+    let new_player = update_player_bet player bet in 
+    let new_state = {state with players=players} in 
+    place_bets new_state (acc @ [new_player])
+  else 
+    let bet = player.balance / 2 in 
+    let new_player = update_player_bet player bet in 
+    let new_state = {state with players=players} in 
+    place_bets new_state (acc @ [new_player])
 
 (** [determine_balances] returns a players list with updated balances based 
     on how every player did against the house *)
