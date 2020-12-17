@@ -25,7 +25,6 @@
     of gameplay, and that all games will carry out in the manner we intend. 
 *)
 
-
 open OUnit2
 open Deck
 open Card
@@ -46,12 +45,9 @@ let cmp_set_like_lists lst1 lst2 =
   &&
   uniq1 = uniq2
 
-(** [pp_string s] pretty-prints string [s]. *)
-let pp_string s = "\"" ^ s ^ "\""
-
 (** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt]
     to pretty-print each element of [lst]. *)
-let pp_list pp_elt lst =
+let pp_list (pp_elt : 'a -> string) (lst : 'a list) : string =
   let pp_elts lst =
     let rec loop n acc = function
       | [] -> acc
@@ -66,20 +62,18 @@ let pp_list pp_elt lst =
     constructs an OUnit test named [name] that asserts the quality of 
     [expected_output] [create_card suit value |> card_attribute]. *)
 let card_attribute_test
-    (name : string) (card_attrib)
-    (suit : suit) (value : value) 
-    (expected_output) (printer): test = 
+    (name : string) (card_attrib) (suit : suit) (value : value) 
+    (expected_output) (printer : 'a -> string): test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
       assert_equal expected_output (create_card suit value |> card_attrib)
-        ~printer:printer) 
+        ~printer: printer) 
 
 (** [card_test name suit value expected_output] constructs an OUnit
     test named [name] that asserts the quality of [expected_output]
     with the string representation of [create_card suit value]. *)
 let card_test 
-    (name : string) 
-    (suit : suit) (value : value)
+    (name : string) (suit : suit) (value : value) 
     (expected_output : string) : test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
@@ -91,12 +85,11 @@ let card_test
     named [name] that asserts the quality of [expected_output] with 
     [add_cards 0 card_list]. *)
 let card_sum_test 
-    (name : string) (card_list : card list)
-    (expected_output : int) : test = 
+    (name : string) (card_list : card list) (expected_output : int) : test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
       assert_equal expected_output (add_cards 0 card_list) 
-        ~printer:(string_of_int)) 
+        ~printer: string_of_int)
 
 (** [add_card_to_test name num suit value expected_output] constructs an 
     OUnit test named [name] that asserts the quality of [expected_output] with 
@@ -107,17 +100,16 @@ let add_card_to_test
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
       assert_equal expected_output (add_card_to num (create_card suit value)) 
-        ~printer:(string_of_int))
+        ~printer: string_of_int)
 
-(** [sum_cards name card_list expected_output] constructs an OUnit test 
+(** [sum_cards_test name card_list expected_output] constructs an OUnit test 
     named [name] that asserts the quality of [expected_output] with 
     [sum_cards card_list]. *)
 let sum_cards_test 
-    (name : string) (card_list : card list)
-    (expected_output : int) : test = 
+    (name : string) (card_list : card list) (expected_output : int) : test = 
   name >:: (fun _ -> 
       assert_equal expected_output (sum_cards card_list) 
-        ~printer:(string_of_int)) 
+        ~printer: string_of_int) 
 
 let card_tests =
   [
@@ -187,8 +179,7 @@ let card_tests =
     OUnit test named [name] that asserts the quality of [expected_output] with 
     [deck]. *)
 let standard_deck_test 
-    (name : string) (deck)
-    (expected_output : card list) : test = 
+    (name : string) (deck : card list) (expected_output : card list) : test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
       assert_equal expected_output deck ~cmp:cmp_set_like_lists 
@@ -222,32 +213,30 @@ let deck_tests =
     named [name] that asserts the quality of [expected_output] with 
     [List.length state]. *)
 let init_state_test 
-    (name : string) (state)
-    (expected_output : int) : test = 
+    (name : string) (state : 'a list) (expected_output : int) : test = 
   name >:: (fun _ -> 
       assert_equal expected_output (List.length state) 
-        ~printer:(string_of_int)) 
+        ~printer: string_of_int) 
 
-(** [state_test name state expected_output] constructs an OUnit test 
+(** [house_test name state expected_output] constructs an OUnit test 
     named [name] that asserts the quality of [expected_output] with 
     [List.length state]. *)
 let house_test 
-    (name : string) (state)
-    (expected_output : string) : test = 
+    (name : string) (state: string) (expected_output : string) : test = 
   name >:: (fun _ -> 
       assert_equal expected_output (state) 
         ~printer:(fun x -> x)) 
 
 (** [print_player_int tuple] returns a string representation of [tuple]. *)
-let print_player_int (tuple : Player.player * int) = 
+let print_player_int (tuple : Player.player * int) : string = 
   ((fst tuple).name ^ ", " ^ string_of_int(snd tuple))    
 
-(** [player_sums_test name state expected_output] constructs an OUnit test 
-    named [name] that asserts the quality of [expected_output] with 
+(** [player_sums_test name player_sums_list expected_output] constructs an
+    OUnit test named [name] that asserts the quality of [expected_output] with 
     [player_sums_list]. *)
 let player_sums_test 
     (name : string) (player_sums_list : (Player.player * int) list)
-    (expected_output) : test = 
+    (expected_output : (Player.player * int) list) : test = 
   name >:: (fun _ -> 
       assert_equal expected_output (player_sums_list) 
         ~printer:(pp_list print_player_int))
@@ -256,8 +245,7 @@ let player_sums_test
     named [name] that asserts the quality of [expected_output] with 
     [determine_round_winners state]. *)
 let winner_test 
-    (name : string) (state)
-    (expected_output : string) : test = 
+    (name : string) (state : string) (expected_output : string) : test = 
   name >:: (fun _ -> 
       assert_equal expected_output (state)  
         ~printer:(fun x -> x)) 
@@ -267,43 +255,42 @@ let standard_state = init_game_state [("Austin", "User"); ("Abby", "User");
 let player_sums = get_player_sums [] standard_state.players
 
 (** [string_of_hand hand] returns a string represenatation of [hand]. *)
-let string_of_hand hand = 
+let string_of_hand (hand : card list) : string = 
   pp_list string_of_card_test hand
 
 (** [string_of_player player] returns a string represenatation of [player]. *)
-let string_of_player player = 
+let string_of_player (player : player) : string = 
   "Name: " ^ player.name ^ ", Current Balance = $"  
   ^ string_of_int (player.balance) ^ ", Hand: " ^ string_of_hand player.hand 
   ^ ", Current Bet: " ^ string_of_int player.current_bet ^ "\n"
 
 (** [state_cycle acc] cycles through each of the players in a given state 
     and concatenates their string representation. *)
-let rec state_cycle acc = function
+let rec state_cycle (acc : string) = function
   | [] -> acc
   | h :: t -> state_cycle (acc ^ string_of_player h) t
 
 (** [string_of_state acc] returns a string represenatation of [curr]. *)
-let string_of_state curr = 
+let string_of_state (curr : state) : string = 
   string_of_player curr.house ^ state_cycle "" curr.players
 
-(** [winner_test name state expected_output] constructs an OUnit test 
+(** [create_state_test name state expected_output] constructs an OUnit test 
     named [name] that asserts the quality of [expected_output] with 
     [determine_round_winners state]. *)
 let create_state_test 
-    (name : string) (state)
-    (expected_output : string) : test = 
+    (name : string) (state : state) (expected_output : string) : test = 
   name >:: (fun _ -> 
       assert_equal expected_output (string_of_state state)  
         ~printer:(fun x -> x))  
 
 (** [betting_test name state expected_output] constructs an OUnit test 
     named [name] that asserts the quality of [expected_output] with 
-    [player_sums_list]. *)
+    [player_list]. *)
 let betting_test 
-    (name : string) (player_list : player list)
-    (expected_output) : test = 
+    (name : string) (player_list : player list) 
+    (expected_output : player list) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (player_list) 
+      assert_equal expected_output player_list
         ~printer:(pp_list string_of_player))
 
 let p1 = {name= "Brennan"; hand = []; balance =  100; 
@@ -539,8 +526,8 @@ Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903, Hand: [2 of clubs; 
       (determine_balances long_name_game) 
       [post_bet_long_name; p3_busted; p2_8; post_bet_rich_p1]; 
 
-    (** These tests were usesd to ensure that our tests were formatted 
-        correctly. *)
+    (** NOTE: These tests were usesd to ensure that our leaderboards
+        were formatted correctly. *)
 
     (* winner_test 
        "testing determine_game_winner with non-house winners and busted players
