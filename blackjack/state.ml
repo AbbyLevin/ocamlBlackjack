@@ -1,6 +1,7 @@
 open Player 
 open Card 
 open Deck 
+open Hard_ai
 
 type state = {players: player list; house: player; game_name: string}
 
@@ -65,20 +66,21 @@ and easy_turn (player : player) (state : state) : player =
   let card_sum = sum_cards (get_hand player) in 
   begin 
     match card_sum with 
-    | s when s < 17 -> player_turn (house_turn player state) state
+    | s when s < 15 -> player_turn (house_turn player state) state
     | s when s <= 21 -> player 
     | _ -> player_turn (house_turn player state) state
   end
 
 (** [hard_turn player state] carries out the gameplay for a Hard difficulty
     AI player [player] with current game [state]. *)
-and hard_turn (player : player) (state : state) : player = 
-  let card_sum = sum_cards (get_hand player) in 
+and hard_turn (player : player) (state) : player = 
+  let dealer_card = List.hd state.house.hand |> get_value |> int_of_value in 
+  let decision = best_move player dealer_card in 
   begin 
-    match card_sum with 
-    | s when s < 17 -> player_turn (house_turn player state) state
-    | s when s <= 21 -> player 
-    | _ -> player_turn (house_turn player state) state
+    match decision with 
+    | 1 -> player_turn (hit player state) state 
+    | 0 -> player 
+    | _ -> failwith "Something went wrong"
   end
 
 (** [play_turns] returns a player list with each player's hand updated based

@@ -2,15 +2,18 @@
   "players": [
     {
       "name": "Austin",
-      "balance": 525
+      "balance": 525,
+      "diff": "User"
     },
     {
       "name": "Abby",
-      "balance": 380
+      "balance": 380,
+      "diff": "User"
     },
     {
       "name": "Brennan",
-      "balance": 150
+      "balance": 150,
+      "diff": "User"
     }
   ]
 }

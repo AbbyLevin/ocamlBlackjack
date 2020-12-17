@@ -1,4 +1,4 @@
-MODULES=deck card player main author state save
+MODULES=deck card player main author state save hard_ai
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

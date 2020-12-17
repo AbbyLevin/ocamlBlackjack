@@ -3,6 +3,7 @@ open Deck
 open Player
 open State
 open Save
+open Hard_ai
 
 (** [play_round state here] carries out all of the functionality of playing a 
     round of Blackjack with associated game information [state]. [here] 
@@ -226,6 +227,7 @@ let rec play_game here =
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
+  initialize_decision_table ();
   ANSITerminal.(print_string [red]
                   "\n\nWelcome to Blackjack.\n");
   ANSITerminal.(print_string [red] 
