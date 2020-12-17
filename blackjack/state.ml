@@ -61,7 +61,7 @@ let rec player_turn player state =
 
 (** [easy_turn player state] carries out the gameplay for an Easy difficulty
     AI player [player] with current game [state]. *)
-and easy_turn player state = 
+and easy_turn (player : player) (state : state) : player = 
   let card_sum = sum_cards (get_hand player) in 
   begin 
     match card_sum with 
@@ -72,7 +72,7 @@ and easy_turn player state =
 
 (** [hard_turn player state] carries out the gameplay for a Hard difficulty
     AI player [player] with current game [state]. *)
-and hard_turn player state = 
+and hard_turn (player : player) (state : state) : player = 
   let card_sum = sum_cards (get_hand player) in 
   begin 
     match card_sum with 

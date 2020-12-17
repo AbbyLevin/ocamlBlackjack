@@ -293,6 +293,39 @@ let betting_test
       assert_equal expected_output player_list
         ~printer:(pp_list string_of_player))
 
+(** [valid_easy player] returns whether the player returned from carrying 
+    out an easy AI [player]'s s turn is valid according to the criteria of an 
+    Easy move outlined in [easy_turn]. *)
+let valid_easy (player : player) : bool = 
+  sum_cards player.hand >= 17        
+
+(** [easy_ai_test name updated_player expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [valid_easy updated_player]. *)
+let easy_ai_test 
+    (name : string) (updated_player : player)
+    (expected_output : bool) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (updated_player |> valid_easy)
+        ~printer:(string_of_bool))
+
+(** [valid_hard player] returns whether the player returned from carrying 
+    out an hard AI [player]'s s turn is valid according to the criteria of an 
+    Hard move outlined in [hard_turn]. *)
+let valid_hard (player : player) : bool = 
+  (* TODO: Update with some criteria once Hard AI is implemented. *)
+  sum_cards player.hand >= 17        
+
+(** [hard_ai_test name updated_player expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [valid_hard updated_player]. *)
+let hard_ai_test 
+    (name : string) (updated_player : player)
+    (expected_output : bool) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (updated_player |> valid_hard)
+        ~printer:(string_of_bool))
+
 let p1 = {name= "Brennan"; hand = []; balance =  100; 
           current_bet =  0; diff="User"} 
 let p2 = {name= "Austin"; hand = []; balance =  100; 
@@ -361,7 +394,15 @@ let post_bet_rich_p1 = {name= "Brennan"; hand = [{suit=Clubs;value=Two}];
 let post_bet_long_name = {name= "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
                           hand = [{suit=Clubs;value=Two}; 
                                   {suit=Clubs;value=Six}]; 
-                          balance = 3116; current_bet = 503; diff="User"}
+                          balance = 3116; current_bet = 503; diff="User"}                    
+
+let default_easy = {name= "Brennan"; hand = []; balance =  100; 
+                    current_bet =  0; diff="Easy"} 
+let valid_easy = {name= "Brennan"; 
+                  hand = [{suit=Diamonds;value=Eight}; 
+                          {suit=Diamonds;value=Nine}; 
+                          {suit=Diamonds;value=Ten}]; 
+                  balance =  100; current_bet =  0; diff="User"} 
 
 let state_tests =
   [
@@ -525,6 +566,13 @@ Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903, Hand: [2 of clubs; 
     betting_test "testing betting with long_name_game" 
       (determine_balances long_name_game) 
       [post_bet_long_name; p3_busted; p2_8; post_bet_rich_p1]; 
+
+    (* easy_ai_test "testing default easy AI" 
+       (easy_turn default_easy default_state) true;  
+       easy_ai_test "testing busted easy AI" 
+       (easy_turn valid_easy default_state) true;   *)
+
+
 
     (** NOTE: These tests were usesd to ensure that our leaderboards
         were formatted correctly. *)

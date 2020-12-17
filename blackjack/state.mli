@@ -12,6 +12,8 @@ val init_game_state : (string * string) list -> int -> string -> state
     many times they hit *)
 val player_turn : player -> state -> player
 
+val easy_turn : player -> state -> player
+
 (** [play_turns] returns a player list with each player's hand updated based
     on how many times they decided to hit *)
 val play_turns : state -> player list -> player list
