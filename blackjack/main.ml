@@ -12,6 +12,8 @@ let play_round state here =
   if here |> not then failwith "Should never get here" 
   else start_round state
 
+(** [save_game_qry state] handles allowing a user to decide to save their 
+    game. *)
 let rec save_game_qry state = 
   print_string "\nWould you like to save your game? (y/n) ";
   let save_game_str = read_line () in 

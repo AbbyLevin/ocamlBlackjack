@@ -1,4 +1,5 @@
 open Card
+
 (** [combine_suit_and_values curr suit value_list] creates and combines tuples
     of the form ([suit], value) for each value in [value_list]. *) 
 let rec combine_suit_and_values (curr : (suit * value) list) 

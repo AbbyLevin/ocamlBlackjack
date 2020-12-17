@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="next" href="Card.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Card" rel="Chapter" href="Card.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Author" rel="Chapter" href="Author.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Save" rel="Chapter" href="Save.html"><title>Deck</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Card.html" title="Card">Next</a>
+</div>
+<h1>Module <a href="type_Deck.html">Deck</a></h1>
+
+<pre><span id="MODULEDeck"><span class="keyword">module</span> Deck</span>: <code class="code">sig</code> <a href="Deck.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><span id="VALcombine_suit_and_values"><span class="keyword">val</span> combine_suit_and_values</span> : <code class="type">(<a href="Card.html#TYPEsuit">Card.suit</a> * <a href="Card.html#TYPEvalue">Card.value</a>) list -><br>       <a href="Card.html#TYPEsuit">Card.suit</a> -> <a href="Card.html#TYPEvalue">Card.value</a> list -> (<a href="Card.html#TYPEsuit">Card.suit</a> * <a href="Card.html#TYPEvalue">Card.value</a>) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">combine_suit_and_values curr suit value_list</code> creates and combines tuples
+    of the form (<code class="code">suit</code>, value) for each value in <code class="code">value_list</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALstandard_deck_maker"><span class="keyword">val</span> standard_deck_maker</span> : <code class="type">(<a href="Card.html#TYPEsuit">Card.suit</a> * <a href="Card.html#TYPEvalue">Card.value</a>) list -><br>       <a href="Card.html#TYPEsuit">Card.suit</a> list -> <a href="Card.html#TYPEvalue">Card.value</a> list -> (<a href="Card.html#TYPEsuit">Card.suit</a> * <a href="Card.html#TYPEvalue">Card.value</a>) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">standard_deck_maker</code> creates a deck consisting of the cross product 
+    of the suits and values provided.</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_standard_deck"><span class="keyword">val</span> create_standard_deck</span> : <code class="type"><a href="Card.html#TYPEcard">Card.card</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_standard_deck</code> creates a standard 52 card deck.</p>
+</div>
+</div>
+
+<pre><span id="VALget_card"><span class="keyword">val</span> get_card</span> : <code class="type">unit -> <a href="Card.html#TYPEcard">Card.card</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_card</code> returns a random card from a standard 52 card deck.</p>
+</div>
+</div>
+</body></html>

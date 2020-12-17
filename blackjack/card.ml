@@ -206,7 +206,8 @@ let hearts_second_line = function
   | Ace -> ANSITerminal.(print_string [red] "* A   H *  ")
 
 (** [diamonds_second_line card] takes in a card and prints the second line of 
-    the card with the value followed by the D for diamonds, spaced appropriately.*) 
+    the card with the value followed by the D for diamonds, 
+    spaced appropriately.*) 
 let diamonds_second_line = function
   | Two -> ANSITerminal.(print_string [red] "* 2   D *  ")
   | Three -> ANSITerminal.(print_string [red] "* 3   D *  ")
@@ -337,11 +338,3 @@ let print_hand cards =
   print_cards cards;
   let string_sum = string_of_int (sum_cards cards) in
   print_string ("Sum:" ^ string_sum ^ "\n")
-
-(* let string_cards = List.map string_of_card cards in 
-   let string_cards = List.fold_left ( ^ ) "" string_cards in 
-   let string_sum = string_of_int (sum_cards cards) in 
-   let cards = "\nCurrent Hand: \n" ^ string_cards ^ "\nSum: " ^ string_sum in 
-   ANSITerminal.(print_string [red]
-                cards);
-   print_string  "> "; *)

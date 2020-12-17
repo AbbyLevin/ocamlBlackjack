@@ -69,10 +69,10 @@ val get_player_money :
 (** [compare_players x y] compares [x] and [y] based on their scores. *)
 val compare_players : 'a * int -> 'b * int -> int 
 
-(** [determine_round_winner determines the winner(s) of round [curr]. *)
+(** [determine_round_winners] determines the winner(s) of round [curr]. *)
 val determine_round_winners : state -> string 
 
-(** [determine_round_winner determines the winner(s) of round [curr]. *)
+(** [determine_game_winners] determines the winner(s) of round [curr]. *)
 val determine_game_winners : state -> string
 
 (** [print_round_leaderboard] prints the leaderboard at the end of a round. *)

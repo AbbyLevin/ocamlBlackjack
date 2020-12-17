@@ -13,8 +13,7 @@ let init_game_state (player_names_and_diff : (string * string) list) (
                    (fun x -> 
                       {name= fst x; hand=[]; balance=start_bal; 
                        current_bet=0; diff = snd x}) 
-                   player_names_and_diff) in 
-  List.iter (fun x -> print_string x.diff) players;
+                   player_names_and_diff) in
   let house = 
     {name="HOUSE"; hand=[]; balance=max_int; current_bet=0; diff = "House"} in 
   {players=players; house=house; game_name=game_name}  
@@ -170,8 +169,6 @@ let winners_list (lst : (player * int) list) =
   match lst with
   | (p, s) :: t -> List.filter (fun x -> snd(x) = s) lst
   | [] -> []
-(* let max_vote_total = (snd (List.hd lst)) in
-   List.filter (fun x -> snd(x) = max_vote_total) lst   *)
 
 (** [output_multiple_winners winners_list] returns a string that contains the 
     names of all of the winners separated by a semicolon. *)
@@ -184,7 +181,8 @@ let rec output_multiple_winners winners_list score house_win=
     else "are tied with a score of " ^ score ^ 
          ", so nobody won this round. Tough luck.\n"
   | h :: t -> if t = [] 
-    then "and " ^ (fst h).name ^ " " ^ output_multiple_winners t score house_win
+    then "and " ^ (fst h).name ^ " " 
+         ^ output_multiple_winners t score house_win
     else if List.length t = 1 
     then (fst h).name ^ " " ^ output_multiple_winners t score house_win
     else (fst h).name ^ ", " ^ output_multiple_winners t score house_win
@@ -260,7 +258,7 @@ let compare_players x y =
   else if snd x < snd y then -1 
   else 0
 
-(** [determine_round_winner determines the winner(s) of round [curr]. *)
+(** [determine_round_winner] determines the winner(s) of round [curr]. *)
 let determine_round_winners curr = 
   let house_and_players = curr.house :: curr.players in 
   let player_sums = get_player_sums [] house_and_players in
@@ -269,7 +267,7 @@ let determine_round_winners curr =
   let round_winners = get_winner sorted in 
   round_winners
 
-(** [determine_round_winner determines the winner(s) of round [curr]. *)
+(** [determine_round_winner] determines the winner(s) of round [curr]. *)
 let determine_game_winners curr = 
   let player_money = get_player_money [] curr.players in  
   let sorted = List.sort compare_players player_money |> List.rev in 

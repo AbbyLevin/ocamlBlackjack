@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Deck.html">
+<link rel="next" href="Player.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Card" rel="Chapter" href="Card.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Author" rel="Chapter" href="Author.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Save" rel="Chapter" href="Save.html"><title>Card</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Deck.html" title="Deck">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Player.html" title="Player">Next</a>
+</div>
+<h1>Module <a href="type_Card.html">Card</a></h1>
+
+<pre><span id="MODULECard"><span class="keyword">module</span> Card</span>: <code class="code">sig</code> <a href="Card.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><code><span id="TYPEsuit"><span class="keyword">type</span> <code class="type"></code>suit</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTsuit.Clubs"><span class="constructor">Clubs</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTsuit.Spades"><span class="constructor">Spades</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTsuit.Hearts"><span class="constructor">Hearts</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTsuit.Diamonds"><span class="constructor">Diamonds</span></span></code></td>
+
+</tr></table>
+
+
+
+<pre><code><span id="TYPEvalue"><span class="keyword">type</span> <code class="type"></code>value</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Two"><span class="constructor">Two</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Three"><span class="constructor">Three</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Four"><span class="constructor">Four</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Five"><span class="constructor">Five</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Six"><span class="constructor">Six</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Seven"><span class="constructor">Seven</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Eight"><span class="constructor">Eight</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Nine"><span class="constructor">Nine</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Ten"><span class="constructor">Ten</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Jack"><span class="constructor">Jack</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Queen"><span class="constructor">Queen</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.King"><span class="constructor">King</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTvalue.Ace"><span class="constructor">Ace</span></span></code></td>
+
+</tr></table>
+
+
+
+<pre><code><span id="TYPEcard"><span class="keyword">type</span> <code class="type"></code>card</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcard.suit">suit</span>&nbsp;: <code class="type"><a href="Card.html#TYPEsuit">suit</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTcard.value">value</span>&nbsp;: <code class="type"><a href="Card.html#TYPEvalue">value</a></code>;</code></td>
+
+</tr></table>
+<code>}</code>
+
+
+
+<pre><span id="VALcreate_card"><span class="keyword">val</span> create_card</span> : <code class="type"><a href="Card.html#TYPEsuit">suit</a> -> <a href="Card.html#TYPEvalue">value</a> -> <a href="Card.html#TYPEcard">card</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_card suit value</code> creates a card record with the given 
+    suit and value.</p>
+</div>
+</div>
+
+<pre><span id="VALtuple_to_card"><span class="keyword">val</span> tuple_to_card</span> : <code class="type"><a href="Card.html#TYPEsuit">suit</a> * <a href="Card.html#TYPEvalue">value</a> -> <a href="Card.html#TYPEcard">card</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">tuple_to_card tup</code> converts a suit * value tuple into a card.</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_card_list"><span class="keyword">val</span> create_card_list</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> list -> (<a href="Card.html#TYPEsuit">suit</a> * <a href="Card.html#TYPEvalue">value</a>) list -> <a href="Card.html#TYPEcard">card</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">create_card_list acc lst</code> returns a list of cards corresponding to a list
+    of suit * value tuples <code class="code">lst</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALget_suit"><span class="keyword">val</span> get_suit</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> -> <a href="Card.html#TYPEsuit">suit</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_suit c</code> returns the suit of <code class="code">c</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALget_value"><span class="keyword">val</span> get_value</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> -> <a href="Card.html#TYPEvalue">value</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_value c</code> returns the value of <code class="code">c</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALstring_of_suit"><span class="keyword">val</span> string_of_suit</span> : <code class="type"><a href="Card.html#TYPEsuit">suit</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">string_of_suit suit</code> returns a string representation of <code class="code">suit</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALstring_of_value"><span class="keyword">val</span> string_of_value</span> : <code class="type"><a href="Card.html#TYPEvalue">value</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">string_of_value value</code> returns a string representation of <code class="code">value</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALint_of_value"><span class="keyword">val</span> int_of_value</span> : <code class="type"><a href="Card.html#TYPEvalue">value</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">int_of_value value</code> returns an int representation of <code class="code">value</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALstring_of_card_test"><span class="keyword">val</span> string_of_card_test</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">string_of_card c</code> returns a string representation of <code class="code">c</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALadd_cards"><span class="keyword">val</span> add_cards</span> : <code class="type">int -> <a href="Card.html#TYPEcard">card</a> list -> int</code></pre>
+<pre><span id="VALadd_card_to"><span class="keyword">val</span> add_card_to</span> : <code class="type">int -> <a href="Card.html#TYPEcard">card</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">add_card_to num c</code> adds the value of <code class="code">c</code> to <code class="code">num</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALfind_rem_ace"><span class="keyword">val</span> find_rem_ace</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> list -> <a href="Card.html#TYPEcard">card</a> list -> <a href="Card.html#TYPEcard">card</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">find_rem_ace cards acc</code> returns a <code class="code">cards</code> but with 1 ace removed
+    if there are any in <code class="code">cards</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALsum_cards_strict"><span class="keyword">val</span> sum_cards_strict</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> list -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">sum_cards_strict cards acc</code> returns the sum of a list of cards where 
+    aces are counted strictly as 1</p>
+</div>
+</div>
+
+<pre><span id="VALsum_cards"><span class="keyword">val</span> sum_cards</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> list -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">sum_cards cards</code> returns the sum of a list of cards. Aces are counted as 
+    either 11 or 1 in manner which gets the player closest to 21 without 
+    putting them over 21</p>
+</div>
+</div>
+
+<pre><span id="VALstring_of_card"><span class="keyword">val</span> string_of_card</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">string_of_card</code> returns a string representation of a card</p>
+</div>
+</div>
+
+<pre><span id="VALprint_cards"><span class="keyword">val</span> print_cards</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_cards cards</code> prints each line of each card in <code class="code">cards</code>.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_hand"><span class="keyword">val</span> print_hand</span> : <code class="type"><a href="Card.html#TYPEcard">card</a> list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">print_hand</code> prints a list of cards</p>
+</div>
+</div>
+</body></html>

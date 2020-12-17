@@ -55,7 +55,8 @@ let hit player state =
   {name=player.name; hand=new_hand; 
    balance=player.balance; current_bet=player.current_bet; diff = player.diff}
 
-(** [house_turn player state] takes the houses turn according to house rules. *)
+(** [house_turn player state] takes the houses turn according to 
+    the house rules. *)
 let house_turn player state = 
   if sum_cards player.hand < 17 
   then hit player state 

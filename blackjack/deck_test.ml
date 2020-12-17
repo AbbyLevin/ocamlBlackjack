@@ -1,3 +1,31 @@
+(** 
+   [TESTING PLAN] 
+    -----------------------------------------------------------------------
+    Given the randomness of drawing new cards through various stages of our 
+    gameplay (initalizing a hand, hitting, etc.) we decided to test the 
+    functionality of our gameplay in three main stages. First, we developed 
+    and tested the ability to create each of the 52 cards in a standard
+    deck. Then, we tested that we could add together the sums of these cards
+    according to standard card summation rules. Second, we developed and 
+    tested that we were able to create a 52-card deck as intended. Given 
+    that we decided to implement the deck used as effectively infinite, we 
+    didn't have to test removing a card from the deck because we instead 
+    sample without replacement from this standard 52-card deck throughout 
+    our gameplay. Finally, we had to test the intricacies of gameplay such as
+    creating a state (which was our way of creating track of all the current 
+    game's details), updating a state, handling betting, and printing out 
+    game updates as the game is carried out. Through testing these main 
+    components, we also tested the majority of our helper functions that were
+    used to carry out the backend behavior of our game. These final state-
+    related tests involved creating states that reprepresented both typical
+    and edge-case games, and we made sure that the major components of gameplay
+    were carried out as intended for each of these test states we created. 
+    Thus, even though we don't directly test letting a program cycle through 
+    our code, we feel confident that these tests encompass all of the aspects 
+    of gameplay, and that all games will carry out in the manner we intend. 
+*)
+
+
 open OUnit2
 open Deck
 open Card
@@ -55,7 +83,8 @@ let card_test
     (expected_output : string) : test = 
   name >:: (fun _ -> 
       (* the [printer] tells OUnit how to convert the output to a string *)
-      assert_equal expected_output (string_of_card_test(create_card suit value)) 
+      assert_equal expected_output 
+        (string_of_card_test(create_card suit value)) 
         ~printer:(fun x -> x))
 
 (** [cards_sum_test name card_list expected_output] constructs an OUnit test 
@@ -93,9 +122,17 @@ let sum_cards_test
 let card_tests =
   [
     card_attribute_test "testing that the suit is properly created" get_suit
+      Spades Two Spades (string_of_suit);
+    card_attribute_test "testing that the suit is properly created" get_suit
+      Diamonds Two Diamonds (string_of_suit);
+    card_attribute_test "testing that the suit is properly created" get_suit
       Clubs Two Clubs (string_of_suit);
+    card_attribute_test "testing that the suit is properly created" get_suit
+      Hearts Two Hearts (string_of_suit);
     card_attribute_test "testing that the value is properly created" get_value
       Clubs Two Two (string_of_value);
+    card_attribute_test "testing that the value is properly created" get_value
+      Clubs Ten Ten (string_of_value);
     card_attribute_test "testing that the value is properly created face card" 
       get_value Clubs Ace Ace (string_of_value);
     card_test "testing card creation for non-face cards" Clubs Two 
@@ -259,6 +296,16 @@ let create_state_test
       assert_equal expected_output (string_of_state state)  
         ~printer:(fun x -> x))  
 
+(** [betting_test name state expected_output] constructs an OUnit test 
+    named [name] that asserts the quality of [expected_output] with 
+    [player_sums_list]. *)
+let betting_test 
+    (name : string) (player_list : player list)
+    (expected_output) : test = 
+  name >:: (fun _ -> 
+      assert_equal expected_output (player_list) 
+        ~printer:(pp_list string_of_player))
+
 let p1 = {name= "Brennan"; hand = []; balance =  100; 
           current_bet =  0; diff="User"} 
 let p2 = {name= "Austin"; hand = []; balance =  100; 
@@ -306,7 +353,7 @@ let p1_p2_win_busted = {players = [p1_8; p2_8; p3_busted];
 let p2_win_busted_rich = {players = [rich_p1; p2_8; p3_busted]; 
                           house = house_busted; game_name = "default"}
 
-let long_name = {name= "ABCDEFGHIJKLMNOPQRSTUV"; 
+let long_name = {name= "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
                  hand = [{suit=Clubs;value=Two}; {suit=Clubs;value=Six}]; 
                  balance = 2110; current_bet = 503; diff="User"}
 
@@ -319,7 +366,15 @@ let large_nums = {name= "ZZZZZZZZZZZZZ";
 
 let large_name_num_game = {players = [rich_p1; p2_8; p3_busted; 
                                       long_name; large_nums]; 
-                           house = house_busted; game_name = "default"}     
+                           house = house_busted; game_name = "default"}   
+
+let post_bet_rich_p1 = {name= "Brennan"; hand = [{suit=Clubs;value=Two}]; 
+                        balance = 5110; current_bet = 1000; diff="User"} 
+
+let post_bet_long_name = {name= "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+                          hand = [{suit=Clubs;value=Two}; 
+                                  {suit=Clubs;value=Six}]; 
+                          balance = 3116; current_bet = 503; diff="User"}
 
 let state_tests =
   [
@@ -329,8 +384,14 @@ let state_tests =
        house list" standard_state.house.name "HOUSE";
     init_state_test "testing that init_game_state works as intended" 
       player_sums 3;
-    player_sums_test "testing player sums" 
+
+    player_sums_test "testing standard player sums" 
       (get_player_sums [] standard_state.players) [(p1,0);(p3,0);(p2,0)];
+    player_sums_test "testing default player sums" 
+      (get_player_sums [] default_state.players) [(p3,0);(p2,0);(p1,0)];
+    player_sums_test "testing house_win_state player sums" 
+      (get_player_sums [] house_win_state.players) [(p3,0);(p2,0);(p1,0)];  
+
     player_sums_test "testing winners_list" 
       (winners_list player_sums) [(p1,0);(p3,0);(p2,0)];
     winner_test "testing get_winner of standard state" (get_winner player_sums) 
@@ -340,23 +401,90 @@ let state_tests =
       "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
 Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
 Name: Austin, Current Balance = $100, Hand: [], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
-";
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+
+    create_state_test "testing house_win_state creation" (house_win_state) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [10 of hearts], Current Bet: 0
+Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
+Name: Austin, Current Balance = $100, Hand: [], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+
+    create_state_test "testing house_tie_state creation" (house_tie_state) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [10 of hearts], Current Bet: 0
+Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
+Name: Austin, Current Balance = $100, Hand: [10 of diamonds], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+
+    create_state_test "testing p2_8_win_state creation" (p2_8_win_state) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
+Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
+Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+
+    create_state_test "testing p1_p2_tie_state creation" (p1_p2_tie_state) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
+Name: Brennan, Current Balance = $100, Hand: [8 of clubs], Current Bet: 0
+Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+
+    create_state_test "testing p1_p2_win_busted creation" (p1_p2_win_busted) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+Name: Brennan, Current Balance = $100, Hand: [8 of clubs], Current Bet: 0
+Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0\n";
+
+    create_state_test "testing p2_win_busted_rich creation" (p2_win_busted_rich) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+Name: Brennan, Current Balance = $3110, Hand: [2 of clubs], Current Bet: 1000
+Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0\n";
+
+    create_state_test "testing long_name_game creation" (long_name_game) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+Name: Brennan, Current Balance = $3110, Hand: [2 of clubs], Current Bet: 1000
+Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0
+Name: ABCDEFGHIJKLMNOPQRSTUVWXYZ, Current Balance = $2110, Hand: [2 of clubs; 6 of clubs], Current Bet: 503\n";
+
+    create_state_test 
+      "testing large_name_num_game creation" (large_name_num_game) 
+      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+Name: Brennan, Current Balance = $3110, Hand: [2 of clubs], Current Bet: 1000
+Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0
+Name: ABCDEFGHIJKLMNOPQRSTUVWXYZ, Current Balance = $2110, Hand: [2 of clubs; 6 of clubs], Current Bet: 503
+Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903, Hand: [2 of clubs; 8 of clubs], Current Bet: 4611686018427387903\n";
+
     winner_test "testing determine_round_winner with all tied with house" 
       (determine_round_winners default_state) 
       "HOUSE, Brennan, Austin and Abby are tied with a score of 0, so nobody won this round. Tough luck.\n";
+    winner_test "testing determine_game_winners with all tied with house" 
+      (determine_game_winners default_state) 
+      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";
     winner_test "testing determine_round_winner with house solo dub" 
-      (determine_round_winners house_win_state) 
+      (determine_round_winners house_win_state)       
       "\nThe House won this round with a score of 10. Tough luck. \n"; 
+    winner_test "testing determine_game_winners with house solo dub" 
+      (determine_game_winners house_win_state)       
+      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n"; 
     winner_test "testing determine_round_winner with one tied with house" 
       (determine_round_winners house_tie_state) 
-      "HOUSE and Austin are tied with a score of 10, so nobody won this round. Tough luck.\n"; 
+      "HOUSE and Austin are tied with a score of 10, so nobody won this round. Tough luck.\n";
+    winner_test "testing determine_game_winners with one tied with house" 
+      (determine_game_winners house_tie_state) 
+      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n"; 
     winner_test "testing determine_round_winner with non-house winner" 
       (determine_round_winners p2_8_win_state) 
       "\nAustin won this round with a score of 8. Congrats!\n";
+    winner_test "testing determine_game_winners with non-house winner" 
+      (determine_game_winners p2_8_win_state) 
+      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";
     winner_test "testing determine_round_winner with non-house winners" 
       (determine_round_winners p1_p2_tie_state) 
       "Brennan and Austin are tied with a score of 8, so they won this round. Congrats!\n";  
+    winner_test "testing determine_game_winners with non-house winners" 
+      (determine_game_winners p1_p2_tie_state) 
+      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";
     winner_test 
       "testing determine_round_winner with non-house winners and busted players" 
       (determine_round_winners p1_p2_win_busted) 
@@ -366,29 +494,59 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
       (determine_game_winners p1_p2_win_busted) 
       "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";  
     winner_test 
+      "testing determine_round_winners with non-house winners and busted players
+      and one rich player" 
+      (determine_round_winners p2_win_busted_rich) 
+      "\nAustin won this round with a score of 8. Congrats!\n"; 
+    winner_test 
       "testing determine_game_winner with non-house winners and busted players
       and one rich player" 
       (determine_game_winners p2_win_busted_rich) 
-      "\nBrennan won this game with a balance of $3110. Congrats!\n\n"; 
+      "\nBrennan won this game with a balance of $3110. Congrats!\n\n";
+    winner_test 
+      "testing determine_round_winners with a player with a long name" 
+      (determine_round_winners long_name_game) 
+      "Austin and ABCDEFGHIJKLMNOPQRSTUVWXYZ are tied with a score of 8, so they won this round. Congrats!\n"; 
+    winner_test 
+      "testing determine_game_winner with a player with a long name" 
+      (determine_game_winners long_name_game) 
+      "\nBrennan won this game with a balance of $3110. Congrats!\n\n";
+    winner_test 
+      "testing determine_round_winners with a player with a large sum" 
+      (determine_round_winners large_name_num_game) 
+      "\nZZZZZZZZZZZZZ won this round with a score of 10. Congrats!\n";
+    winner_test 
+      "testing determine_game_winner with a player with a large sum" 
+      (determine_game_winners large_name_num_game) 
+      "\nZZZZZZZZZZZZZ won this game with a balance of $4611686018427387903. Congrats!\n\n";
+
+    betting_test "testing betting with default_state" 
+      (determine_balances default_state) [p3; p2; p1];
+    betting_test "testing betting with house_win_state" 
+      (determine_balances house_win_state) [p3; p2; p1];  
+    betting_test "testing betting with house_tie_state" 
+      (determine_balances house_tie_state) [p3; p2_10; p1]; 
+    betting_test "testing betting with p2_8_win_state" 
+      (determine_balances p2_8_win_state) [p3; p2_8; p1]; 
+    betting_test "testing betting with p1_p2_tie_state" 
+      (determine_balances p1_p2_tie_state) [p3; p2_8; p1_8]; 
+    betting_test "testing betting with p1_p2_win_busted" 
+      (determine_balances p1_p2_win_busted) [p3_busted; p2_8; p1_8]; 
+    betting_test "testing betting with p2_win_busted_rich" 
+      (determine_balances p2_win_busted_rich)
+      [p3_busted; p2_8; post_bet_rich_p1]; 
+    betting_test "testing betting with long_name_game" 
+      (determine_balances long_name_game) 
+      [post_bet_long_name; p3_busted; p2_8; post_bet_rich_p1]; 
+
+    (** These tests were usesd to ensure that our tests were formatted 
+        correctly. *)
+
     (* winner_test 
        "testing determine_game_winner with non-house winners and busted players
        and one rich player" 
        (print_round_leaderboard long_name_game) 
        "\nBrennan won this game with a balance of $3110. Congrats!\n\n";  *)
-
-    (* winner_test 
-       "testing determine_game_winner with non-house winners and busted players
-       and one rich player" 
-       (print_round_leaderboard large_name_num_game) 
-       ("\n*************************************************************************\n"
-       ^"*        PLAYER\t        ||    ROUND EARNINGS    ||    CURRENT BALANCE   *\n" 
-       ^ "*-----------------------------------------------------------------------*\n" 
-       ^ "* ZZZZZZZZZZZZZ         ||      $4611686018427  ||      $4611686018427  *\n"
-       ^ "* Brennan               ||      $1000           ||      $3110           *\n"
-       ^ "* ABCDEFGHIJKLMN        ||      $500            ||      $2110           *\n"
-       ^ "* Austin                ||      $0              ||      $100            *\n"
-       ^ "* Abby                  ||      $0              ||      $100            *\n"
-       ^ "*************************************************************************\n"); *)
 
     (* winner_test 
        "testing determine_game_winner with non-house winners and busted players
@@ -402,7 +560,6 @@ Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0
        (print_game_leaderboard p2_win_busted_rich 
          [p1_p2_tie_state; p1_p2_win_busted; p2_win_busted_rich]) ""; *)
   ]
-
 
 let tests =
   "test suite for Blackjack"  >::: List.flatten [

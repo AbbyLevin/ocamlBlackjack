@@ -1,0 +1,665 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Card" rel="Chapter" href="Card.html">
+<link title="Player" rel="Chapter" href="Player.html">
+<link title="Main" rel="Chapter" href="Main.html">
+<link title="Author" rel="Chapter" href="Author.html">
+<link title="State" rel="Chapter" href="State.html">
+<link title="Save" rel="Chapter" href="Save.html"><title>Index of values</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
+<table>
+<tr><td align="left"><div>A</div></td></tr>
+<tr><td><a href="Card.html#VALadd_card_to">add_card_to</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">add_card_to num c</code> adds the value of <code class="code">c</code> to <code class="code">num</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALadd_cards">add_cards</a> [<a href="Card.html">Card</a>]</td>
+<td></td></tr>
+<tr><td><a href="State.html#VALadd_spaces">add_spaces</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">add_spaces name n</code> adds enough spaces to <code class="code">name</code> to standardize the 
+    string.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>C</div></td></tr>
+<tr><td><a href="Card.html#VALclubs_fourth_line">clubs_fourth_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">clubs_fourth_line card</code> takes in a card and prints the fourth line of the
+    card with a C for clubs followed by the value, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALclubs_second_line">clubs_second_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">clubs_second_line card</code> takes in a card and prints the second line of the
+    card with the value followed by the C for clubs, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Deck.html#VALcombine_suit_and_values">combine_suit_and_values</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">combine_suit_and_values curr suit value_list</code> creates and combines tuples
+    of the form (<code class="code">suit</code>, value) for each value in <code class="code">value_list</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALcompare_players">compare_players</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">compare_players x y</code> compares <code class="code">x</code> and <code class="code">y</code> based on their scores.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALcreate_card">create_card</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">create_card suit value</code> creates a card record with suit <code class="code">suit</code> and 
+     value <code class="code">value</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALcreate_card_list">create_card_list</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">create_card_list acc lst</code> returns a list of cards corresponding to a list
+    of suit * value tuples <code class="code">lst</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALcreate_player">create_player</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">create_player name hand</code> creates a player with <code class="code">name</code> and <code class="code">hand</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Deck.html#VALcreate_standard_deck">create_standard_deck</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">create_standard_deck</code> creates a standard 52 card deck.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>D</div></td></tr>
+<tr><td><a href="State.html#VALdeal_cards">deal_cards</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">deal_cards</code> returns a player list where each player's hand is updated 
+    to contain two cards randomly selected from the deck</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_average_bet_amount">determine_average_bet_amount</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">determine_average_bet_amount acc past_states size player</code> determines
+    the average bet amount of <code class="code">player</code> throughout all prior rounds 
+    <code class="code">past_states</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_balances">determine_balances</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">determine_balances</code> returns a players list with updated balances based 
+    on how every player did against the house</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_game_winners">determine_game_winners</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">determine_round_winner</code> determines the winner(s) of round <code class="code">curr</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_player_wins">determine_player_wins</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">determine_player_wins acc past_states player</code> determines the number of 
+    rounds won by <code class="code">player</code> in all prior rounds <code class="code">past_states</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_round_winners">determine_round_winners</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">determine_round_winner</code> determines the winner(s) of round <code class="code">curr</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_sign">determine_sign</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">determine_sign curr elt</code> determines the sign of the earnings of <code class="code">elt</code> 
+    at the end of round <code class="code">curr</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALdetermine_win">determine_win</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">determine_win player state</code> determines if <code class="code">player</code> won in the round 
+    represented by <code class="code">state</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALdiamonds_fourth_line">diamonds_fourth_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">diamonds_fourth_line card</code> takes in a card and prints the fourthline of the
+    card with a D for diamonds followed by the value, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALdiamonds_second_line">diamonds_second_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">diamonds_second_line card</code> takes in a card and prints the second line of 
+    the card with the value followed by the D for diamonds, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="State.html#VALeasy_turn">easy_turn</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">easy_turn player state</code> carries out the gameplay for an Easy difficulty
+    AI player.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>F</div></td></tr>
+<tr><td><a href="State.html#VALfinal_leader_entry">final_leader_entry</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">final_leader_entry acc lst</code> creates a leaderboard entry for each player in 
+    <code class="code">lst</code> at the end of the game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALfind_rem_ace">find_rem_ace</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">find_rem_ace cards acc</code> returns a <code class="code">cards</code> but with 1 ace removed
+    if there are any in <code class="code">cards</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>G</div></td></tr>
+<tr><td><a href="Player.html#VALget_balance">get_balance</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">get_balance player</code> is the balance of <code class="code">player</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Deck.html#VALget_card">get_card</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">get_card</code> returns a random card from a standard 52 card deck</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALget_hand">get_hand</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">get_hand player</code> is the hand of <code class="code">player</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALget_names_and_diff">get_names_and_diff</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">get_names name_list n</code> returns <code class="code">name_and_diff_list</code> which has the names 
+    and associated difficulties of the <code class="code">n</code> players.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_player_money">get_player_money</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_player_money acc players</code> returns a dictionary <code class="code">acc</code> where the key 
+    is each player's name in <code class="code">players</code> and the associated value is their 
+    balance at the end of the round.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_player_sums">get_player_sums</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_player_sums acc players</code> returns a dictionary <code class="code">acc</code> where the key 
+    is each player's name in <code class="code">players</code> and the associated value is their 
+    score at the end of the round.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_suit">get_suit</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_suit c</code> returns the suit of <code class="code">c</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALget_sum">get_sum</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">get_sum player</code> is the sum of <code class="code">player</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALget_value">get_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">get_value c</code> returns the value of <code class="code">c</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_winner">get_winner</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_winner player_sums</code> determines the winner(s) of a list of players 
+    and their scores <code class="code">player_sums</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALget_winner_game">get_winner_game</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">get_winner player_money</code> determines the winner(s) of a list of players 
+    and their balances <code class="code">player_sums</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>H</div></td></tr>
+<tr><td><a href="State.html#VALhard_turn">hard_turn</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">hard_turn player state</code> carries out the gameplay for a Hard difficulty
+    AI player.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALhearts_fourth_line">hearts_fourth_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">hearts_fourth_line card</code> takes in a card and prints the fourth line of the
+    card with an H for hearts followed by the value, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALhearts_second_line">hearts_second_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">hearts_second_line card</code> takes in a card and prints the second line of the
+    card with the value followed by the H for hearts, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALhit">hit</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">hit player state</code> carries out the functionality of hit by updating 
+    <code class="code">player</code> and <code class="code">state</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Author.html#VALhours_worked">hours_worked</a> [<a href="Author.html">Author</a>]</td>
+<td><div class="info">
+<p><code class="code">hours_worked</code> is the number of hours you worked on this assignment.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALhouse_turn">house_turn</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">house_turn player state</code> takes the houses turn according to house rules.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALhouse_win">house_win</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">house_win player_sums</code> determines whether the house won</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>I</div></td></tr>
+<tr><td><a href="State.html#VALinit_game_state">init_game_state</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">init_game_state player_names</code> returns a game state with as many players
+    as are in <code class="code">player_names</code> plus the house</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALinitialize_game">initialize_game</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">initialize_game here</code> initializes the game by gathering the number of
+    players and returning an initial game state with each of these players' 
+    names.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALinitialize_hand">initialize_hand</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">initialize_hand player</code> initializes the hand of <code class="code">player</code> by "drawing"
+    two cards for them.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALint_of_value">int_of_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">int_of_value value</code> returns an int representation of <code class="code">value</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>J</div></td></tr>
+<tr><td><a href="Save.html#VALjson_of_players">json_of_players</a> [<a href="Save.html">Save</a>]</td>
+<td><div class="info">
+<p><code class="code">json_of_players state</code> returns a Yojson.Safe.t object based on the players
+    in the current game in <code class="code">state</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>L</div></td></tr>
+<tr><td><a href="State.html#VALleader_entry">leader_entry</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">leader_entry acc lst</code> creates a leaderboard entry for each player in 
+    <code class="code">lst</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Save.html#VALload_game">load_game</a> [<a href="Save.html">Save</a>]</td>
+<td><div class="info">
+<p><code class="code">load_game name</code> returns a game state based on the contents from the json
+    file whose name is <code class="code">name</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>M</div></td></tr>
+<tr><td><a href="Main.html#VALmain">main</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">main ()</code> prompts for the game to play, then starts it.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>O</div></td></tr>
+<tr><td><a href="State.html#VALoutput_multiple_winners">output_multiple_winners</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">output_multiple_winners winners_list</code> returns a string that contains the 
+    names of all of the winners separated by a semicolon.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALoutput_multiple_winners_game">output_multiple_winners_game</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">output_multiple_winners_game winners_list balance</code> prints the 
+    winners within <code class="code">winners_list</code> and their <code class="code">balance</code>.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>P</div></td></tr>
+<tr><td><a href="State.html#VALplace_bets">place_bets</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">place_bets</code> returns a players list where every player's bets for the 
+    current round have been placed</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALplay_game">play_game</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">play_game here</code> starts the Blackjack game.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALplay_round">play_round</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">play_round state here</code> carries out all of the functionality of playing a 
+    round of Blackjack with associated game information <code class="code">state</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALplay_turns">play_turns</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">play_turns</code> returns a player list with each player's hand updated based
+    on how many times they decided to hit</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Save.html#VALplayer_of_savedp">player_of_savedp</a> [<a href="Save.html">Save</a>]</td>
+<td><div class="info">
+<p><code class="code">player_of_savedp</code> returns a player object based on the Yojson.Basic.t
+    object in <code class="code">saved_p</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALplayer_turn">player_turn</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">player_turn</code> returns a player with their hand updated based on how 
+    many times they hit</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_cards">print_cards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_cards cards</code> prints each line of each card in <code class="code">cards</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_fourth_line">print_fourth_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_fourth_line hand</code> takes in a list of cards and prints the fourth
+    line of each card with the appropriate suit and value.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALprint_game_leaderboard">print_game_leaderboard</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">print_game_leaderboard curr</code> prints the final leaderboard at the end of 
+    a given round <code class="code">curr</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_hand">print_hand</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_hand</code> prints a list of cards</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALprint_round_leaderboard">print_round_leaderboard</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">print_round_leaderboard curr</code> prints the leaderboard at the end of 
+    a given round <code class="code">curr</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_second_line">print_second_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_second_line hand</code> takes in a list of cards and prints the second
+    line of each card with the appropriate suit and value.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_third_line">print_third_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_third_line hand</code> takes in a list of cards and prints the third
+    line of each card.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALprint_top_or_bottom">print_top_or_bottom</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">print_top_or_bottom</code> prints the upper / lower borders of a card.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprompt_diff">prompt_diff</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">prompt_diff here name</code> prompts a user to enter their difficulty level 
+    of an AI player named <code class="code">name</code> and handles their response.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprompt_name">prompt_name</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">prompt_name here</code> prompts a user to enter their name and handles
+    their response.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALprompt_user_or_ai">prompt_user_or_ai</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">prompt_user_or_ai here</code> prompts a user to enter their name and handles
+    their response.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>R</div></td></tr>
+<tr><td><a href="Save.html#VALremove_l_comma">remove_l_comma</a> [<a href="Save.html">Save</a>]</td>
+<td><div class="info">
+<p><code class="code">remove_l_comma str</code> removes the last character from the string <code class="code">str</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALrepeat_rounds">repeat_rounds</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">repeat_rounds state quit here</code> allows a user to play a round and 
+    update <code class="code">state</code> along the way as long as they don't make <code class="code">quit</code> true.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALreturn_player">return_player</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">return_player player players</code> returns the corresponding <code class="code">player</code> within
+    <code class="code">players</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALreturn_player_bet">return_player_bet</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">return_player_bet player players</code> returns the bet of <code class="code">player</code> within 
+    <code class="code">players</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALrules">rules</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">rules here</code> handles outputting the rules if a player desires them.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALrules_string">rules_string</a> [<a href="Main.html">Main</a>]</td>
+<td></td></tr>
+<tr><td align="left"><div>S</div></td></tr>
+<tr><td><a href="Save.html#VALsave_game">save_game</a> [<a href="Save.html">Save</a>]</td>
+<td><div class="info">
+<p><code class="code">save_game state</code> saves the data in a games state object <code class="code">state</code> to 
+    a json file with the game's name (also stored in <code class="code">state</code>).</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALsave_game_qry">save_game_qry</a> [<a href="Main.html">Main</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALselect_game">select_game</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">select_game here</code> returns a state object afting prompting the players
+    to choose whether they want to start a new game or load an existing one.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALspades_fourth_line">spades_fourth_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">spades_fourth_line card</code> takes in a card and prints the fourth line of the
+    card with a S for spades followed by the value, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALspades_second_line">spades_second_line</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">spades_second_line card</code> takes in a card and prints the second line of the
+    card with the value followed by the S for spades, spaced appropriately.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Deck.html#VALstandard_deck_maker">standard_deck_maker</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">standard_deck_maker acc suit_list value_list</code> creates a deck consisting
+    of the cross product of each element of <code class="code">suit_list</code> and <code class="code">value_list</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALstandardize_name">standardize_name</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">standardize_name name</code> converts all <code class="code">name</code> to the same length.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALstandardize_output">standardize_output</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">standardize_output output</code> converts all <code class="code">output</code> to the same length.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="State.html#VALstart_round">start_round</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">start_round</code> starts a new round of blackjack and returns the state once 
+    the game is finished</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALstring_of_card">string_of_card</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">string_of_card</code> returns a string representation of a card</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALstring_of_card_test">string_of_card_test</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">string_of_card c</code> returns a string representation of <code class="code">c</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALstring_of_suit">string_of_suit</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">string_of_suit suit</code> returns a string representation of <code class="code">suit</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALstring_of_value">string_of_value</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">string_of_value value</code> returns a string representation of <code class="code">value</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALsum_cards">sum_cards</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">sum_cards cards</code> returns the sum of a list of cards.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALsum_cards_strict">sum_cards_strict</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">sum_cards_strict cards acc</code> returns the sum of a list of cards where 
+    aces are counted strictly as 1</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>T</div></td></tr>
+<tr><td><a href="State.html#VALto_dollar">to_dollar</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">to_dollar</code> converts <code class="code">float</code> into USD format.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Card.html#VALtuple_to_card">tuple_to_card</a> [<a href="Card.html">Card</a>]</td>
+<td><div class="info">
+<p><code class="code">tuple_to_card tup</code> converts a suit * value tuple <code class="code">tup</code> into a card.</p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>U</div></td></tr>
+<tr><td><a href="Player.html#VALupdate_balance">update_balance</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">update_balance</code> updates a player's balance at the end of a round according 
+    to how they did in comparison to the house</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Player.html#VALupdate_player_bet">update_player_bet</a> [<a href="Player.html">Player</a>]</td>
+<td><div class="info">
+<p><code class="code">update_player_bet player</code> returns a new player record with the same 
+    fields as <code class="code">player</code> except for the sum field which is <code class="code">new_sum</code></p>
+
+</div>
+</td></tr>
+<tr><td align="left"><div>W</div></td></tr>
+<tr><td><a href="State.html#VALwinners_list">winners_list</a> [<a href="State.html">State</a>]</td>
+<td><div class="info">
+<p><code class="code">winners_list lst</code> returns a list of all of the winners of a round 
+    represented by <code class="code">lst</code> and their scores.</p>
+
+</div>
+</td></tr>
+</table>
+</body>
+</html>

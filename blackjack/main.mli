@@ -9,6 +9,10 @@ open State
     file is loaded. *)
 val play_round : state -> bool -> state 
 
+(** [save_game_qry state] handles allowing a user to decide to save their 
+    game. *)
+val save_game_qry : state -> unit
+
 (** [repeat_rounds state quit here] allows a user to play a round and 
     update [state] along the way as long as they don't make [quit] true. 
     [here] is used to prevent this functionality from occuring when the 

@@ -20,12 +20,13 @@ let load_game name =
   let players = json |> member "players" |> 
                 to_list |> List.map player_of_savedp in
   {players=players; house=
-                      {name="HOUSE"; hand=[]; balance=max_int; current_bet=0; diff = "House"};
+                      {name="HOUSE"; hand=[]; balance=max_int; 
+                       current_bet=0; diff = "House"};
    game_name=name}
 
 (** [remove_l_comma str] removes the last character from the string [str]. 
-    This is needed to remove the comma at the end of a Json string so that it is 
-    properly formatted to work with Yojson. *)
+    This is needed to remove the comma at the end of a Json string so that it 
+    is properly formatted to work with Yojson. *)
 let remove_l_comma str = 
   let len_str = String.length str in 
   let res = String.sub str 0 (len_str-1) in 
