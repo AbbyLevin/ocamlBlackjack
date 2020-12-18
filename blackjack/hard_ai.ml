@@ -23,17 +23,27 @@ let hits = [(12, 2); (12, 3); (12, 7); (12, 8); (12, 9); (12, 10); (12, 1);
             (14, 9); (14, 10); (14, 1); (15, 7); (15, 8); (15, 9); (15, 10); 
             (15, 1); (16, 7); (16, 8); (16, 9); (16, 10); (16, 1)]
 
+(** [insert_tup_list tup_list entry] takes a list of int * int tuples [tup_list] 
+    and inserts them into the decision table using the tuple as the key and 
+    the [entry] as the integer that the tuple maps to in the decision table. *)
 let rec insert_tup_list tup_list entry = 
   match tup_list with 
   | [] -> ()
   | x :: xs -> add decision_table x entry; insert_tup_list xs entry  
 
+(** [initialize_decision_table ()] initializes the decision table with 
+    the best possible plays for the combinations of player and dealer hands 
+    in the stays and hits lists.  *)
 let initialize_decision_table () = 
   insert_tup_list stays 0; 
   insert_tup_list hits 1 
 
 (* 11 or less and the AI hits every time *)
 (* 17 or more and the AI should stay every time *)
+
+(** [best_move player dealer_hand] returns a 0 or 1 corrosponding to the best  
+    move based on the current [player] and [dealer_hand]. A 0 corrosponds to 
+    staying while a 1 means hit.  *)
 let best_move player dealer_hand = 
   let player_sum = get_sum player in 
   if player_sum <= 11 then 1 else 
