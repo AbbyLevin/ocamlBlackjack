@@ -16,7 +16,7 @@ let play_round state here =
 (** [save_game_qry state] handles allowing a user to decide to save their 
     game. *)
 let rec save_game_qry state = 
-  print_string "\nWould you like to save your game? (y/n) ";
+  print_string "\n\nWould you like to save your game? (y/n) ";
   let save_game_str = read_line () in 
   match save_game_str with 
   | "y" -> save_game state 
@@ -72,8 +72,8 @@ let rec prompt_diff here name =
   print_string  "> ";
   let diff = read_line () in 
   match diff with
-  | "Easy" -> "Easy"
-  | "Hard" -> "Hard"
+  | "Easy" | "easy" -> "Easy"
+  | "Hard" | "hard" -> "Hard"
   | _ -> print_string "\nPlease type a valid input.\n";
     prompt_diff here name
 
@@ -86,14 +86,14 @@ let rec prompt_user_or_ai here name =
     ANSITerminal.(print_string [red] (
         "\n\nWill " ^ name ^ 
         " be a user-controlled player or an AI-controlled player?\n" ^ 
-        "Enter [\"user\"] for a user-controlled player or " ^ 
+        "Enter [\"User\"] for a user-controlled player or " ^ 
         "[\"AI\"] for an AI player."));
   print_string "\n";
   print_string  "> ";
   let player_type = read_line () in 
   match player_type with
-  | "user" -> "User" 
-  | "AI" -> prompt_diff true name
+  | "user" | "User" -> "User" 
+  | "AI" | "ai" | "Ai" -> prompt_diff true name
   | _ -> print_string "\nPlease type a valid input.\n";
     prompt_user_or_ai here name
 
@@ -145,7 +145,7 @@ let rec rules here =
   match read_line () with 
   | "y" -> begin
       ANSITerminal.(print_string [red] 
-                      "\nWhat would you like the name of this game to be?");
+                      "\n\nWhat would you like the name of this game to be?");
       print_string "\n";
       print_string  "> "; 
       let game_name = read_line () in 
@@ -173,7 +173,7 @@ let rec rules here =
     of the game they would like to load.  *)
 let rec select_game here = 
   ANSITerminal.(print_string [red] 
-                  "\nWould you like to load an existing game? (y/n)");
+                  "\n\nWould you like to load an existing game? (y/n)");
   print_string "\n";
   print_string  "> "; 
   match read_line () with 
@@ -186,8 +186,9 @@ let rec select_game here =
     let name = read_line () in 
     load_game name 
   | "n" -> 
+    print_string "\n\n";
     ANSITerminal.(print_string [red] 
-                    "\nWhat would you like the name of this game to be?");
+                    "What would you like the name of this game to be?");
     print_string "\n";
     print_string  "> "; 
     let game_name = read_line () in 
