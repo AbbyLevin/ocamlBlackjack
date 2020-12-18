@@ -49,13 +49,23 @@ let rec player_turn player state =
     else if player.diff = "Hard" then hard_turn player state     
     else begin
       ANSITerminal.(print_string [red]
-                      "Press 'h' to hit or press 's' to stay.\n");
+                      "Press 'h' to hit, press 's' to stay, or press 'a' for advice.\n");
       print_string  "> ";
       match read_line () with
       | "h" -> let new_player = hit player state in
         player_turn new_player state 
       | "s" -> player
-      | "quit" -> failwith "unimplimented"
+      | "a" ->   
+        let dealer_card = List.hd state.house.hand |> get_value |> int_of_value in 
+        let decision = best_move player dealer_card in 
+        begin 
+          match decision with 
+          | 1 -> ANSITerminal.(print_string [red] "\n\nHIT\n\n"); 
+            player_turn player state 
+          | 0 -> ANSITerminal.(print_string [red] "\n\nSTAY\n\n"); 
+            player_turn player state
+          | _ -> failwith "Something went wrong"
+        end
       | _ -> player_turn player state
     end
   end
