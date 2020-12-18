@@ -38,7 +38,8 @@ let json_of_players state =
   let players = state.players in 
   let res = List.fold_right (fun a b -> 
       {|{"name": "|} ^ a.name ^ {|","balance": |} 
-      ^ (string_of_int a.balance) ^ "}," ^ b) players "" in 
+      ^ (string_of_int a.balance) ^ {|, "diff": "|} ^ a.diff ^ "\"}," ^ b) 
+      players "" in 
   let res_formatted = remove_l_comma res in 
   let json_string = {|{"players": [|} ^ res_formatted ^ {|]}|} in 
   Yojson.Safe.from_string json_string
