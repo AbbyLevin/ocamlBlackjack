@@ -38,6 +38,22 @@ let initialize_decision_table () =
   insert_tup_list stays 0; 
   insert_tup_list hits 1 
 
+let best_move_ace new_hand dealer_hand =
+  let sum_without_ace = sum_cards_strict new_hand 0 in
+  if sum_without_ace > 7 then 0 
+  else if sum_without_ace < 7 then 1 else
+    match dealer_hand with
+    | 2 | 7 | 8 -> 0
+    | 3 | 4 | 5 | 6 | 9 | 10 | 1 -> 1
+    | _ -> failwith "dealer hand illegal"
+
+let best_move_no_ace player dealer_hand =
+  let player_sum = get_sum player in 
+  if player_sum <= 11 then 1 else 
+  if player_sum >= 17 then 0 else 
+    let card_tup = (player_sum, dealer_hand) in 
+    find decision_table card_tup
+
 (* 11 or less and the AI hits every time *)
 (* 17 or more and the AI should stay every time *)
 
@@ -45,8 +61,11 @@ let initialize_decision_table () =
     move based on the current [player] and [dealer_hand]. A 0 corrosponds to 
     staying while a 1 means hit.  *)
 let best_move player dealer_hand = 
-  let player_sum = get_sum player in 
-  if player_sum <= 11 then 1 else 
-  if player_sum >= 17 then 0 else 
-    let card_tup = (player_sum, dealer_hand) in 
-    find decision_table card_tup
+  let new_hand = find_rem_ace player.hand [] in
+  if (List.length new_hand) <> (List.length player.hand) then
+    if (sum_cards_strict new_hand 0) + 11 <= 21 then 
+      best_move_ace new_hand dealer_hand 
+    else best_move_no_ace player dealer_hand
+  else 
+    best_move_no_ace player dealer_hand
+
