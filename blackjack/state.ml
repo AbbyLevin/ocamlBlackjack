@@ -5,6 +5,36 @@ open Hard_ai
 
 type state = {players: player list; house: player; game_name: string}
 
+let hit_string = 
+  "
+___            ___     _________________    _________________     
+|*|            |*|    |*****************|  |*****************|
+|*|            |*|     ------|***|-------   ------|***|------               
+|*|            |*|           |***|                |***|
+|*|____________|*|           |***|                |***|
+|****************|           |***|                |***|
+|*|------------|*|           |***|                |***|
+|*|            |*|           |***|                |***|
+|*|            |*|     ______|***|______          |***|
+|*|            |*|    |*****************|         |***|
+---            ---    -------------------         -----
+"
+
+let stay_string = 
+  "
+  ________      _________________           ___        _____            _____            
+ /*********\\   |*****************|         /***\\       \\****\\          /****/
+|***/---\\***|   ------|***|------         /*****\\       \\****\\        /****/ 
+|***|    ---          |***|              /*******\\       \\****\\      /****/ 
+ \\***\\                |***|             /***/-\\***\\       \\****\\____/****/
+   \\***\\              |***|            /***/___\\***\\       \\___*****___/     
+     \\***\\            |***|           /*************\\          |***|               
+ ___  \\***\\           |***|          /***/-------\\***\\         |***|           
+|***\\___|***|         |***|         /***/         \\***\\        |***|                 
+ \\*********/          |***|        /***/           \\***\\       |***|                        
+   ------             -----        ----             ----       -----       
+"
+
 (** [init_game_state player_names] returns a game state with as many players
     as are in [player_names] plus the house *)
 let init_game_state (player_names_and_diff : (string * string) list) (
@@ -60,9 +90,9 @@ let rec player_turn player state =
         let decision = best_move player dealer_card in 
         begin 
           match decision with 
-          | 1 -> ANSITerminal.(print_string [red] "\n\nHIT\n\n"); 
+          | 1 -> ANSITerminal.(print_string [red] ("\n\n" ^ hit_string ^ "\n\n")); 
             player_turn player state 
-          | 0 -> ANSITerminal.(print_string [red] "\n\nSTAY\n\n"); 
+          | 0 -> ANSITerminal.(print_string [red] ("\n\n" ^ stay_string^ "\n\n")); 
             player_turn player state
           | _ -> failwith "Something went wrong"
         end
