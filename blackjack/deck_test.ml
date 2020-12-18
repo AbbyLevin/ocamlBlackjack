@@ -30,6 +30,7 @@ open Deck
 open Card
 open Player
 open State
+open Hard_ai
 
 (** [cmp_set_like_lists lst1 lst2] compares two lists to see whether
     they are equivalent set-like lists.  That means checking two things.
@@ -320,11 +321,13 @@ let valid_hard (player : player) : bool =
     named [name] that asserts the quality of [expected_output] with 
     [valid_hard updated_player]. *)
 let hard_ai_test 
-    (name : string) (updated_player : player)
-    (expected_output : bool) : test = 
+    (name : string) 
+    (updated_player : player)
+    (dealer_card : int)
+    (expected_output : int) : test = 
   name >:: (fun _ -> 
-      assert_equal expected_output (updated_player |> valid_hard)
-        ~printer:(string_of_bool))
+      assert_equal expected_output (best_move updated_player dealer_card)
+        ~printer:(string_of_int))
 
 let p1 = {name= "Brennan"; hand = []; balance =  100; 
           current_bet =  0; diff="User"} 
@@ -403,6 +406,21 @@ let valid_easy = {name= "Brennan";
                           {suit=Diamonds;value=Nine}; 
                           {suit=Diamonds;value=Ten}]; 
                   balance =  100; current_bet =  0; diff="User"} 
+
+let default_hard = {name= "Abby"; hand = []; balance =  100; 
+                    current_bet =  0; diff="Hard"} 
+let valid_hard = {name= "Abby"; 
+                  hand = [{suit=Diamonds;value=Ace}; 
+                          {suit=Diamonds;value=Seven}]; 
+                  balance =  100; current_bet =  0; diff="Hard"} 
+let valid_hard6 = {name= "Abby"; 
+                   hand = [{suit=Diamonds;value=Ace}; 
+                           {suit=Diamonds;value=Six}]; 
+                   balance =  100; current_bet =  0; diff="Hard"} 
+let valid_hard8 = {name= "Abby"; 
+                   hand = [{suit=Diamonds;value=Ace}; 
+                           {suit=Diamonds;value=Eight}]; 
+                   balance =  100; current_bet =  0; diff="Hard"} 
 
 let state_tests =
   [
@@ -572,6 +590,30 @@ Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903, Hand: [2 of clubs; 
        easy_ai_test "testing busted easy AI" 
        (easy_turn valid_easy default_state) true;   *)
 
+    hard_ai_test "testing 7 and ace with 1"
+      valid_hard 1 1;
+    hard_ai_test "testing 7 and ace with 2"
+      valid_hard 2 0;
+    hard_ai_test "testing 7 and ace with 3"
+      valid_hard 3 1;
+    hard_ai_test "testing 7 and ace with 4"
+      valid_hard 4 1;
+    hard_ai_test "testing 7 and ace with 5"
+      valid_hard 5 1;
+    hard_ai_test "testing 7 and ace with 6"
+      valid_hard 6 1;
+    hard_ai_test "testing 7 and ace with 7"
+      valid_hard 7 0;
+    hard_ai_test "testing 7 and ace with 8"
+      valid_hard 8 0;
+    hard_ai_test "testing 7 and ace with 9"
+      valid_hard 9 1;
+    hard_ai_test "testing 7 and ace with 10"
+      valid_hard 10 1;
+    hard_ai_test "testing 6 and ace with 10"
+      valid_hard6 10 1;
+    hard_ai_test "testing 8 and ace with 10"
+      valid_hard8 10 0;
 
 
     (** NOTE: These tests were usesd to ensure that our leaderboards
