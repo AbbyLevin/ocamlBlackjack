@@ -60,9 +60,7 @@ let rec player_turn player state =
   end 
   else ();
   if (get_sum player > 21) then begin
-    print_hand player.hand;
-    print_string "\n\n";
-    print_string (player.name ^ " has busted. Haha loser.\n");
+    print_loser player;
     player
   end
   else begin
@@ -77,31 +75,43 @@ let rec player_turn player state =
       end
     else if player.diff = "Easy" then easy_turn player state
     else if player.diff = "Hard" then hard_turn player state     
-    else begin
-      ANSITerminal.(print_string [red]
-                      "Press 'h' to hit, press 's' to stay, or press 'a' for advice.\n");
-      print_string  "> ";
-      match read_line () with
-      | "h" -> let new_player = hit player in
-        player_turn new_player state 
-      | "s" -> player
-      | "a" ->   
-        let dealer_card = List.hd state.house.hand |> get_value |> int_of_value in 
-        let decision = best_move player dealer_card in 
-        begin 
-          match decision with 
-          | 1 -> ANSITerminal.(print_string [red] ("\n\n" ^ hit_string ^ "\n\n")); 
-            player_turn player state 
-          | 0 -> ANSITerminal.(print_string [red] ("\n\n" ^ stay_string^ "\n\n")); 
-            player_turn player state
-          | _ -> failwith "Something went wrong"
-        end
-      | _ -> player_turn player state
-    end
+    else 
+      user_turn player state 
   end
 
-(** [easy_turn player state] carries out the gameplay for an Easy difficulty
-    AI player [player] with current game [state]. *)
+(** [user_turn player state] returns a player [player] based on their decision
+    to hit, stay, or ask for advice. *)
+and user_turn player state = 
+  let prompt = 
+    "Press 'h' to hit, press 's' to stay, or press 'a' for advice.\n" in 
+  ANSITerminal.(print_string [red] prompt);
+  print_string  "> ";
+  match read_line () with
+  | "h" -> let new_player = hit player in
+    player_turn new_player state 
+  | "s" -> player
+  | "a" ->   
+    let dealer_card = List.hd state.house.hand |> get_value |> int_of_value in 
+    let decision = best_move player dealer_card in 
+    begin 
+      match decision with 
+      | 1 -> ANSITerminal.(print_string [red] ("\n\n" ^ hit_string ^ "\n\n")); 
+        player_turn player state 
+      | 0 -> ANSITerminal.(print_string [red] ("\n\n" ^ stay_string^ "\n\n")); 
+        player_turn player state
+      | _ -> failwith "Something went wrong"
+    end
+  | _ -> player_turn player state
+
+(** [print_loser player] prints out the message that should appear after 
+    a player [player] has exceeded 21. *)
+and print_loser player = 
+  print_hand player.hand;
+  print_string "\n\n";
+  print_string (player.name ^ " has busted. Haha loser.\n");
+
+  (** [easy_turn player state] carries out the gameplay for an Easy difficulty
+      AI player [player] with current game [state]. *)
 and easy_turn (player : player) (state : state) : player = 
   let card_sum = sum_cards (get_hand player) in 
   begin 
@@ -123,8 +133,8 @@ and hard_turn (player : player) (state) : player =
     | _ -> failwith "Something went wrong"
   end
 
-(** [play_turns] returns a player list with each player's hand updated based
-    on how many times they decided to hit *)
+(** [play_turns state acc] returns a player list with each player's hand 
+    updated based on how many times they decided to hit *)
 let rec play_turns state acc = 
   match state.players with 
     [] -> acc
@@ -132,8 +142,8 @@ let rec play_turns state acc =
     let new_state = {state with players=xs} in 
     play_turns new_state (new_player :: acc)
 
-(** [deal_cards] returns a player list where each player's hand is updated 
-    to contain two cards randomly selected from the deck *)
+(** [deal_cards state acc] returns a player list where each player's 
+    hand is updated to contain two cards randomly selected from the deck *)
 let rec deal_cards state acc = 
   match state.players with 
     [] -> acc 
@@ -141,8 +151,8 @@ let rec deal_cards state acc =
     let new_state = {state with players=xs} in 
     deal_cards new_state (new_player :: acc)
 
-(** [place_bets] returns a players list where every player's bets for the 
-    current round have been placed *)
+(** [place_bets state acc] returns a players list where every player's bets
+    for the current round have been placed *)
 let rec place_bets state acc = 
   match state.players with 
   | [] -> acc
@@ -151,14 +161,7 @@ let rec place_bets state acc =
       place_ai_bet x state xs acc 
     else 
       begin
-        print_endline "\n";
-        print_string (x.name ^ "'s " ^ "hand and current balance:\n");
-        print_cards x.hand;
-        print_string ("Current balance: " ^ string_of_int x.balance ^ "\n");
-        print_string "HOUSE's card:\n";
-        print_cards [(List.hd (state.house.hand))];
-        ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
-        print_string  "> ";
+        print_bet_prompt x state;
         begin
           match int_of_string_opt (read_line()) with
           | Some n when n <= x.balance ->
@@ -168,10 +171,26 @@ let rec place_bets state acc =
           | Some n -> ANSITerminal.(print_string [red] 
                                       "\n\nYou cannot bet more than you have."); 
             place_bets state acc  
-          | None -> print_string "\nInvalid input. Try again.\n"; place_bets state acc
+          | None -> print_string "\nInvalid input. Try again.\n"; place_bets
+              state acc
         end
       end
 
+(** [print_bet_prompt x state] prints the betting prompt with player [p] and 
+    state [state]. *)
+and print_bet_prompt p state = 
+  print_endline "\n";
+  print_string (p.name ^ "'s " ^ "hand and current balance:\n");
+  print_cards p.hand;
+  print_string ("Current balance: " ^ string_of_int p.balance ^ "\n");
+  print_string "HOUSE's card:\n";
+  print_cards [(List.hd (state.house.hand))];
+  ANSITerminal.(print_string [red] "How much would you like to bet?\n" );
+  print_string  "> ";
+
+  (** [place_ai_bet player state player acc] returns a player list with player 
+      [player] appended to the end with a bet amount of half the ammount of 
+      its current balance. *)
 and place_ai_bet player state players acc = 
   if player.balance = 1 then 
     let bet = 1 in 
@@ -231,8 +250,8 @@ let winners_list (lst : (player * int) list) =
   | (p, s) :: t -> List.filter (fun x -> snd(x) = s) lst
   | [] -> []
 
-(** [output_multiple_winners winners_list] returns a string that contains the 
-    names of all of the winners separated by a semicolon. *)
+(** [output_multiple_winners winners_list score house_win] returns a string 
+    that contains the names of all of the winners separated by a semicolon. *)
 let rec output_multiple_winners winners_list score house_win= 
   match winners_list with
   | [] -> if house_win = false 
@@ -319,7 +338,7 @@ let compare_players x y =
   else if snd x < snd y then -1 
   else 0
 
-(** [determine_round_winner] determines the winner(s) of round [curr]. *)
+(** [determine_round_winner curr] determines the winner(s) of round [curr]. *)
 let determine_round_winners curr = 
   let house_and_players = curr.house :: curr.players in 
   let player_sums = get_player_sums [] house_and_players in
@@ -328,7 +347,7 @@ let determine_round_winners curr =
   let round_winners = get_winner sorted in 
   round_winners
 
-(** [determine_round_winner] determines the winner(s) of round [curr]. *)
+(** [determine_round_winner curr] determines the winner(s) of round [curr]. *)
 let determine_game_winners curr = 
   let player_money = get_player_money [] curr.players in  
   let sorted = List.sort compare_players player_money |> List.rev in 
@@ -388,7 +407,8 @@ let print_round_leaderboard curr =
   let player_money = get_player_money [] curr.players in  
   let sorted = List.sort compare_players player_money |> List.rev in 
   let leaderboard_entries = leader_entry "" sorted curr in 
-  "\n*************************************************************************\n"
+  "\n**********************************************************" ^ 
+  "***************\n"
   ^ 
   "*        PLAYER\t        ||    ROUND EARNINGS    ||    CURRENT BALANCE   *\n"
   ^ 
@@ -412,7 +432,7 @@ let rec determine_player_wins acc past_states player =
     then determine_player_wins (1 + acc) t player
     else determine_player_wins (acc) t player
 
-(** [to_dollar] converts [float] into USD format. *)
+(** [to_dollar float] converts [float] into USD format. *)
 let to_dollar float = 
   let float_string = string_of_float (float) in
   let period_spot = String.index float_string '.' in 
@@ -436,8 +456,8 @@ let rec determine_average_bet_amount acc past_states size player =
     determine_average_bet_amount 
       (return_player_bet player h.players  +. acc) t size player
 
-(** [final_leader_entry acc lst] creates a leaderboard entry for each player in 
-    [lst] at the end of the game. *)
+(** [final_leader_entry acc lst curr past_states] creates a leaderboard 
+    entry for each player in [lst] at the end of the game. *)
 let rec final_leader_entry acc lst curr past_states = 
   match lst with 
   | [] -> acc
@@ -458,10 +478,14 @@ let print_game_leaderboard curr past_states =
   let player_money = get_player_money [] curr.players in  
   let sorted = List.sort compare_players player_money |> List.rev in 
   let leaderboard_entries = final_leader_entry "" sorted curr past_states in 
-  "\n*************************************************************************************************\n"
+  "\n*****************************************************************" ^ 
+  "********************************\n"
   ^ 
-  "*        PLAYER\t        ||     FINAL BALANCE    ||     ROUNDS WON       ||  AVERAGE BET AMOUNT  *\n"
+  "*        PLAYER\t        ||     FINAL BALANCE    ||  " ^
+  "   ROUNDS WON       ||  AVERAGE BET AMOUNT  *\n"
   ^ 
-  "*-----------------------------------------------------------------------------------------------*\n"
+  "*---------------------------------------------------" ^
+  "--------------------------------------------*\n"
   ^ leaderboard_entries ^ 
-  "*************************************************************************************************\n"
+  "********************************************************" ^
+  "*****************************************\n"

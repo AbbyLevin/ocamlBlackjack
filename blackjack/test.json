@@ -2,17 +2,17 @@
   "players": [
     {
       "name": "Brenna",
-      "balance": 75,
+      "balance": 56,
       "diff": "Easy"
     },
     {
       "name": "Abby",
-      "balance": 225,
+      "balance": 57,
       "diff": "Hard"
     },
     {
       "name": "Austin",
-      "balance": 120,
+      "balance": 100,
       "diff": "User"
     }
   ]
