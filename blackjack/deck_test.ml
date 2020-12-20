@@ -441,104 +441,131 @@ let state_tests =
     player_sums_test "testing winners_list" 
       (winners_list player_sums) [(p1,0);(p3,0);(p2,0)];
     winner_test "testing get_winner of standard state" (get_winner player_sums) 
-      "Brennan, Abby and Austin are tied with a score of 0, so they won this round. Congrats!\n";  
+      ("Brennan, Abby and Austin are tied with a score of 0, " ^
+       "so they won this round. Congrats!\n");  
 
     create_state_test "testing default state creation" (default_state) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903, " ^
+       "Hand: [], Current Bet: 0
 Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
 Name: Austin, Current Balance = $100, Hand: [], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n");
 
     create_state_test "testing house_win_state creation" (house_win_state) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [10 of hearts], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903, " ^
+       "Hand: [10 of hearts], Current Bet: 0
 Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
 Name: Austin, Current Balance = $100, Hand: [], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n");
 
     create_state_test "testing house_tie_state creation" (house_tie_state) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [10 of hearts], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903," ^ 
+       " Hand: [10 of hearts], Current Bet: 0
 Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
 Name: Austin, Current Balance = $100, Hand: [10 of diamonds], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n");
 
     create_state_test "testing p2_8_win_state creation" (p2_8_win_state) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903, Hand: []," ^
+       " Current Bet: 0
 Name: Brennan, Current Balance = $100, Hand: [], Current Bet: 0
 Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n");
 
     create_state_test "testing p1_p2_tie_state creation" (p1_p2_tie_state) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903, " ^
+       "Hand: [], Current Bet: 0
 Name: Brennan, Current Balance = $100, Hand: [8 of clubs], Current Bet: 0
 Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n";
+Name: Abby, Current Balance = $100, Hand: [], Current Bet: 0\n");
 
     create_state_test "testing p1_p2_win_busted creation" (p1_p2_win_busted) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903, Hand:" ^ 
+       " [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
 Name: Brennan, Current Balance = $100, Hand: [8 of clubs], Current Bet: 0
 Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0\n";
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of" ^ 
+       " diamonds; 10 of diamonds], Current Bet: 0\n");
 
     create_state_test "testing p2_win_busted_rich creation" (p2_win_busted_rich) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903, Hand: " ^ 
+       "[8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
 Name: Brennan, Current Balance = $3110, Hand: [2 of clubs], Current Bet: 1000
 Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0\n";
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 " ^
+       "of diamonds; 10 of diamonds], Current Bet: 0\n");
 
     create_state_test "testing long_name_game creation" (long_name_game) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903," ^
+       " Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
 Name: Brennan, Current Balance = $3110, Hand: [2 of clubs], Current Bet: 1000
 Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0
-Name: ABCDEFGHIJKLMNOPQRSTUVWXYZ, Current Balance = $2110, Hand: [2 of clubs; 6 of clubs], Current Bet: 503\n";
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds;" ^
+       " 9 of diamonds; 10 of diamonds], Current Bet: 0
+Name: ABCDEFGHIJKLMNOPQRSTUVWXYZ, Current Balance = $2110, " ^
+       "Hand: [2 of clubs; 6 of clubs], Current Bet: 503\n");
 
     create_state_test 
       "testing large_name_num_game creation" (large_name_num_game) 
-      "Name: HOUSE, Current Balance = $4611686018427387903, Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
+      ("Name: HOUSE, Current Balance = $4611686018427387903, " ^
+       "Hand: [8 of clubs; 9 of clubs; 10 of clubs], Current Bet: 0
 Name: Brennan, Current Balance = $3110, Hand: [2 of clubs], Current Bet: 1000
 Name: Austin, Current Balance = $100, Hand: [8 of spades], Current Bet: 0
-Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of diamonds; 10 of diamonds], Current Bet: 0
-Name: ABCDEFGHIJKLMNOPQRSTUVWXYZ, Current Balance = $2110, Hand: [2 of clubs; 6 of clubs], Current Bet: 503
-Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903, Hand: [2 of clubs; 8 of clubs], Current Bet: 4611686018427387903\n";
+Name: Abby, Current Balance = $100, Hand: [8 of diamonds; 9 of " ^
+       "diamonds; 10 of diamonds], Current Bet: 0
+Name: ABCDEFGHIJKLMNOPQRSTUVWXYZ, Current Balance = $2110, " ^
+       "Hand: [2 of clubs; 6 of clubs], Current Bet: 503
+Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903," ^
+       " Hand: [2 of clubs; 8 of clubs], Current Bet: 4611686018427387903\n");
 
     winner_test "testing determine_round_winner with all tied with house" 
       (determine_round_winners default_state) 
-      "HOUSE, Brennan, Austin and Abby are tied with a score of 0, so nobody won this round. Tough luck.\n";
+      ("HOUSE, Brennan, Austin and Abby are tied with " ^
+       "a score of 0, so nobody won this round. Tough luck.\n");
     winner_test "testing determine_game_winners with all tied with house" 
       (determine_game_winners default_state) 
-      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";
+      ("Brennan, Austin and Abby are tied with a balance of 100, " ^
+       "so nobody won this game. Tough luck.\n");
     winner_test "testing determine_round_winner with house solo dub" 
       (determine_round_winners house_win_state)       
       "\nThe House won this round with a score of 10. Tough luck. \n"; 
     winner_test "testing determine_game_winners with house solo dub" 
       (determine_game_winners house_win_state)       
-      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n"; 
+      ("Brennan, Austin and Abby are tied with a balance of " ^
+       "100, so nobody won this game. Tough luck.\n"); 
     winner_test "testing determine_round_winner with one tied with house" 
       (determine_round_winners house_tie_state) 
-      "HOUSE and Austin are tied with a score of 10, so nobody won this round. Tough luck.\n";
+      ("HOUSE and Austin are tied with a score of 10," ^
+       " so nobody won this round. Tough luck.\n");
     winner_test "testing determine_game_winners with one tied with house" 
       (determine_game_winners house_tie_state) 
-      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n"; 
+      ("Brennan, Austin and Abby are tied with a " ^
+       "balance of 100, so nobody won this game. Tough luck.\n"); 
     winner_test "testing determine_round_winner with non-house winner" 
       (determine_round_winners p2_8_win_state) 
       "\nAustin won this round with a score of 8. Congrats!\n";
     winner_test "testing determine_game_winners with non-house winner" 
       (determine_game_winners p2_8_win_state) 
-      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";
+      ("Brennan, Austin and Abby are tied with a balance of" ^
+       " 100, so nobody won this game. Tough luck.\n");
     winner_test "testing determine_round_winner with non-house winners" 
       (determine_round_winners p1_p2_tie_state) 
-      "Brennan and Austin are tied with a score of 8, so they won this round. Congrats!\n";  
+      ("Brennan and Austin are tied with a score of 8," ^
+       " so they won this round. Congrats!\n");  
     winner_test "testing determine_game_winners with non-house winners" 
       (determine_game_winners p1_p2_tie_state) 
-      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";
+      ("Brennan, Austin and Abby are tied with a balance of 100," ^
+       " so nobody won this game. Tough luck.\n");
     winner_test 
       "testing determine_round_winner with non-house winners and busted players" 
       (determine_round_winners p1_p2_win_busted) 
-      "Brennan and Austin are tied with a score of 8, so they won this round. Congrats!\n"; 
+      ("Brennan and Austin are tied with a score of 8," ^
+       " so they won this round. Congrats!\n"); 
     winner_test 
       "testing determine_game_winner with non-house winners and busted players" 
       (determine_game_winners p1_p2_win_busted) 
-      "Brennan, Austin and Abby are tied with a balance of 100, so nobody won this game. Tough luck.\n";  
+      ("Brennan, Austin and Abby are tied with a balance of" ^
+       " 100, so nobody won this game. Tough luck.\n");  
     winner_test 
       "testing determine_round_winners with non-house winners and busted players
       and one rich player" 
@@ -552,7 +579,8 @@ Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903, Hand: [2 of clubs; 
     winner_test 
       "testing determine_round_winners with a player with a long name" 
       (determine_round_winners long_name_game) 
-      "Austin and ABCDEFGHIJKLMNOPQRSTUVWXYZ are tied with a score of 8, so they won this round. Congrats!\n"; 
+      ("Austin and ABCDEFGHIJKLMNOPQRSTUVWXYZ are tied with" ^
+       " a score of 8, so they won this round. Congrats!\n"); 
     winner_test 
       "testing determine_game_winner with a player with a long name" 
       (determine_game_winners long_name_game) 
@@ -564,7 +592,8 @@ Name: ZZZZZZZZZZZZZ, Current Balance = $4611686018427387903, Hand: [2 of clubs; 
     winner_test 
       "testing determine_game_winner with a player with a large sum" 
       (determine_game_winners large_name_num_game) 
-      "\nZZZZZZZZZZZZZ won this game with a balance of $4611686018427387903. Congrats!\n\n";
+      ("\nZZZZZZZZZZZZZ won this game with a balance" ^
+       " of $4611686018427387903. Congrats!\n\n");
 
     betting_test "testing betting with default_state" 
       (determine_balances default_state) [p3; p2; p1];

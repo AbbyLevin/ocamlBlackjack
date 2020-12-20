@@ -175,7 +175,8 @@ let rec rules here =
   | _ -> begin
       print_endline "\n";
       print_string
-        "That wasn't a yes, so here are the rules again. Try reading them this time. ";
+        ("That wasn't a yes, so here are the rules" ^
+         "again. Try reading them this time. ");
       rules here
     end  
 
