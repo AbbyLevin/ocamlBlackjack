@@ -166,7 +166,7 @@ let rec rules here =
       print_string "\n";
       print_string  "> "; 
       let start_amount = read_line () |> int_of_string in 
-      let init_state = initialize_game here start_amount (game_name^".json") in 
+      let init_state = initialize_game here start_amount (game_name) in 
       let final_state = start_round init_state in 
       (*repeat_rounds_fake true; *)
       repeat_rounds final_state [final_state] false true

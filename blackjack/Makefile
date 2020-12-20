@@ -36,3 +36,7 @@ docs-private: build
 	ocamlfind ocamldoc -I _build -package yojson,ANSITerminal \
 		-html -stars -d doc.private \
 		-inv-merge-ml-mli -m A $(MLIS) $(MLS)	
+
+clean: 
+	ocamlbuild -clean 
+	rm -rf blackjack.zip doc.public doc.private 
