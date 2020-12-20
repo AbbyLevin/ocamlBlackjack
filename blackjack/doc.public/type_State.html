@@ -12,7 +12,8 @@
 <link title="Main" rel="Chapter" href="Main.html">
 <link title="Author" rel="Chapter" href="Author.html">
 <link title="State" rel="Chapter" href="State.html">
-<link title="Save" rel="Chapter" href="Save.html"><title>State</title>
+<link title="Save" rel="Chapter" href="Save.html">
+<link title="Hard_ai" rel="Chapter" href="Hard_ai.html"><title>State</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
@@ -24,6 +25,7 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;init_game_state&nbsp;:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;(string&nbsp;*&nbsp;string)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.state<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;player_turn&nbsp;:&nbsp;<span class="constructor">Player</span>.player&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;easy_turn&nbsp;:&nbsp;<span class="constructor">Player</span>.player&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;play_turns&nbsp;:&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;deal_cards&nbsp;:&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;place_bets&nbsp;:&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Player</span>.player&nbsp;list<br>

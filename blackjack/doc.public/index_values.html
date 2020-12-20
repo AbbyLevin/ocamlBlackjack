@@ -13,7 +13,8 @@
 <link title="Main" rel="Chapter" href="Main.html">
 <link title="Author" rel="Chapter" href="Author.html">
 <link title="State" rel="Chapter" href="State.html">
-<link title="Save" rel="Chapter" href="Save.html"><title>Index of values</title>
+<link title="Save" rel="Chapter" href="Save.html">
+<link title="Hard_ai" rel="Chapter" href="Hard_ai.html"><title>Index of values</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -29,6 +30,15 @@
 </td></tr>
 <tr><td><a href="Card.html#VALadd_cards">add_cards</a> [<a href="Card.html">Card</a>]</td>
 <td></td></tr>
+<tr><td align="left"><div>B</div></td></tr>
+<tr><td><a href="Hard_ai.html#VALbest_move">best_move</a> [<a href="Hard_ai.html">Hard_ai</a>]</td>
+<td><div class="info">
+<p><code class="code">best_move player dealer_hand</code> returns the best move an AI player can make, 
+    with 0 representing the decision to stay, and 1 representing the decision 
+    to hit.</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>C</div></td></tr>
 <tr><td><a href="Deck.html#VALcombine_suit_and_values">combine_suit_and_values</a> [<a href="Deck.html">Deck</a>]</td>
 <td><div class="info">
@@ -37,6 +47,8 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Hard_ai.CardTup.html#VALcompare">compare</a> [<a href="Hard_ai.CardTup.html">Hard_ai.CardTup</a>]</td>
+<td></td></tr>
 <tr><td><a href="State.html#VALcompare_players">compare_players</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">compare_players x y</code> compares <code class="code">x</code> and <code class="code">y</code> based on their scores.</p>
@@ -77,6 +89,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Hard_ai.html#VALdecision_table">decision_table</a> [<a href="Hard_ai.html">Hard_ai</a>]</td>
+<td><div class="info">
+<p><code class="code">decision_table</code> is the hashtable that maps CardTups to an integer, 
+    either 0 or 1.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="State.html#VALdetermine_balances">determine_balances</a> [<a href="State.html">State</a>]</td>
 <td><div class="info">
 <p><code class="code">determine_balances</code> returns a players list with updated balances based 
@@ -96,6 +115,9 @@
 
 </div>
 </td></tr>
+<tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="State.html#VALeasy_turn">easy_turn</a> [<a href="State.html">State</a>]</td>
+<td></td></tr>
 <tr><td align="left"><div>F</div></td></tr>
 <tr><td><a href="Card.html#VALfind_rem_ace">find_rem_ace</a> [<a href="Card.html">Card</a>]</td>
 <td><div class="info">
@@ -186,6 +208,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Hard_ai.html#VALhits">hits</a> [<a href="Hard_ai.html">Hard_ai</a>]</td>
+<td><div class="info">
+<p><code class="code">hits</code> is the list of CardTups for which the player should hit.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Author.html#VALhours_worked">hours_worked</a> [<a href="Author.html">Author</a>]</td>
 <td><div class="info">
 <p><code class="code">hours_worked</code> is the number of hours you worked on this assignment.</p>
@@ -212,6 +240,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Hard_ai.html#VALinitialize_decision_table">initialize_decision_table</a> [<a href="Hard_ai.html">Hard_ai</a>]</td>
+<td><div class="info">
+<p><code class="code">initialize_decision_table</code> adds all of the values in <code class="code">hits</code> and <code class="code">stays</code> and their corresponding values 
+    to the hashtable.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Main.html#VALinitialize_game">initialize_game</a> [<a href="Main.html">Main</a>]</td>
 <td><div class="info">
 <p><code class="code">initialize_game here</code> initializes the game by gathering the number of
@@ -224,6 +259,13 @@
 <td><div class="info">
 <p><code class="code">initialize_hand player</code> initializes the hand of <code class="code">player</code> by "drawing"
     two cards for them.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hard_ai.html#VALinsert_tup_list">insert_tup_list</a> [<a href="Hard_ai.html">Hard_ai</a>]</td>
+<td><div class="info">
+<p><code class="code">insert_tup_list</code> nserts each CardTup in <code class="code">tup_list</code> and corresponding value 
+    <code class="code">entry</code> into the decision table.</p>
 
 </div>
 </td></tr>
@@ -372,6 +414,13 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Main.html#VALsave_game_qry">save_game_qry</a> [<a href="Main.html">Main</a>]</td>
+<td><div class="info">
+<p><code class="code">save_game_qry state</code> handles allowing a user to decide to save their 
+    game.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALstandard_deck_maker">standard_deck_maker</a> [<a href="Deck.html">Deck</a>]</td>
 <td><div class="info">
 <p><code class="code">standard_deck_maker</code> creates a deck consisting of the cross product 
@@ -383,6 +432,12 @@
 <td><div class="info">
 <p><code class="code">start_round</code> starts a new round of blackjack and returns the state once 
     the game is finished</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Hard_ai.html#VALstays">stays</a> [<a href="Hard_ai.html">Hard_ai</a>]</td>
+<td><div class="info">
+<p><code class="code">stays</code> is list of CardTups for which the player should stay.</p>
 
 </div>
 </td></tr>

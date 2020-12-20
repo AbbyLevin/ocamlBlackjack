@@ -29,8 +29,7 @@ let create_card suit value =
 (** [tuple_to_card tup] converts a suit * value tuple [tup] into a card. *)
 let tuple_to_card (tup : suit * value) : card = 
   match tup with 
-  | (x, y) -> 
-    {suit=x; value=y}
+  | (x, y) -> {suit=x; value=y}
 
 (** [create_card_list acc lst] returns a list of cards corresponding to a list
     of suit * value tuples [lst]. *)
@@ -92,7 +91,7 @@ let int_of_value (value : value) =
   | King -> 10
   | Ace -> 1
 
-(** [string_of_card c] returns a string representation of [c]. *)
+(** [string_of_card_test c] returns a string representation of [c]. *)
 let string_of_card_test (c : card) = 
   (get_value c |> string_of_value) ^ " of " ^ (get_suit c |> string_of_suit)
 
@@ -108,8 +107,8 @@ let rec add_cards (acc : int) (lst : card list) =
 let add_card_to (num : int) (c : card) : int = 
   num + (get_value c |> int_of_value)
 
-(** [find_rem_ace cards acc] returns a [cards] but with 1 ace removed
-    if there are any in [cards].*)
+(** [find_rem_ace cards acc] returns [cards] but with 1 ace removed
+    if there are any in [cards]. *)
 let rec find_rem_ace (cards : card list) acc = 
   match cards with 
     [] -> acc 
@@ -117,7 +116,7 @@ let rec find_rem_ace (cards : card list) acc =
     else find_rem_ace xs (x :: acc)
 
 (** [sum_cards_strict cards acc] returns the sum of a list of cards where 
-    aces are counted strictly as 1*)
+    aces are counted strictly as 1. *)
 let rec sum_cards_strict (cards : card list) acc = 
   match cards with 
     [] -> acc
@@ -154,8 +153,9 @@ let rec print_top_or_bottom = function
     else ANSITerminal.(print_string [default] "*********  "); 
     print_top_or_bottom t
 
-(** [clubs_second_line card] takes in a card and prints the second line of the
-    card with the value followed by the C for clubs, spaced appropriately.*)  
+(** [clubs_second_line card] takes in a card [cards] and prints the second line 
+    of the card with the value followed by the C for clubs, spaced 
+    appropriately. *)  
 let clubs_second_line = function
   | Two -> ANSITerminal.(print_string [default] "* 2   C *  ")
   | Three -> ANSITerminal.(print_string [default] "* 3   C *  ")
@@ -171,8 +171,9 @@ let clubs_second_line = function
   | King -> ANSITerminal.(print_string [default] "* K   C *  ")
   | Ace -> ANSITerminal.(print_string [default] "* A   C *  ")
 
-(** [spades_second_line card] takes in a card and prints the second line of the
-    card with the value followed by the S for spades, spaced appropriately.*) 
+(** [spades_second_line card] takes in a card [card] and prints the second 
+    line of the card with the value followed by the S for spades, 
+    spaced appropriately.*) 
 let spades_second_line = function
   | Two -> ANSITerminal.(print_string [default] "* 2   S *  ")
   | Three -> ANSITerminal.(print_string [default] "* 3   S *  ")
@@ -188,8 +189,9 @@ let spades_second_line = function
   | King -> ANSITerminal.(print_string [default] "* K   S *  ")
   | Ace -> ANSITerminal.(print_string [default] "* A   S *  ")
 
-(** [hearts_second_line card] takes in a card and prints the second line of the
-    card with the value followed by the H for hearts, spaced appropriately.*) 
+(** [hearts_second_line card] takes in a card [card] and prints the second 
+    line of the card with the value followed by the H for hearts, 
+    spaced appropriately.*) 
 let hearts_second_line = function
   | Two -> ANSITerminal.(print_string [red] "* 2   H *  ")
   | Three -> ANSITerminal.(print_string [red] "* 3   H *  ")

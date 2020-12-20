@@ -132,16 +132,28 @@ let rec initialize_game here =
          |> get_names_and_diff [] 
          |> init_game_state
 
-let rules_string = "Welcome to Blackjack! \nYour goal is to beat the dealer's hand without going over 21. \nFace cards are worth 10, aces are worth 1 or 11 (whichever is better for your hand). \nAll other cards are worth their value. \nEach player begins with two cards. \nThe players' cards are known to all, but only one of the dealer's cards is visible. \nTo hit (h) is to ask for another card. To stand (s) is end your turn without getting another card. \nIf the total value of your hand goes over 21, you bust, and the dealer wins.\nPress control c at any time to exit the game.\n"
+let rules_string = "Welcome to Blackjack!
+Your goal is to beat the dealer's hand without going over 21. Face cards are 
+worth 10, aces are worth 1 or 11 (whichever is better for your hand). All other 
+cards are worth their value. Each player begins with two cards. The players' 
+cards are known to all, but only one of the dealer's cards is visible. To hit 
+(h) is to ask for another card. To stand (s) is end your turn without 
+getting another card. If the total value of your hand goes over 21, you bust,
+and the dealer wins. Press control c at any time to exit the game.\n"
 
-(** [rules here] handles outputting the rules if a player desires them. *)
-let rec rules here =
+(** [print_rules ()] prints the rules string along with correct spacing and 
+    prompts the players as to whether or not they are ready to continue. *)
+let print_rules () = 
   print_endline "\n";
   print_string rules_string;
   print_endline "\n";
   ANSITerminal.(print_string [red] "Are you ready to play? (y/n)" );
   print_string "\n";
-  print_string  "> "; 
+  print_string  "> "
+
+(** [rules here] handles outputting the rules if a player desires them. *)
+let rec rules here =
+  print_rules ();
   match read_line () with 
   | "y" -> begin
       ANSITerminal.(print_string [red] 

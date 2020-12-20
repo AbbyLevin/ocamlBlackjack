@@ -12,11 +12,13 @@
 <link title="Main" rel="Chapter" href="Main.html">
 <link title="Author" rel="Chapter" href="Author.html">
 <link title="State" rel="Chapter" href="State.html">
-<link title="Save" rel="Chapter" href="Save.html"><title>Main</title>
+<link title="Save" rel="Chapter" href="Save.html">
+<link title="Hard_ai" rel="Chapter" href="Hard_ai.html"><title>Main</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;play_round&nbsp;:&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.state<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;save_game_qry&nbsp;:&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;repeat_rounds&nbsp;:&nbsp;<span class="constructor">State</span>.state&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">State</span>.state&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;prompt_name&nbsp;:&nbsp;bool&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_names_and_diff&nbsp;:<br>

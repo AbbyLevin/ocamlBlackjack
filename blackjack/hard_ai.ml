@@ -9,8 +9,6 @@ struct
     | (x1, x2), (y1, y2) -> Stdlib.compare (x1+x2) (y1+y2)
 end
 
-(* Stay = 0, Hit = 1 *)
-
 module CardTupMap = Map.Make(CardTup)
 let decision_table = create 110
 
@@ -33,7 +31,7 @@ let rec insert_tup_list tup_list entry =
 
 (** [initialize_decision_table ()] initializes the decision table with 
     the best possible plays for the combinations of player and dealer hands 
-    in the stays and hits lists.  *)
+    in the stays and hits lists. *)
 let initialize_decision_table () = 
   insert_tup_list stays 0; 
   insert_tup_list hits 1 
@@ -62,7 +60,7 @@ let best_move_no_ace player dealer_hand =
     staying while a 1 means hit.  *)
 let best_move player dealer_hand = 
   let new_hand = find_rem_ace player.hand [] in
-  if (List.length new_hand) <> (List.length player.hand) then
+  if List.length new_hand <> List.length player.hand then
     if (sum_cards_strict new_hand 0) + 11 <= 21 then 
       best_move_ace new_hand dealer_hand 
     else best_move_no_ace player dealer_hand

@@ -26,6 +26,9 @@ let get_balance player =
 let update_balance player house_score = 
   let player_score = get_sum player in 
   if player_score > 21 then player 
+  else if house_score = player_score then 
+    let new_bal = player.balance+player.current_bet in 
+    {player with balance=new_bal}
   else if house_score > 21 || player_score > house_score then 
     let new_bal = player.balance+player.current_bet*2 in 
     {player with balance=new_bal}

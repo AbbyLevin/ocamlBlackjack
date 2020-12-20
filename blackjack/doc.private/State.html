@@ -17,7 +17,8 @@
 <link title="Main" rel="Chapter" href="Main.html">
 <link title="Author" rel="Chapter" href="Author.html">
 <link title="State" rel="Chapter" href="State.html">
-<link title="Save" rel="Chapter" href="Save.html"><title>State</title>
+<link title="Save" rel="Chapter" href="Save.html">
+<link title="Hard_ai" rel="Chapter" href="Hard_ai.html"><title>State</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="Author.html" title="Author">Previous</a>
@@ -54,6 +55,8 @@
 
 
 
+<pre><span id="VALhit_string"><span class="keyword">val</span> hit_string</span> : <code class="type">string</code></pre>
+<pre><span id="VALstay_string"><span class="keyword">val</span> stay_string</span> : <code class="type">string</code></pre>
 <pre><span id="VALinit_game_state"><span class="keyword">val</span> init_game_state</span> : <code class="type">(string * string) list -> int -> string -> <a href="State.html#TYPEstate">state</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">init_game_state player_names</code> returns a game state with as many players
@@ -64,7 +67,7 @@
 </div>
 </div>
 
-<pre><span id="VALplayer_turn"><span class="keyword">val</span> player_turn</span> : <code class="type"><a href="Player.html#TYPEplayer">Player.player</a> -> 'a -> <a href="Player.html#TYPEplayer">Player.player</a></code></pre><div class="info ">
+<pre><span id="VALplayer_turn"><span class="keyword">val</span> player_turn</span> : <code class="type"><a href="Player.html#TYPEplayer">Player.player</a> -> <a href="State.html#TYPEstate">state</a> -> <a href="Player.html#TYPEplayer">Player.player</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">player_turn</code> returns a player with their hand updated based on how 
     many times they hit</p>
@@ -74,17 +77,17 @@
 </div>
 </div>
 
-<pre><span id="VALeasy_turn"><span class="keyword">val</span> easy_turn</span> : <code class="type"><a href="Player.html#TYPEplayer">Player.player</a> -> 'a -> <a href="Player.html#TYPEplayer">Player.player</a></code></pre><div class="info ">
+<pre><span id="VALeasy_turn"><span class="keyword">val</span> easy_turn</span> : <code class="type"><a href="Player.html#TYPEplayer">Player.player</a> -> <a href="State.html#TYPEstate">state</a> -> <a href="Player.html#TYPEplayer">Player.player</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">easy_turn player state</code> carries out the gameplay for an Easy difficulty
-    AI player.</p>
+    AI player <code class="code">player</code> with current game <code class="code">state</code>.</p>
 </div>
 </div>
 
-<pre><span id="VALhard_turn"><span class="keyword">val</span> hard_turn</span> : <code class="type"><a href="Player.html#TYPEplayer">Player.player</a> -> 'a -> <a href="Player.html#TYPEplayer">Player.player</a></code></pre><div class="info ">
+<pre><span id="VALhard_turn"><span class="keyword">val</span> hard_turn</span> : <code class="type"><a href="Player.html#TYPEplayer">Player.player</a> -> <a href="State.html#TYPEstate">state</a> -> <a href="Player.html#TYPEplayer">Player.player</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">hard_turn player state</code> carries out the gameplay for a Hard difficulty
-    AI player.</p>
+    AI player <code class="code">player</code> with current game <code class="code">state</code>.</p>
 </div>
 </div>
 
@@ -118,6 +121,7 @@
 </div>
 </div>
 
+<pre><span id="VALplace_ai_bet"><span class="keyword">val</span> place_ai_bet</span> : <code class="type"><a href="Player.html#TYPEplayer">Player.player</a> -><br>       <a href="State.html#TYPEstate">state</a> -> <a href="Player.html#TYPEplayer">Player.player</a> list -> <a href="Player.html#TYPEplayer">Player.player</a> list -> <a href="Player.html#TYPEplayer">Player.player</a> list</code></pre>
 <pre><span id="VALdetermine_balances"><span class="keyword">val</span> determine_balances</span> : <code class="type"><a href="State.html#TYPEstate">state</a> -> <a href="Player.html#TYPEplayer">Player.player</a> list</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">determine_balances</code> returns a players list with updated balances based 
