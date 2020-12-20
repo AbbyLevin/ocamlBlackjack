@@ -36,6 +36,8 @@ let initialize_decision_table () =
   insert_tup_list stays 0; 
   insert_tup_list hits 1 
 
+(** [best_move_ace new_hand dealer_hand] returns a 0 or 1 corrosponding to the 
+    best possible move to make for a hand that has an ace. *)
 let best_move_ace new_hand dealer_hand =
   let sum_without_ace = sum_cards_strict new_hand 0 in
   if sum_without_ace > 7 then 0 
@@ -45,6 +47,8 @@ let best_move_ace new_hand dealer_hand =
     | 3 | 4 | 5 | 6 | 9 | 10 | 1 -> 1
     | _ -> failwith "dealer hand illegal"
 
+(** [best_move_no_ace player dealer_hand] returns a 0 or 1 corrosponding to the 
+    best possible move to make for a hand that does not have an ace. *)
 let best_move_no_ace player dealer_hand =
   let player_sum = get_sum player in 
   if player_sum <= 11 then 1 else 
