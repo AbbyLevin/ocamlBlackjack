@@ -298,7 +298,7 @@ let betting_test
     out an easy AI [player]'s s turn is valid according to the criteria of an 
     Easy move outlined in [easy_turn]. *)
 let valid_easy (player : player) : bool = 
-  sum_cards player.hand >= 17        
+  sum_cards player.hand >= 15      
 
 (** [easy_ai_test name updated_player expected_output] constructs an OUnit test 
     named [name] that asserts the quality of [expected_output] with 

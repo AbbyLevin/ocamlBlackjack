@@ -71,9 +71,9 @@ let rec player_turn player state =
     then let card_sum = sum_cards (get_hand player) in 
       begin 
         match card_sum with 
-        | s when s < 17 -> player_turn (house_turn player state) state
+        | s when s < 17 -> player_turn (house_turn player) state
         | s when s <= 21 -> player 
-        | _ -> player_turn (house_turn player state) state
+        | _ -> player_turn (house_turn player) state
       end
     else if player.diff = "Easy" then easy_turn player state
     else if player.diff = "Hard" then hard_turn player state     
@@ -82,7 +82,7 @@ let rec player_turn player state =
                       "Press 'h' to hit, press 's' to stay, or press 'a' for advice.\n");
       print_string  "> ";
       match read_line () with
-      | "h" -> let new_player = hit player state in
+      | "h" -> let new_player = hit player in
         player_turn new_player state 
       | "s" -> player
       | "a" ->   
@@ -106,9 +106,9 @@ and easy_turn (player : player) (state : state) : player =
   let card_sum = sum_cards (get_hand player) in 
   begin 
     match card_sum with 
-    | s when s < 15 -> player_turn (house_turn player state) state
+    | s when s < 15 -> player_turn (house_turn player) state
     | s when s <= 21 -> player 
-    | _ -> player_turn (house_turn player state) state
+    | _ -> player_turn (house_turn player) state
   end
 
 (** [hard_turn player state] carries out the gameplay for a Hard difficulty
@@ -118,7 +118,7 @@ and hard_turn (player : player) (state) : player =
   let decision = best_move player dealer_card in 
   begin 
     match decision with 
-    | 1 -> player_turn (hit player state) state 
+    | 1 -> player_turn (hit player) state 
     | 0 -> player 
     | _ -> failwith "Something went wrong"
   end

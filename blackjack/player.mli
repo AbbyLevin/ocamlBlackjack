@@ -29,9 +29,9 @@ val update_player_bet : player -> int -> player
     two cards for them. *)
 val initialize_hand : player -> player
 
-(** [hit player state] carries out the functionality of hit by updating 
-    [player] and [state]. *)
-val hit : player -> 'a -> player
+(** [hit player] carries out the functionality of hit by updating 
+    [player]. *)
+val hit : player -> player
 
-(** [house_turn player state] takes the houses turn according to house rules. *)
-val house_turn : player -> 'a -> player
+(** [house_turn player] takes the houses turn according to house rules. *)
+val house_turn : player -> player

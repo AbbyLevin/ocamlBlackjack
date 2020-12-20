@@ -17,7 +17,7 @@ val save_game_qry : state -> unit
     update [state] along the way as long as they don't make [quit] true. 
     [here] is used to prevent this functionality from occuring when the 
     file is loaded.*)
-val repeat_rounds : state -> state list -> bool -> bool -> unit
+val repeat_rounds : state -> state list -> bool -> unit
 
 (** [prompt_name here] prompts a user to enter their name and handles
     their response. [here] is used to prevent this functionality from 

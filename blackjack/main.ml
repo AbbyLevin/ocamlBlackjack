@@ -23,11 +23,11 @@ let rec save_game_qry state =
   | "n" -> ()
   | _ -> print_string "Please input a valid response\n"; save_game_qry state
 
-(** [repeat_rounds state quit here] allows a user to play a round and 
-    update [state] along the way as long as they don't make [quit] true. 
+(** [repeat_rounds state here] allows a user to play a round and 
+    update [state] along the way. 
     [here] is used to prevent this functionality from occuring when the 
     file is loaded.*)
-let rec repeat_rounds state past_states quit here = 
+let rec repeat_rounds state past_states here = 
   if here |> not then failwith "repeat_rounds here = not" else 
     print_string "\n\nWould you like to play another round? (y/n) ";
   let str = read_line () in
@@ -44,9 +44,9 @@ let rec repeat_rounds state past_states quit here =
     print_string (determine_round_winners state);
     print_string (print_round_leaderboard state);
     let y = play_round state true in
-    repeat_rounds (y) (y :: past_states) false true
+    repeat_rounds (y) (y :: past_states) true
   | other -> print_string "\nPlease type a valid input.\n";
-    repeat_rounds state past_states quit here
+    repeat_rounds state past_states here
 
 (** [prompt_name here] prompts a user to enter their name and handles
     their response. [here] is used to prevent this functionality from 
@@ -169,7 +169,7 @@ let rec rules here =
       let init_state = initialize_game here start_amount (game_name) in 
       let final_state = start_round init_state in 
       (*repeat_rounds_fake true; *)
-      repeat_rounds final_state [final_state] false true
+      repeat_rounds final_state [final_state] true
 
     end
   | _ -> begin
@@ -228,7 +228,7 @@ let rec play_game here =
       let init_state = select_game true in 
       let final_state = start_round init_state in 
       (*repeat_rounds_fake true; *)
-      repeat_rounds final_state [final_state] false true 
+      repeat_rounds final_state [final_state] true 
       (* in 
          determine_big_winner final_round *)
     end

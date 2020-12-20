@@ -50,17 +50,17 @@ let initialize_hand player =
   {name=player.name; hand=init_hand; 
    balance=player.balance; current_bet=player.current_bet; diff = player.diff}
 
-(** [hit player state] carries out the functionality of hit by updating 
-    [player] and [state]. *)
-let hit player state =
+(** [hit player] carries out the functionality of hit by updating 
+    [player]. *)
+let hit player =
   let new_card = get_card () in 
   let new_hand = new_card :: player.hand in 
   {name=player.name; hand=new_hand; 
    balance=player.balance; current_bet=player.current_bet; diff = player.diff}
 
-(** [house_turn player state] takes the houses turn according to 
+(** [house_turn player] takes the houses turn according to 
     the house rules. *)
-let house_turn player state = 
+let house_turn player = 
   if sum_cards player.hand < 17 
-  then hit player state 
+  then hit player 
   else player 

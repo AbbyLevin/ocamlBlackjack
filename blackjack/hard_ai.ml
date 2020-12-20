@@ -52,9 +52,6 @@ let best_move_no_ace player dealer_hand =
     let card_tup = (player_sum, dealer_hand) in 
     find decision_table card_tup
 
-(* 11 or less and the AI hits every time *)
-(* 17 or more and the AI should stay every time *)
-
 (** [best_move player dealer_hand] returns a 0 or 1 corrosponding to the best  
     move based on the current [player] and [dealer_hand]. A 0 corrosponds to 
     staying while a 1 means hit.  *)
